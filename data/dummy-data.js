@@ -27,7 +27,7 @@ export const MEALS = [
     "Margherita Pizza",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     25,
     ["Pizza Dough", "Tomato Sauce", "Mozzarella", "Basil Leaves", "Olive Oil"],
     [
@@ -48,7 +48,7 @@ export const MEALS = [
     "Grilled Cheese Sandwich",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1528733918455-5a59687cedf0?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1528736235302-52922df5c122?q=80&w=1554&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     10,
     ["2 Slices of Bread", "Cheddar Cheese", "Butter"],
     [
@@ -67,7 +67,7 @@ export const MEALS = [
     "Classic Cheeseburger",
     "pricey",
     "simple",
-    "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=500&auto=format&fit=crop",
     30,
     [
       "Beef Patty",
@@ -94,7 +94,7 @@ export const MEALS = [
     "Bratwurst with Sauerkraut",
     "luxurious",
     "challenging",
-    "https://images.pexels.com/photos/12737380/pexels-photo-12737380.jpeg?auto=compress&cs=tinysrgb&w=1000",
+    "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?q=80&w=500&auto=format&fit=crop",
     50,
     ["Bratwurst Sausages", "Sauerkraut", "Mustard", "Bread Rolls"],
     [
@@ -113,7 +113,7 @@ export const MEALS = [
     "Greek Salad",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=500&auto=format&fit=crop",
     15,
     [
       "Tomatoes",
@@ -140,7 +140,7 @@ export const MEALS = [
     "Sushi Platter",
     "luxurious",
     "hard",
-    "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=500&auto=format&fit=crop",
     60,
     ["Sushi Rice", "Nori Sheets", "Salmon", "Avocado", "Cucumber", "Soy Sauce"],
     [
@@ -160,7 +160,7 @@ export const MEALS = [
     "Pancakes with Maple Syrup",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1567620905732-2d1ec7bb7445?q=80&w=1000&auto=format&fit=crop",
+    "https://plus.unsplash.com/premium_photo-1663854478296-dd00b6257021?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     20,
     ["Flour", "Milk", "Eggs", "Sugar", "Butter", "Maple Syrup"],
     [
@@ -180,7 +180,7 @@ export const MEALS = [
     "Pad Thai",
     "pricey",
     "challenging",
-    "https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1645500498403-970672caf43e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     35,
     [
       "Rice Noodles",
@@ -209,7 +209,7 @@ export const MEALS = [
     "Crème Brûlée",
     "luxurious",
     "hard",
-    "https://images.unsplash.com/photo-1470124182917-cc6e71b22ecc?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1676300184943-09b2a08319a3?q=80&w=500&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     50,
     ["Cream", "Egg Yolks", "Sugar", "Vanilla Bean"],
     [
@@ -229,7 +229,7 @@ export const MEALS = [
     "Falafel with Hummus",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1593001874117-c99c5edbb867?q=80&w=1000&auto=format&fit=crop",
+    "https://plus.unsplash.com/premium_photo-1663853051503-57130cb26bc6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8RmFsYWZlbCUyMHdpdGglMjBIdW1tdXN8ZW58MHx8MHx8fDA%3D",
     25,
     [
       "Chickpeas",
@@ -256,7 +256,7 @@ export const MEALS = [
     "Tacos al Pastor",
     "pricey",
     "challenging",
-    "https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?q=80&w=1000&auto=format&fit=crop",
+    "https://plus.unsplash.com/premium_photo-1681406994521-82c20814605d?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8VGFjb3MlMjBhbCUyMFBhc3RvcnxlbnwwfHwwfHx8MA%3D%3D",
     40,
     [
       "Corn Tortillas",
@@ -282,7 +282,7 @@ export const MEALS = [
     "Butter Chicken",
     "luxurious",
     "challenging",
-    "https://images.unsplash.com/photo-1603894584134-f132f1370bc3?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1728910107534-e04e261768ae?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8QnV0dGVyJTIwQ2hpY2tlbnxlbnwwfHwwfHx8MA%3D%3D",
     50,
     ["Chicken", "Butter", "Tomatoes", "Cream", "Spices", "Garlic", "Ginger"],
     [
@@ -302,7 +302,7 @@ export const MEALS = [
     "Grilled Salmon with Lemon",
     "pricey",
     "simple",
-    "https://images.unsplash.com/photo-1485921325833-c519f76c4927?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1485921325833-c519f76c4927?q=80&w=500&auto=format&fit=crop",
     30,
     ["Salmon Fillet", "Lemon", "Olive Oil", "Salt", "Pepper"],
     [
@@ -321,7 +321,7 @@ export const MEALS = [
     "Vegan Buddha Bowl",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=500&auto=format&fit=crop",
     20,
     ["Quinoa", "Chickpeas", "Avocado", "Spinach", "Carrots", "Tahini Dressing"],
     [
@@ -340,7 +340,7 @@ export const MEALS = [
     "Chicken Tikka Masala",
     "pricey",
     "challenging",
-    "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=500&auto=format&fit=crop",
     45,
     ["Chicken", "Yogurt", "Garam Masala", "Tomato Puree", "Cream", "Ginger"],
     [
@@ -360,7 +360,7 @@ export const MEALS = [
     "Chocolate Lava Cake",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1624353365286-3f8d62daad51?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1624353365286-3f8d62daad51?q=80&w=500&auto=format&fit=crop",
     20,
     ["Dark Chocolate", "Butter", "Eggs", "Sugar", "Flour"],
     [
@@ -380,7 +380,7 @@ export const MEALS = [
     "Chicken Quesadilla",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?q=80&w=500&auto=format&fit=crop",
     15,
     [
       "Flour Tortillas",
@@ -405,7 +405,7 @@ export const MEALS = [
     "Shrimp Scampi",
     "pricey",
     "simple",
-    "https://images.unsplash.com/photo-1633964913295-ceb4c72610a9?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1625943553852-781c6dd46faa?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8U2hyaW1wJTIwU2NhbXBpfGVufDB8fDB8fHww",
     25,
     ["Shrimp", "Garlic", "White Wine", "Lemon Juice", "Parsley", "Pasta"],
     [
@@ -425,7 +425,7 @@ export const MEALS = [
     "Spaghetti Carbonara",
     "pricey",
     "simple",
-    "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=500&auto=format&fit=crop",
     20,
     [
       "Spaghetti",
@@ -451,7 +451,7 @@ export const MEALS = [
     "Lamb Rogan Josh",
     "luxurious",
     "hard",
-    "https://images.unsplash.com/photo-1542367592-8849eb950fd8?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?q=80&w=500&auto=format&fit=crop",
     60,
     ["Lamb", "Yogurt", "Kashmiri Chilies", "Fennel Seeds", "Ginger", "Oil"],
     [
@@ -471,7 +471,7 @@ export const MEALS = [
     "BBQ Bacon Burger",
     "pricey",
     "challenging",
-    "https://images.unsplash.com/photo-1553979459-d2229ba7433b?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1553979459-d2229ba7433b?q=80&w=500&auto=format&fit=crop",
     35,
     ["Beef Patty", "Bacon", "BBQ Sauce", "Onion Rings", "Bun", "Cheese"],
     [
@@ -490,7 +490,7 @@ export const MEALS = [
     "Eggs Benedict",
     "luxurious",
     "hard",
-    "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?q=80&w=500&auto=format&fit=crop",
     30,
     [
       "Eggs",
@@ -517,7 +517,7 @@ export const MEALS = [
     "Quinoa Tabbouleh",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=500&auto=format&fit=crop",
     15,
     ["Quinoa", "Parsley", "Mint", "Tomato", "Cucumber", "Lemon Juice"],
     [
@@ -536,7 +536,7 @@ export const MEALS = [
     "Ratatouille",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1572453800999-e8d2d4400c71?q=80&w=1000&auto=format&fit=crop",
+    "https://plus.unsplash.com/premium_photo-1713635953194-ab8a625b2477?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8UmF0YXRvdWlsbGV8ZW58MHx8MHx8fDA%3D",
     45,
     [
       "Eggplant",
@@ -563,7 +563,7 @@ export const MEALS = [
     "Kabuli Pulao",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?q=80&w=500&auto=format&fit=crop",
     90,
     ["Basmati Rice", "Lamb", "Carrots", "Raisins", "Afghan Spices", "Almonds"],
     [
@@ -583,7 +583,7 @@ export const MEALS = [
     "Ghormeh Sabzi",
     "pricey",
     "hard",
-    "https://images.pexels.com/photos/18602047/pexels-photo-18602047.jpeg?auto=compress&cs=tinysrgb&w=1000",
+    "https://media.istockphoto.com/id/2223494636/photo/ghormeh-sabzi.webp?a=1&b=1&s=612x612&w=0&k=20&c=6LbIF9enTmlVUASewR5lhjWnqry8vuK9WC4WOXdtse8=",
     120,
     ["Mixed Herbs", "Lamb", "Kidney Beans", "Dried Lime", "Turmeric"],
     [
@@ -603,7 +603,7 @@ export const MEALS = [
     "Beef Pho",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?q=80&w=500&auto=format&fit=crop",
     180,
     [
       "Beef Bones",
@@ -629,7 +629,7 @@ export const MEALS = [
     "Mantu",
     "pricey",
     "hard",
-    "https://images.pexels.com/photos/4403082/pexels-photo-4403082.jpeg?auto=compress&cs=tinysrgb&w=1000",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYN66YQjm1DWF3amqkpSXYpPQ1Opw7yIb8hg&s",
     60,
     ["Pasta Dough", "Ground Beef", "Onions", "Yogurt Sauce", "Tomato Gravy"],
     [
@@ -649,7 +649,7 @@ export const MEALS = [
     "Beef Enchiladas",
     "pricey",
     "challenging",
-    "https://images.unsplash.com/photo-1533777324545-d419307024f0?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1730878423239-0fd430bbac37?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8QmVlZiUyMEVuY2hpbGFkYXN8ZW58MHx8MHx8fDA%3D",
     40,
     ["Corn Tortillas", "Ground Beef", "Enchilada Sauce", "Cheese", "Beans"],
     [
@@ -669,7 +669,7 @@ export const MEALS = [
     "Kung Pao Chicken",
     "affordable",
     "challenging",
-    "https://images.unsplash.com/photo-1525755662778-989d0524087e?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1525755662778-989d0524087e?q=80&w=500&auto=format&fit=crop",
     25,
     ["Chicken", "Peanuts", "Dried Chilies", "Soy Sauce", "Sichuan Pepper"],
     [
@@ -689,7 +689,7 @@ export const MEALS = [
     "Joojeh Kabab",
     "pricey",
     "simple",
-    "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1644364935906-792b2245a2c0?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Sm9vamVoJTIwS2FiYWJ8ZW58MHx8MHx8fDA%3D",
     40,
     ["Chicken", "Saffron", "Lemon Juice", "Onion", "Butter"],
     [
@@ -709,7 +709,7 @@ export const MEALS = [
     "Chicken Biryani",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1563379091339-03b11adbbee1?q=80&w=1000&auto=format&fit=crop",
+    "https://plus.unsplash.com/premium_photo-1694141251673-1758913ade48?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Q2hpY2tlbiUyMEJpcnlhbml8ZW58MHx8MHx8fDA%3D",
     60,
     ["Basmati Rice", "Chicken", "Biryani Masala", "Yogurt", "Fried Onions"],
     [
@@ -729,7 +729,7 @@ export const MEALS = [
     "Afghan Bolani",
     "affordable",
     "challenging",
-    "https://images.pexels.com/photos/2092897/pexels-photo-2092897.jpeg?auto=compress&cs=tinysrgb&w=1000",
+    "https://media.istockphoto.com/id/2196374149/photo/gutab.webp?a=1&b=1&s=612x612&w=0&k=20&c=eTN1p2s-QvMr9H7IOxkR7hdD01WfsOfz8KezDTPuzag=",
     45,
     ["Flatbread Dough", "Leeks or Potatoes", "Green Chilies", "Oil"],
     [
@@ -749,7 +749,7 @@ export const MEALS = [
     "Kashk-e Bademjan",
     "affordable",
     "simple",
-    "https://images.pexels.com/photos/15014902/pexels-photo-15014902.jpeg?auto=compress&cs=tinysrgb&w=1000",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmda9o0kB-RuSt8r6w68lrP2hevxn4XV7jwg&s",
     35,
     ["Eggplants", "Kashk (Whey)", "Fried Onions", "Garlic", "Dried Mint"],
     [
@@ -769,7 +769,7 @@ export const MEALS = [
     "Lasagna Bolognese",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=500&auto=format&fit=crop",
     60,
     [
       "Lasagna Sheets",
@@ -795,7 +795,7 @@ export const MEALS = [
     "Avocado Toast",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=500&auto=format&fit=crop",
     5,
     ["Whole Grain Bread", "Ripe Avocado", "Red Pepper Flakes", "Lemon Juice"],
     [
@@ -814,7 +814,7 @@ export const MEALS = [
     "Mushroom Swiss Burger",
     "pricey",
     "simple",
-    "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1579065413090-3ce766e7deca?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     25,
     ["Beef Patty", "Swiss Cheese", "Sautéed Mushrooms", "Garlic Aioli", "Bun"],
     [
@@ -834,7 +834,7 @@ export const MEALS = [
     "Chicken Schnitzel",
     "pricey",
     "challenging",
-    "https://images.unsplash.com/photo-1599923208225-bfbd0c360be1?q=80&w=1000&auto=format&fit=crop",
+    "https://plus.unsplash.com/premium_photo-1664391997303-dab867f07ad4?q=80&w=1328&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     35,
     ["Chicken Breast", "Breadcrumbs", "Eggs", "Flour", "Lemon Wedges"],
     [
@@ -854,7 +854,7 @@ export const MEALS = [
     "Caesar Salad",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1550317138-10000687ad32?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1546793665-c74683f339c1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Q2Flc2FyJTIwU2FsYWR8ZW58MHx8MHx8fDA%3D",
     15,
     ["Romaine Lettuce", "Croutons", "Parmesan Cheese", "Caesar Dressing"],
     ["Chop lettuce", "Toss with dressing and cheese", "Top with croutons"],
@@ -869,7 +869,7 @@ export const MEALS = [
     "Moroccan Tagine",
     "luxurious",
     "hard",
-    "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?q=80&w=500&auto=format&fit=crop",
     90,
     ["Lamb", "Dried Apricots", "Couscous", "Ginger", "Cinnamon", "Saffron"],
     [
@@ -888,7 +888,7 @@ export const MEALS = [
     "Shakshuka",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1590412200988-a436970781fa?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1590412200988-a436970781fa?q=80&w=500&auto=format&fit=crop",
     20,
     ["Eggs", "Tomato Puree", "Bell Peppers", "Garlic", "Cumin", "Feta Cheese"],
     [
@@ -907,7 +907,7 @@ export const MEALS = [
     "Chicken Teriyaki",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1533759080696-6745127847c2?q=80&w=1000&auto=format&fit=crop",
+    "https://plus.unsplash.com/premium_photo-1695167739750-a1e7c856438b?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     25,
     ["Chicken Thighs", "Soy Sauce", "Ginger", "Honey", "Sesame Seeds", "Rice"],
     [
@@ -926,7 +926,7 @@ export const MEALS = [
     "Quiche Lorraine",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1626645272195-2305540139e1?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=500&auto=format&fit=crop",
     55,
     ["Pastry Crust", "Bacon", "Heavy Cream", "Eggs", "Gruyère Cheese"],
     [
@@ -946,7 +946,7 @@ export const MEALS = [
     "Tiramisu",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?q=80&w=500&auto=format&fit=crop",
     40,
     ["Ladyfingers", "Mascarpone", "Espresso", "Cocoa Powder", "Sugar"],
     [
@@ -965,7 +965,7 @@ export const MEALS = [
     "Shawarma Wrap",
     "affordable",
     "challenging",
-    "https://images.unsplash.com/photo-1561651823-34feb02250e4?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1561651823-34feb02250e4?q=80&w=500&auto=format&fit=crop",
     30,
     ["Chicken strips", "Pita Bread", "Tahini", "Pickles", "Garlic Sauce"],
     [
@@ -984,7 +984,7 @@ export const MEALS = [
     "Chicken Fajitas",
     "pricey",
     "simple",
-    "https://images.unsplash.com/photo-1534352956274-4b95b3d8271c?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1689773976415-293dd893f77e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Q2hpY2tlbiUyMEZhaml0YXN8ZW58MHx8MHx8fDA%3D",
     25,
     ["Chicken breast", "Bell Peppers", "Onions", "Flour Tortillas", "Lime"],
     [
@@ -1002,7 +1002,7 @@ export const MEALS = [
     "Palak Paneer",
     "affordable",
     "challenging",
-    "https://images.unsplash.com/photo-1601050638917-3d8bc6873523?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8UGFsYWslMjBQYW5lZXJ8ZW58MHx8MHx8fDA%3D",
     40,
     [
       "Spinach",
@@ -1027,7 +1027,7 @@ export const MEALS = [
     "Fish and Chips",
     "pricey",
     "challenging",
-    "https://images.unsplash.com/photo-1524335582529-943f27dd4473?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1579208030886-b937da0925dc?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8RmlzaCUyMGFuZCUyMENoaXBzfGVufDB8fDB8fHww",
     35,
     ["Cod Fillets", "Potatoes", "Beer Batter", "Tartar Sauce"],
     [
@@ -1046,7 +1046,7 @@ export const MEALS = [
     "Vegan Lentil Soup",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=500&auto=format&fit=crop",
     45,
     ["Red Lentils", "Carrots", "Celery", "Turmeric", "Vegetable Broth"],
     ["Sauté veggies", "Add lentils and broth", "Simmer until lentils are soft"],
@@ -1061,7 +1061,7 @@ export const MEALS = [
     "Ashak",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1626132646529-5003375a95d1?q=80&w=1000&auto=format&fit=crop",
+    "https://i.ytimg.com/vi/jALnPwz0dA4/maxresdefault.jpg",
     60,
     [
       "Dough skins",
@@ -1086,7 +1086,7 @@ export const MEALS = [
     "Fesenjan",
     "luxurious",
     "hard",
-    "https://images.unsplash.com/photo-1647265882650-20593441a7df?q=80&w=1000&auto=format&fit=crop",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIRvwswu10qrpAfMUr6QAsqaCOJX6Kyi9iQ&s",
     120,
     ["Chicken", "Walnuts", "Pomegranate Paste", "Sugar", "Onions"],
     [
@@ -1105,7 +1105,7 @@ export const MEALS = [
     "Beef Wellington",
     "luxurious",
     "hard",
-    "https://images.unsplash.com/photo-1601356616077-695728ecf769?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1675718341348-65224936b742?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8QmVlZiUyMFdlbGxpbmd0b258ZW58MHx8MHx8fDA%3D",
     120,
     [
       "Beef Tenderloin",
@@ -1130,7 +1130,7 @@ export const MEALS = [
     "Pesto Pasta",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1473093226795-af9932fe5856?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1473093226795-af9932fe5856?q=80&w=500&auto=format&fit=crop",
     20,
     ["Pasta", "Basil", "Pine Nuts", "Parmesan Cheese", "Garlic", "Olive Oil"],
     [
@@ -1149,7 +1149,7 @@ export const MEALS = [
     "Chicken Quesadilla",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1618219944342-824e40a13285?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1628430044262-fb84cffbb744?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     15,
     ["Tortilla", "Grilled Chicken", "Cheddar Cheese", "Peppers"],
     [
@@ -1168,7 +1168,7 @@ export const MEALS = [
     "Hawaiian Burger",
     "pricey",
     "simple",
-    "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=500&auto=format&fit=crop",
     25,
     [
       "Beef Patty",
@@ -1193,7 +1193,7 @@ export const MEALS = [
     "Apple Strudel",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1536511132770-e5069b053255?q=80&w=1000&auto=format&fit=crop",
+    "https://media.istockphoto.com/id/1125180633/photo/apple-strudel-pie-with-flakey-crust-and-firm-apples.jpg?s=1024x1024&w=is&k=20&c=BquPCoveo3k1xzz_MvQTGMz1cyJA7a-bNQQrAcl4f1o=",
     60,
     ["Apples", "Phyllo Pastry", "Cinnamon", "Raisins", "Breadcrumbs"],
     [
@@ -1212,7 +1212,7 @@ export const MEALS = [
     "Caprese Salad",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?q=80&w=500&auto=format&fit=crop",
     10,
     ["Fresh Mozzarella", "Tomatoes", "Fresh Basil", "Balsamic Glaze"],
     [
@@ -1231,7 +1231,7 @@ export const MEALS = [
     "Paella Valenciana",
     "luxurious",
     "hard",
-    "https://images.unsplash.com/photo-1534080564607-317f65453295?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1630175860333-5131bda75071?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     75,
     ["Rice", "Saffron", "Shrimp", "Mussels", "Chicken", "Peas"],
     [
@@ -1250,7 +1250,7 @@ export const MEALS = [
     "French Toast",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=500&auto=format&fit=crop",
     15,
     ["Bread Slices", "Eggs", "Milk", "Cinnamon", "Honey"],
     [
@@ -1269,7 +1269,7 @@ export const MEALS = [
     "Spring Rolls",
     "affordable",
     "challenging",
-    "https://images.unsplash.com/photo-1544333346-ce03b392e463?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1695712641569-05eee7b37b6d?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     40,
     ["Rice Paper", "Cabbage", "Carrots", "Noodles", "Sweet Chili Sauce"],
     [
@@ -1288,7 +1288,7 @@ export const MEALS = [
     "Onion Soup",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1547592115-859746c1936e?q=80&w=1000&auto=format&fit=crop",
+    "https://plus.unsplash.com/premium_photo-1727960325953-ef51e51d73f1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8T25pb24lMjBTb3VwfGVufDB8fDB8fHww",
     50,
     ["Onions", "Beef Broth", "Baguette", "Gruyère Cheese"],
     [
@@ -1307,7 +1307,7 @@ export const MEALS = [
     "Baklava",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1519676867240-f03562e64548?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1519676867240-f03562e64548?q=80&w=500&auto=format&fit=crop",
     90,
     ["Phyllo Dough", "Pistachios", "Honey Syrup", "Butter"],
     [
@@ -1326,7 +1326,7 @@ export const MEALS = [
     "Baba Ganoush",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1577906030559-994364448722?q=80&w=1000&auto=format&fit=crop",
+    "https://plus.unsplash.com/premium_photo-1700089152197-6b2ac14e85ec?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8QmFiYSUyMEdhbm91c2h8ZW58MHx8MHx8fDA%3D",
     30,
     ["Roasted Eggplant", "Tahini", "Lemon Juice", "Garlic"],
     [
@@ -1345,7 +1345,7 @@ export const MEALS = [
     "Guacamole with Chips",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1541232390620-548906e82459?q=80&w=1000&auto=format&fit=crop",
+    "https://plus.unsplash.com/premium_photo-1681406689585-0b0c2e02ec44?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8R3VhY2Ftb2xlJTIwd2l0aCUyMENoaXBzfGVufDB8fDB8fHww",
     10,
     ["Avocados", "Onion", "Tomato", "Lime", "Tortilla Chips"],
     [
@@ -1364,7 +1364,7 @@ export const MEALS = [
     "Lamb Curry",
     "luxurious",
     "hard",
-    "https://images.unsplash.com/photo-1545247181-516773cae754?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1545247181-516773cae754?q=80&w=500&auto=format&fit=crop",
     80,
     ["Lamb", "Curry Powder", "Coconut Milk", "Potatoes", "Spices"],
     [
@@ -1383,7 +1383,7 @@ export const MEALS = [
     "Grilled Lobster",
     "luxurious",
     "challenging",
-    "https://images.unsplash.com/photo-1533682805518-48d1f5b8cd3a?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1738231670072-ab51e6bf483e?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fEdyaWxsZWQlMjBMb2JzdGVyfGVufDB8fDB8fHww",
     45,
     ["Lobster Tail", "Garlic Butter", "Lemon", "Parsley"],
     [
@@ -1402,7 +1402,7 @@ export const MEALS = [
     "Chickpea Salad",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=500&auto=format&fit=crop",
     15,
     ["Chickpeas", "Cucumber", "Parsley", "Lemon Juice"],
     [
@@ -1421,7 +1421,7 @@ export const MEALS = [
     "Afghan Karahi",
     "pricey",
     "challenging",
-    "https://images.unsplash.com/photo-1606471191009-63994c53433b?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1606471191009-63994c53433b?q=80&w=500&auto=format&fit=crop",
     40,
     ["Chicken", "Tomatoes", "Green Chilies", "Ginger", "Garlic"],
     [
@@ -1440,7 +1440,7 @@ export const MEALS = [
     "Tahchin",
     "luxurious",
     "hard",
-    "https://images.unsplash.com/photo-1626509653295-81582760bf8f?q=80&w=1000&auto=format&fit=crop",
+    "https://media.istockphoto.com/id/1296166176/photo/tahchin-or-tah-chin-is-an-iranian-rice-cake-primarily-consisting-of-rice-yogurt-saffron-and.webp?a=1&b=1&s=612x612&w=0&k=20&c=Vlvn1iA3svmM9Y0qAipieZXxM21WMbxxNVSW8YeE_Oc=",
     90,
     ["Rice", "Yogurt", "Saffron", "Chicken", "Barberries (Zereshk)"],
     [
@@ -1459,7 +1459,7 @@ export const MEALS = [
     "Shepherd's Pie",
     "pricey",
     "challenging",
-    "https://images.unsplash.com/photo-1584273143981-43c2910f3bb1?q=80&w=1000&auto=format&fit=crop",
+    "https://plus.unsplash.com/premium_photo-1723770033472-0b0452d98225?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8U2hlcGhlcmQncyUyMFBpZXxlbnwwfHwwfHx8MA%3D%3D",
     50,
     ["Ground Lamb", "Mashed Potatoes", "Peas", "Carrots", "Onion"],
     [
@@ -1478,7 +1478,7 @@ export const MEALS = [
     "Bruschetta with Tomato",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1572656631137-7935297eff55?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1572656631137-7935297eff55?q=80&w=500&auto=format&fit=crop",
     15,
     ["Baguette", "Tomatoes", "Garlic", "Basil", "Olive Oil"],
     [
@@ -1497,7 +1497,7 @@ export const MEALS = [
     "Egg Salad Sandwich",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=500&auto=format&fit=crop",
     15,
     ["Hard-boiled Eggs", "Mayonnaise", "Mustard", "Bread"],
     ["Mash eggs and mix with mayo and mustard", "Spread on bread"],
@@ -1512,7 +1512,7 @@ export const MEALS = [
     "Double Bacon Burger",
     "luxurious",
     "challenging",
-    "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=500&auto=format&fit=crop",
     35,
     ["2 Beef Patties", "4 Bacon Strips", "Cheddar Cheese", "Bun"],
     [
@@ -1531,7 +1531,7 @@ export const MEALS = [
     "Potato Salad (Kartoffelsalat)",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=500&auto=format&fit=crop",
     30,
     ["Potatoes", "Vinegar", "Onions", "Mustard", "Parsley"],
     [
@@ -1550,7 +1550,7 @@ export const MEALS = [
     "Fruit Salad",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1490818387583-1baba5e638af?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1490818387583-1baba5e638af?q=80&w=500&auto=format&fit=crop",
     10,
     ["Apple", "Banana", "Strawberry", "Orange", "Honey"],
     ["Chop all fruits", "Mix in a bowl and drizzle with honey"],
@@ -1565,7 +1565,7 @@ export const MEALS = [
     "Brazilian Moqueca",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=500&auto=format&fit=crop",
     50,
     ["Fish", "Coconut Milk", "Peppers", "Palm Oil", "Lime"],
     ["Simmer fish with vegetables and coconut milk", "Add palm oil for flavor"],
@@ -1580,7 +1580,7 @@ export const MEALS = [
     "Oatmeal with Berries",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1517673132405-a56a62b18caf?q=80&w=1000&auto=format&fit=crop",
+    "https://media.istockphoto.com/id/979149642/photo/oatmeal-porridge-with-fresh-berries-and-nuts-top-view.webp?a=1&b=1&s=612x612&w=0&k=20&c=wtNo8XEzrQ8LH1mMzPUble3mU9Ime8IKV2dzFlwsaqw=",
     10,
     ["Oats", "Milk", "Blueberries", "Honey"],
     ["Cook oats in milk", "Top with fresh berries and honey"],
@@ -1595,7 +1595,7 @@ export const MEALS = [
     "Pork Ramen",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?q=80&w=500&auto=format&fit=crop",
     120,
     ["Ramen Noodles", "Pork Belly", "Miso Broth", "Soft-boiled Egg"],
     [
@@ -1614,7 +1614,7 @@ export const MEALS = [
     "Beef Tartare",
     "luxurious",
     "hard",
-    "https://images.unsplash.com/photo-1511018556340-d16986a1c194?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1676664778856-b48a7d87d831?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8QmVlZiUyMFRhcnRhcmV8ZW58MHx8MHx8fDA%3D",
     25,
     ["Raw Beef Tenderloin", "Egg Yolk", "Capers", "Mustard"],
     [
@@ -1633,7 +1633,7 @@ export const MEALS = [
     "Panna Cotta",
     "pricey",
     "simple",
-    "https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=500&auto=format&fit=crop",
     20,
     ["Cream", "Gelatin", "Sugar", "Vanilla", "Berry Sauce"],
     [
@@ -1652,7 +1652,7 @@ export const MEALS = [
     "Kofta Kebab",
     "pricey",
     "challenging",
-    "https://images.unsplash.com/photo-1529692236671-f1f6e94d7456?q=80&w=1000&auto=format&fit=crop",
+    "https://plus.unsplash.com/premium_photo-1770815084799-72c976c30acc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fEtvZnRhJTIwS2ViYWJ8ZW58MHx8MHx8fDA%3D",
     35,
     ["Ground Beef", "Onion", "Parsley", "Middle Eastern Spices"],
     ["Mix meat with spices and onions", "Shape onto skewers and grill"],
@@ -1667,7 +1667,7 @@ export const MEALS = [
     "Chiles Rellenos",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?q=80&w=1000&auto=format&fit=crop",
+    "https://media.istockphoto.com/id/159305135/photo/chile-relleno-stuffed-with-mashed-potatoes.webp?a=1&b=1&s=612x612&w=0&k=20&c=euPmCewbx7GuNjwzblTJGTJOCfqqeSAbInnvMlK3Qus=",
     50,
     ["Poblano Peppers", "Cheese", "Egg Batter", "Tomato Sauce"],
     ["Roast and peel peppers", "Stuff with cheese", "Dip in batter and fry"],
@@ -1682,7 +1682,7 @@ export const MEALS = [
     "Samosas",
     "affordable",
     "hard",
-    "https://images.unsplash.com/photo-1601050638917-3d8bc6873523?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1601050690294-397f3c324515?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8U2Ftb3Nhc3xlbnwwfHwwfHx8MA%3D%3D",
     45,
     ["Flour Dough", "Potatoes", "Peas", "Cumin", "Ginger"],
     ["Make filling", "Fold into triangles", "Deep fry until golden"],
@@ -1697,7 +1697,7 @@ export const MEALS = [
     "Ceviche",
     "pricey",
     "simple",
-    "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?q=80&w=500&auto=format&fit=crop",
     20,
     ["Raw Fish", "Lime Juice", "Red Onion", "Cilantro", "Chili"],
     [
@@ -1716,7 +1716,7 @@ export const MEALS = [
     "Vegan Tofu Stir-fry",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=500&auto=format&fit=crop",
     20,
     ["Tofu", "Broccoli", "Soy Sauce", "Ginger", "Sesame Oil"],
     ["Press and dice tofu", "Stir-fry with broccoli and sauce"],
@@ -1731,7 +1731,7 @@ export const MEALS = [
     "Afghan Kofta Chalau",
     "pricey",
     "challenging",
-    "https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?q=80&w=1000&auto=format&fit=crop",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpUMDudDpYG_e1TGLegQmMdg2MQOnOSOIsQw&s",
     50,
     ["Meatballs", "Tomato Sauce", "Basmati Rice", "Spices"],
     ["Cook meatballs in tomato gravy", "Serve with white rice (Chalau)"],
@@ -1746,7 +1746,7 @@ export const MEALS = [
     "Kabab Koobideh",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1000&auto=format&fit=crop",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrajRJ91xAq1fHNkfRT3hZMu0uRz7QFmw77w&s",
     45,
     ["Minced Lamb/Beef", "Onions", "Sumac", "Rice"],
     [
@@ -1765,7 +1765,7 @@ export const MEALS = [
     "Steak Frites",
     "luxurious",
     "challenging",
-    "https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=500&auto=format&fit=crop",
     30,
     ["Sirloin Steak", "Potatoes", "Butter", "Herbs"],
     ["Pan-sear steak", "Make hand-cut fries", "Serve with herb butter"],
@@ -1780,7 +1780,7 @@ export const MEALS = [
     "Mushroom Risotto",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1476124369491-e7addf5db371?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1476124369491-e7addf5db371?q=80&w=500&auto=format&fit=crop",
     45,
     ["Arborio Rice", "Mushrooms", "Vegetable Broth", "Parmesan"],
     [
@@ -1799,7 +1799,7 @@ export const MEALS = [
     "Caprese Wrap",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?q=80&w=500&auto=format&fit=crop",
     10,
     ["Tortilla", "Mozzarella", "Tomato", "Spinach", "Pesto"],
     [
@@ -1818,7 +1818,7 @@ export const MEALS = [
     "Afghan Shorwa",
     "affordable",
     "challenging",
-    "https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=1000&auto=format&fit=crop",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeeBpJRuJgUR_DArPC15Jqim80wxKItUJfgw&s",
     90,
     ["Lamb Bones", "Potatoes", "Beans", "Bread"],
     ["Slow cook lamb and beans into a soup", "Serve with bread for dipping"],
@@ -1833,7 +1833,7 @@ export const MEALS = [
     "Mirza Ghasemi",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1647265882650-20593441a7df?q=80&w=1000&auto=format&fit=crop",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyqiu0bbKw9VuaZHPgP_vDCgSMwy5MTlVcJw&s",
     40,
     ["Smoked Eggplant", "Garlic", "Tomatoes", "Eggs"],
     [
@@ -1852,7 +1852,7 @@ export const MEALS = [
     "Dim Sum (Dumplings)",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?q=80&w=500&auto=format&fit=crop",
     60,
     ["Dough", "Shrimp or Pork", "Soy Sauce", "Ginger"],
     [
@@ -1871,7 +1871,7 @@ export const MEALS = [
     "Naan Bread",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1585238342024-78d387f4a707?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1585238342024-78d387f4a707?q=80&w=500&auto=format&fit=crop",
     20,
     ["Flour", "Yogurt", "Yeast", "Garlic Butter"],
     [
@@ -1890,7 +1890,7 @@ export const MEALS = [
     "New York Cheesecake",
     "pricey",
     "hard",
-    "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=500&auto=format&fit=crop",
     70,
     ["Cream Cheese", "Graham Crackers", "Sugar", "Eggs"],
     [
@@ -1909,7 +1909,7 @@ export const MEALS = [
     "Zucchini Noodles",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?q=80&w=500&auto=format&fit=crop",
     15,
     ["Zucchini", "Garlic", "Olive Oil", "Cherry Tomatoes"],
     ["Spiralize zucchini into noodles", "Sauté with garlic and tomatoes"],
@@ -1924,7 +1924,7 @@ export const MEALS = [
     "Tabbouleh Salad",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=500&auto=format&fit=crop",
     20,
     ["Bulgur", "Parsley", "Mint", "Tomato", "Lemon Juice"],
     ["Soak bulgur", "Chop herbs finely", "Mix with lemon and oil"],
@@ -1939,7 +1939,7 @@ export const MEALS = [
     "Veggie Burger",
     "affordable",
     "simple",
-    "https://images.unsplash.com/photo-1520072959219-c595dc870360?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1520072959219-c595dc870360?q=80&w=500&auto=format&fit=crop",
     20,
     ["Black Bean Patty", "Lettuce", "Tomato", "Whole Wheat Bun"],
     ["Grill the veggie patty", "Assemble with fresh vegetables"],
@@ -1954,7 +1954,7 @@ export const MEALS = [
     "Clam Chowder",
     "pricey",
     "challenging",
-    "https://images.unsplash.com/photo-1560684352-8497838a2229?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1560684352-8497838a2229?q=80&w=500&auto=format&fit=crop",
     40,
     ["Clams", "Potatoes", "Cream", "Bacon"],
     [
@@ -1973,7 +1973,7 @@ export const MEALS = [
     "Roast Turkey",
     "luxurious",
     "hard",
-    "https://images.unsplash.com/photo-1516684669134-de6f7c473a2a?q=80&w=1000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1516684669134-de6f7c473a2a?q=80&w=500&auto=format&fit=crop",
     180,
     ["Turkey", "Butter", "Stuffing", "Cranberry Sauce"],
     ["Season turkey and roast for 3 hours", "Serve with stuffing and sauce"],
