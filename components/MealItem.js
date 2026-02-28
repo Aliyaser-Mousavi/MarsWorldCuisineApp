@@ -1,7 +1,8 @@
 import { View, Text, Pressable, StyleSheet, Platform } from "react-native";
 import { Image } from "expo-image";
-
+import { useNavigation } from "@react-navigation/native";
 const MealItem = ({ title, imageUrl, duration, complexity, affordability }) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.mealItem}>
       <Pressable
