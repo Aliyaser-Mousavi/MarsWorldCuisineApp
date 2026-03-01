@@ -1,8 +1,21 @@
 import { View, Text, Pressable, StyleSheet, Platform } from "react-native";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
-const MealItem = ({ title, imageUrl, duration, complexity, affordability }) => {
+import MealDetails from "./MealDetails";
+const MealItem = ({
+  id,
+  title,
+  imageUrl,
+  duration,
+  complexity,
+  affordability,
+}) => {
   const navigation = useNavigation();
+  function selectMealItemHandler() {
+    navigation.navigate("MealDetail", {
+      mealId: id,
+    });
+  }
   return (
     <View style={styles.mealItem}>
       <Pressable
@@ -11,22 +24,24 @@ const MealItem = ({ title, imageUrl, duration, complexity, affordability }) => {
           styles.button,
           pressed && styles.buttonPressed,
         ]}
+        onPress={selectMealItemHandler}
       >
-        <View>
-          <Image
-            source={imageUrl}
-            style={styles.image}
-            contentFit="cover"
-            transition={300}
-            cachePolicy="memory-disk"
-          />
-          <Text style={styles.title}>{title}</Text>
-
-          <View style={styles.details}>
-            <Text style={styles.detailItem}>{duration}m</Text>
-            <Text style={styles.detailItem}>{complexity.toUpperCase()}</Text>
-            <Text style={styles.detailItem}>{affordability.toUpperCase()}</Text>
+        <View style={styles.innerContainer}>
+          <View>
+            <Image
+              source={imageUrl}
+              style={styles.image}
+              contentFit="cover"
+              transition={300}
+              cachePolicy="memory-disk"
+            />
+            <Text style={styles.title}>{title}</Text>
           </View>
+          <MealDetails
+            duration={duration}
+            complexity={complexity}
+            affordability={affordability}
+          />
         </View>
       </Pressable>
     </View>
@@ -63,15 +78,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 18,
     margin: 8,
-  },
-  details: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 8,
-  },
-  detailItem: {
-    marginHorizontal: 8,
-    fontSize: 12,
   },
 });
