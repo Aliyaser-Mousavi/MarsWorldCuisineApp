@@ -12,7 +12,7 @@ const MealDetailScreen = ({ route, navigation }) => {
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
   function headerButtonPressHandler() {}
   useLayoutEffect(() => {
-    navigation.setOptions = {
+    navigation.setOptions({
       headerRight: () => {
         return (
           <IconButton
@@ -22,8 +22,22 @@ const MealDetailScreen = ({ route, navigation }) => {
           />
         );
       },
-    };
+    });
   }, [navigation, headerButtonPressHandler]);
+  ///////////////////////////
+  // useLayoutEffect(() => {
+  //   navigation.setOptions = {
+  //     headerRight: () => {
+  //       return (
+  //         <IconButton
+  //           icon="star"
+  //           color="white"
+  //           onPress={headerButtonPressHandler}
+  //         />
+  //       );
+  //     },
+  //   };
+  // }, [navigation, headerButtonPressHandler]);
   return (
     <ScrollView style={styles.rootContainer}>
       <Image
