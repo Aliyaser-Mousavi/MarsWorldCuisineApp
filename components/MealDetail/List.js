@@ -12,15 +12,26 @@ export default List;
 
 const styles = StyleSheet.create({
   listItem: {
-    borderRadius: 6,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    marginVertical: 4,
-    marginHorizontal: 12,
-    backgroundColor: "#e2b497",
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    marginVertical: 6,
+    marginHorizontal: 24,
+    backgroundColor: "white",
+    borderLeftColor: "#351401",
+    borderLeftWidth: 5,
+    // Soft Shadow
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 3,
   },
   itemText: {
-    color: "#351401",
-    textAlign: "center",
+    color: "#4a4a4a",
+    textAlign: "left",
+    fontSize: 15,
+    fontWeight: "500",
+    lineHeight: 20,
   },
 });

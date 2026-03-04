@@ -1,26 +1,106 @@
 import Category from "../models/category";
 import Meal from "../models/meal";
 export const CATEGORIES = [
-  new Category("c1", "Italian", "#f5428d"),
-  new Category("c2", "Quick & Easy", "#f54242"),
-  new Category("c3", "Hamburgers", "#f5a442"),
-  new Category("c4", "German", "#f5d142"),
-  new Category("c5", "Salads", "#368dff"),
-  new Category("c6", "Exotic", "#41d95d"),
-  new Category("c7", "Breakfast", "#9eecff"),
-  new Category("c8", "Asian", "#b9ffb0"),
-  new Category("c9", "French", "#ffc7ff"),
-  new Category("c10", "Desserts", "#47fced"),
-  new Category("c11", "Middle Eastern", "#ffb347"),
-  new Category("c12", "Mexican", "#ff6347"),
-  new Category("c13", "Indian", "#6a0dad"),
-  new Category("c14", "Seafood", "#1e90ff"),
-  new Category("c15", "Vegan", "#228B22"),
-  new Category("c16", "Afghan", "#006400"),
-  new Category("c17", "Iranian", "#DAA520"),
-  new Category("c18", "World Classics", "#808080"),
-  new Category("c19", "Street Food", "#ff4500"),
-  new Category("c20", "Vegetarian", "#98fb98"),
+  new Category(
+    "c1",
+    "Italian",
+    "https://plus.unsplash.com/premium_photo-1681406688895-30bd63b24eb3?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  ),
+  new Category(
+    "c2",
+    "Quick & Easy",
+    "https://media.istockphoto.com/id/1690603779/photo/food-collage-layout-a-variety-of-dishes-a-collection-for-a-restaurant-banner.jpg?s=2048x2048&w=is&k=20&c=mlc1jGpqoDpIQCQ2XE7SKFFxVgNh_-FzM5bA_Xe7pxs=",
+  ),
+  new Category(
+    "c3",
+    "Hamburgers",
+    "https://plus.unsplash.com/premium_photo-1668618295293-75f191aca356?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  ),
+  new Category(
+    "c4",
+    "German",
+    "https://media.istockphoto.com/id/178369709/photo/flag-of-germany.webp?a=1&b=1&s=612x612&w=0&k=20&c=nf6SYliU7-D0XPkdlLxM-2cyMIR1DG89J3Nzjgu23ic=",
+  ),
+  new Category(
+    "c5",
+    "Salads",
+    "https://images.unsplash.com/photo-1607532941433-304659e8198a?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8U2FsYWRzfGVufDB8fDB8fHww",
+  ),
+  new Category(
+    "c6",
+    "Exotic",
+    "https://thumbs.dreamstime.com/b/flag-philippines-4837491.jpg",
+  ),
+  new Category(
+    "c7",
+    "Breakfast",
+    "https://images.unsplash.com/photo-1611601184963-9d1de9b79ff3?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8QnJlYWtmYXN0JTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D",
+  ),
+  new Category(
+    "c8",
+    "Asian",
+    "https://i.pinimg.com/736x/77/f4/f2/77f4f2c2fbbd6dce0cfe34bf951ee801.jpg",
+  ),
+  new Category(
+    "c9",
+    "French",
+    "https://plus.unsplash.com/premium_photo-1675865394537-e90c5c5c39ac?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  ),
+  new Category(
+    "c10",
+    "Desserts",
+    "https://media.istockphoto.com/id/2235222005/photo/autumn-desserts-table-scene-above-view-over-a-white-wood-background.jpg?s=1024x1024&w=is&k=20&c=tF9KQCL7QJUNRid2_9feKzb97M8R25R3IotK4qITCa0=",
+  ),
+  new Category(
+    "c11",
+    "Middle Eastern",
+    "https://i.pinimg.com/736x/38/34/5c/38345c0b345425e4a2f3c4dfa9bb68f2.jpg",
+  ),
+  new Category(
+    "c12",
+    "Mexican",
+    "https://plus.unsplash.com/premium_photo-1674591172745-448b9777dac8?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8TWV4aWNhbiUyMGZsYWd8ZW58MHx8MHx8fDA%3D",
+  ),
+  new Category(
+    "c13",
+    "Indian",
+    "https://plus.unsplash.com/premium_photo-1674591172888-1184c4170a47?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  ),
+  new Category(
+    "c14",
+    "Seafood",
+    "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8U2VhZm9vZHxlbnwwfHwwfHx8MA%3D%3D",
+  ),
+  new Category(
+    "c15",
+    "Vegan",
+    "https://i.pinimg.com/736x/1b/24/64/1b2464ecf626e4f40359f436b73f7e3e.jpg",
+  ),
+  new Category(
+    "c16",
+    "Afghan",
+    "https://i.pinimg.com/736x/18/6f/d9/186fd9d8245846d5df48a4541f655c6c.jpg",
+  ),
+  new Category(
+    "c17",
+    "Iranian",
+    "https://i.pinimg.com/1200x/82/e9/38/82e93894b1135dc00cb1e3240b6d82a3.jpg",
+  ),
+  new Category(
+    "c18",
+    "World Classics",
+    "https://i.pinimg.com/1200x/9d/28/ec/9d28ec57d59f7d0b43ad318365d97dd1.jpg",
+  ),
+  new Category(
+    "c19",
+    "Street Food",
+    "https://i.pinimg.com/1200x/ca/05/08/ca0508e2ee57221d79f5460e9261712d.jpg",
+  ),
+  new Category(
+    "c20",
+    "Vegetarian",
+    "https://i.pinimg.com/736x/f7/6a/26/f76a264bf889fccd255d89565e9eeb49.jpg",
+  ),
 ];
 export const MEALS = [
   new Meal(

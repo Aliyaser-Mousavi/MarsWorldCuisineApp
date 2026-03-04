@@ -17,15 +17,26 @@ function DrawerNavigator() {
   return (
     <Drawer.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: "#351401" },
-        headerTintColor: "white",
-        sceneStyle: { backgroundColor: "#443227" },
-        drawerContentStyle: {
-          backgroundColor: "#351401",
+        headerStyle: {
+          backgroundColor: "#ffffff",
+          elevation: 0,
+          shadowOpacity: 0,
         },
-        drawerInactiveTintColor: "white",
+        headerTintColor: "#351401",
+        headerTitleStyle: { fontWeight: "900", fontSize: 20 },
+        sceneStyle: { backgroundColor: "#f8f9fa" },
+        drawerContentStyle: {
+          backgroundColor: "#ffffff",
+        },
+        drawerInactiveTintColor: "#5e5e5e",
         drawerActiveTintColor: "#351401",
-        drawerActiveBackgroundColor: "#d19b7a",
+        drawerActiveBackgroundColor: "#f2e7e0",
+        drawerLabelStyle: { fontWeight: "700", fontSize: 16 },
+        drawerItemStyle: {
+          borderRadius: 12,
+          marginVertical: 5,
+          paddingHorizontal: 10,
+        },
       }}
     >
       <Drawer.Screen
@@ -54,15 +65,21 @@ function DrawerNavigator() {
 export default function App() {
   return (
     <>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       {/* <FavoritesContextProvider> */}
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator
             screenOptions={{
-              headerStyle: { backgroundColor: "#351401" },
-              headerTintColor: "white",
-              contentStyle: { backgroundColor: "#443227" },
+              headerStyle: {
+                backgroundColor: "#ffffff",
+                elevation: 0,
+                shadowOpacity: 0,
+              },
+              headerTintColor: "#351401",
+              headerTitleStyle: { fontWeight: "900" },
+              headerBackTitleVisible: false,
+              contentStyle: { backgroundColor: "#f8f9fa" },
             }}
           >
             <Stack.Screen

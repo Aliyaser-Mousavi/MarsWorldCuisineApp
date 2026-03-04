@@ -49,34 +49,44 @@ const MealItem = ({
 };
 
 export default MealItem;
-
 const styles = StyleSheet.create({
   mealItem: {
     margin: 16,
-    borderRadius: 8,
-    overflow: Platform.OS === "android" ? "hidden" : "visible",
+    borderRadius: 18,
     backgroundColor: "white",
-    elevation: 4,
+    // iOS Shadow
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.12,
+    shadowRadius: 15,
+    // Android Shadow
+    elevation: 8,
+    overflow: Platform.OS === "android" ? "hidden" : "visible",
   },
   innerContainer: {
-    borderRadius: 8,
+    borderRadius: 18,
     overflow: "hidden",
   },
+  button: {
+    flex: 1,
+  },
   buttonPressed: {
-    opacity: 0.5,
+    opacity: 0.9,
+    transform: [{ scale: 0.98 }],
   },
   image: {
     width: "100%",
-    height: 200,
+    height: 220,
+    backgroundColor: "#f0f0f0",
   },
   title: {
-    fontWeight: "bold",
-    textAlign: "center",
-    fontSize: 18,
-    margin: 8,
+    fontWeight: "800",
+    textAlign: "left",
+    fontSize: 20,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 4,
+    color: "#2c3e50",
+    letterSpacing: 0.3,
   },
 });
