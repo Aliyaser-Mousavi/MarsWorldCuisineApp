@@ -1,4 +1,3 @@
-import { StyleSheet } from "react-native";
 import CategoriesScreen from "./screens/CategoriesScreen";
 import MealsOverviewScreen from "./screens/MealsOverviewScreen";
 import { StatusBar } from "expo-status-bar";
@@ -8,6 +7,9 @@ import MealDetailScreen from "./screens/MealDetailScreen";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import { Ionicons } from "@expo/vector-icons";
+import { Provider } from "react-redux";
+import { store } from "./store/redux/store";
+// import FavoritesContextProvider from "./store/context/favorites-context";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -53,46 +55,40 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: "#351401" },
-            headerTintColor: "white",
-            contentStyle: { backgroundColor: "#443227" },
-          }}
-        >
-          <Stack.Screen
-            name="MealsCategories"
-            options={{
-              headerShown: false,
+      {/* <FavoritesContextProvider> */}
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: "#351401" },
+              headerTintColor: "white",
+              contentStyle: { backgroundColor: "#443227" },
             }}
-            component={DrawerNavigator}
-          />
-          <Stack.Screen
-            name="MealsOverview"
-            // options={({ route, navigation }) => {
-            //   const catId = route.params.categoryId;
-            //   return {
-            //     title: catId,
-            //   };
-            // }}
-            component={MealsOverviewScreen}
-          />
-          <Stack.Screen
-            name="MealDetail"
-            options={{
-              title: "About the Meal",
-            }}
-            component={MealDetailScreen}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+          >
+            <Stack.Screen
+              name="MealsCategories"
+              options={{
+                headerShown: false,
+              }}
+              component={DrawerNavigator}
+            />
+            <Stack.Screen
+              name="MealsOverview"
+              component={MealsOverviewScreen}
+            />
+            <Stack.Screen
+              name="MealDetail"
+              options={{
+                title: "About the Meal",
+              }}
+              component={MealDetailScreen}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
+      {/* </FavoritesContextProvider> */}
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {},
-});
 
 // npx expo start --localhost
