@@ -6,8 +6,13 @@ import {
   Platform,
   ImageBackground,
 } from "react-native";
+import * as Haptics from "expo-haptics";
 
 const CategoryGridTile = ({ title, color, onPress }) => {
+  const handlePress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    onPress();
+  };
   return (
     <View style={styles.gridItem}>
       <Pressable
@@ -16,7 +21,7 @@ const CategoryGridTile = ({ title, color, onPress }) => {
           styles.button,
           pressed ? styles.buttonPressed : null,
         ]}
-        onPress={onPress}
+        onPress={handlePress}
       >
         <ImageBackground
           source={{ uri: color }}

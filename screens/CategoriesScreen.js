@@ -3,6 +3,7 @@ import { FlatList, View, StyleSheet, TextInput, Platform } from "react-native";
 import { CATEGORIES } from "../data/dummy-data";
 import CategoryGridTile from "../components/CategoryGridTile";
 import { Ionicons } from "@expo/vector-icons";
+import FadeInView from "../components/UI/FadeInView";
 
 const CategoriesScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
@@ -18,11 +19,13 @@ const CategoriesScreen = ({ navigation }) => {
       });
     }
     return (
-      <CategoryGridTile
-        title={itemData.item.title}
-        color={itemData.item.color}
-        onPress={pressHandler}
-      />
+      <FadeInView index={itemData.index}>
+        <CategoryGridTile
+          title={itemData.item.title}
+          color={itemData.item.color}
+          onPress={pressHandler}
+        />
+      </FadeInView>
     );
   }
 

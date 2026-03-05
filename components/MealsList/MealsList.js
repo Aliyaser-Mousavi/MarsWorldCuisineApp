@@ -1,6 +1,6 @@
 import { View, FlatList } from "react-native";
 import MealItem from "./MealItem";
-
+import FadeInView from "../UI/FadeInView";
 const MealsList = ({ items }) => {
   function renderMealItem(itemData) {
     const item = itemData.item;
@@ -12,7 +12,11 @@ const MealsList = ({ items }) => {
       complexity: item.complexity,
       duration: item.duration,
     };
-    return <MealItem {...mealItemProps} />;
+    return (
+      <FadeInView index={itemData.index}>
+        <MealItem {...mealItemProps} />
+      </FadeInView>
+    );
   }
   return (
     <View>

@@ -8,9 +8,12 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { Provider } from "react-redux";
-import { store } from "./store/redux/store";
-// import FavoritesContextProvider from "./store/context/favorites-context";
-
+import { store, persistor } from "./store/redux/store";
+import { useEffect } from "react";
+import { Image } from "expo-image";
+import { MEALS } from "./data/dummy-data";
+import OfflineBanner from "./components/UI/OfflineBanner";
+import { PersistGate } from "redux-persist/integration/react";
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 function DrawerNavigator() {
@@ -63,47 +66,61 @@ function DrawerNavigator() {
 }
 
 export default function App() {
+  useEffect(() => {
+    async function prefetchImages() {
+      try {
+        const imageAssets = MEALS.map((meal) => meal.imageUrl);
+        await Image.prefetch(imageAssets);
+        console.log("All images cached successfully!");
+      } catch (e) {
+        console.log("Error caching images:", e);
+      }
+    }
+
+    prefetchImages();
+  }, []);
   return (
     <>
       <StatusBar style="dark" />
-      {/* <FavoritesContextProvider> */}
       <Provider store={store}>
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              headerStyle: {
-                backgroundColor: "#ffffff",
-                elevation: 0,
-                shadowOpacity: 0,
-              },
-              headerTintColor: "#351401",
-              headerTitleStyle: { fontWeight: "900" },
-              headerBackTitleVisible: false,
-              contentStyle: { backgroundColor: "#f8f9fa" },
-            }}
-          >
-            <Stack.Screen
-              name="MealsCategories"
-              options={{
-                headerShown: false,
+        <PersistGate loading={null} persistor={persistor}>
+          <OfflineBanner />
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={{
+                headerStyle: {
+                  backgroundColor: "#ffffff",
+                  elevation: 0,
+                  shadowOpacity: 0,
+                },
+                headerTintColor: "#351401",
+                headerTitleStyle: { fontWeight: "900" },
+                headerBackTitleVisible: false,
+                contentStyle: { backgroundColor: "#f8f9fa" },
               }}
-              component={DrawerNavigator}
-            />
-            <Stack.Screen
-              name="MealsOverview"
-              component={MealsOverviewScreen}
-            />
-            <Stack.Screen
-              name="MealDetail"
-              options={{
-                title: "About the Meal",
-              }}
-              component={MealDetailScreen}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
+            >
+              <Stack.Screen
+                name="MealsCategories"
+                options={{
+                  headerShown: false,
+                }}
+                component={DrawerNavigator}
+              />
+              <Stack.Screen
+                name="MealsOverview"
+                component={MealsOverviewScreen}
+              />
+              <Stack.Screen
+                name="MealDetail"
+                options={{
+                  title: "About the Meal",
+                }}
+                component={MealDetailScreen}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </PersistGate>
       </Provider>
-      {/* </FavoritesContextProvider> */}
     </>
   );
 }

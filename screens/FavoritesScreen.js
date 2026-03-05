@@ -1,38 +1,39 @@
-import { useEffect } from "react";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import MealsList from "../components/MealsList/MealsList";
-// import { FavoritesContext } from "../store/context/favorites-context";
 import { MEALS } from "../data/dummy-data";
-import { StyleSheet, Text, View, Alert } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { StyleSheet, Text, View, Alert, Pressable } from "react-native";
 import { useSelector } from "react-redux";
 
 const FavoritesScreen = () => {
   const navigation = useNavigation();
-  const isFocused = useIsFocused();
   const favoriteMealIds = useSelector((state) => state.favoriteMeals.ids);
-  // const favoriteMealsCtx = useContext(FavoritesContext);
 
   const favoriteMeals = MEALS.filter((meal) =>
-    // favoriteMealsCtx.ids.includes(meal.id),
     favoriteMealIds.includes(meal.id),
   );
-
-  useEffect(() => {
-    if (isFocused && favoriteMealIds.length === 0) {
-      Alert.alert("No Favorites !!", "You have no favorite meals yet.", [
-        { text: "OK", style: "cancel" },
-        {
-          text: "Add",
-          onPress: () => navigation.navigate("Categories"),
-        },
-      ]);
-    }
-  }, [isFocused]);
-
   if (favoriteMeals.length === 0) {
     return (
       <View style={styles.rootContainer}>
-        <Text style={styles.text}>You have no favorite meals yet.</Text>
+        <View style={styles.iconContainer}>
+          <Ionicons
+            name="heart-dislike-outline"
+            size={80}
+            color="#351401"
+            style={{ opacity: 0.2 }}
+          />
+        </View>
+        <Text style={styles.title}>No Favorites Yet</Text>
+        <Text style={styles.text}>
+          Explore our delicious recipes and tap the star icon to save your
+          favorites here!
+        </Text>
+        <Pressable
+          style={styles.button}
+          onPress={() => navigation.navigate("Categories")}
+        >
+          <Text style={styles.buttonText}>Browse Recipes</Text>
+        </Pressable>
       </View>
     );
   }
@@ -46,16 +47,42 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f7f7f7",
-    padding: 32,
+    backgroundColor: "#f8f9fa",
+    padding: 30,
+  },
+  iconContainer: {
+    marginBottom: 20,
+    backgroundColor: "#fff",
+    padding: 25,
+    borderRadius: 50,
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "900",
+    color: "#351401",
+    marginBottom: 10,
   },
   text: {
-    fontSize: 22,
-    fontWeight: "800",
-    color: "#351401",
+    fontSize: 16,
+    color: "#888",
     textAlign: "center",
-    opacity: 0.4,
-    letterSpacing: 0.5,
-    lineHeight: 30,
+    lineHeight: 24,
+    marginBottom: 30,
+  },
+  button: {
+    backgroundColor: "#351401",
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 15,
+    elevation: 5,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "800",
+    fontSize: 16,
   },
 });
