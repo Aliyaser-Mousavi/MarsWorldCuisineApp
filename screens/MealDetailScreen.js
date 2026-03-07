@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
-
+import * as Haptics from "expo-haptics";
 import { MEALS } from "../data/dummy-data";
 import MealDetails from "../components/MealDetails";
 import Subtitle from "../components/MealDetail/Subtitle";
@@ -52,6 +52,8 @@ const MealDetailScreen = ({ route, navigation }) => {
   });
 
   function changeFavoriteStatusHandler() {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+
     if (mealIsFavorite) {
       dispatch(removeFavorite({ id: mealId }));
     } else {

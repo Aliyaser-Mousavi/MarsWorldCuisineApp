@@ -4,14 +4,12 @@ import { CATEGORIES } from "../data/dummy-data";
 import CategoryGridTile from "../components/CategoryGridTile";
 import { Ionicons } from "@expo/vector-icons";
 import FadeInView from "../components/UI/FadeInView";
-
 const CategoriesScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
 
   const filteredCategories = CATEGORIES.filter((category) =>
     category.title.toLowerCase().includes(searchText.toLowerCase()),
   );
-
   function renderCategoryItem(itemData) {
     function pressHandler() {
       navigation.navigate("MealsOverview", {

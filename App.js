@@ -1,21 +1,27 @@
-import CategoriesScreen from "./screens/CategoriesScreen";
-import MealsOverviewScreen from "./screens/MealsOverviewScreen";
-import { StatusBar } from "expo-status-bar";
+import { useState, useEffect } from "react";
+import * as ExpoSplashScreen from "expo-splash-screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import MealDetailScreen from "./screens/MealDetailScreen";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import FavoritesScreen from "./screens/FavoritesScreen";
-import { Ionicons } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
 import { Provider } from "react-redux";
-import { store, persistor } from "./store/redux/store";
-import { useEffect } from "react";
-import { Image } from "expo-image";
-import { MEALS } from "./data/dummy-data";
-import OfflineBanner from "./components/UI/OfflineBanner";
 import { PersistGate } from "redux-persist/integration/react";
+import { Image } from "expo-image";
+import { Ionicons } from "@expo/vector-icons";
+import CategoriesScreen from "./screens/CategoriesScreen";
+import MealsOverviewScreen from "./screens/MealsOverviewScreen";
+import MealDetailScreen from "./screens/MealDetailScreen";
+import FavoritesScreen from "./screens/FavoritesScreen";
+import SplashScreen from "./screens/SplashScreen";
+import OfflineBanner from "./components/UI/OfflineBanner";
+import { store, persistor } from "./store/redux/store";
+import { MEALS } from "./data/dummy-data";
+
+ExpoSplashScreen.preventAutoHideAsync().catch(() => {});
+
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
+
 function DrawerNavigator() {
   return (
     <Drawer.Navigator
@@ -28,9 +34,7 @@ function DrawerNavigator() {
         headerTintColor: "#351401",
         headerTitleStyle: { fontWeight: "900", fontSize: 20 },
         sceneStyle: { backgroundColor: "#f8f9fa" },
-        drawerContentStyle: {
-          backgroundColor: "#ffffff",
-        },
+        drawerContentStyle: { backgroundColor: "#ffffff" },
         drawerInactiveTintColor: "#5e5e5e",
         drawerActiveTintColor: "#351401",
         drawerActiveBackgroundColor: "#f2e7e0",
@@ -66,63 +70,75 @@ function DrawerNavigator() {
 }
 
 export default function App() {
+  const [isAppReady, setIsAppReady] = useState(false);
+  const [dbLoaded, setDbLoaded] = useState(false);
+
   useEffect(() => {
-    async function prefetchImages() {
+    async function prepare() {
       try {
         const imageAssets = MEALS.map((meal) => meal.imageUrl);
         await Image.prefetch(imageAssets);
-        console.log("All images cached successfully!");
+        await new Promise((resolve) => setTimeout(resolve, 200));
       } catch (e) {
-        console.log("Error caching images:", e);
+        console.warn(e);
+      } finally {
+        setDbLoaded(true);
       }
     }
-
-    prefetchImages();
+    prepare();
   }, []);
+  const onSplashScreenAnimationStart = async () => {
+    await ExpoSplashScreen.hideAsync();
+  };
+
+  if (!dbLoaded) {
+    return null;
+  }
+  if (!isAppReady) {
+    return (
+      <SplashScreen
+        onFinish={() => setIsAppReady(true)}
+        onAnimationReady={onSplashScreenAnimationStart}
+      />
+    );
+  }
+
   return (
-    <>
-      <StatusBar style="dark" />
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <OfflineBanner />
-          <NavigationContainer>
-            <Stack.Navigator
-              screenOptions={{
-                headerStyle: {
-                  backgroundColor: "#ffffff",
-                  elevation: 0,
-                  shadowOpacity: 0,
-                },
-                headerTintColor: "#351401",
-                headerTitleStyle: { fontWeight: "900" },
-                headerBackTitleVisible: false,
-                contentStyle: { backgroundColor: "#f8f9fa" },
-              }}
-            >
-              <Stack.Screen
-                name="MealsCategories"
-                options={{
-                  headerShown: false,
-                }}
-                component={DrawerNavigator}
-              />
-              <Stack.Screen
-                name="MealsOverview"
-                component={MealsOverviewScreen}
-              />
-              <Stack.Screen
-                name="MealDetail"
-                options={{
-                  title: "About the Meal",
-                }}
-                component={MealDetailScreen}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </PersistGate>
-      </Provider>
-    </>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <StatusBar style="dark" />
+        <OfflineBanner />
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: "#ffffff",
+                elevation: 0,
+                shadowOpacity: 0,
+              },
+              headerTintColor: "#351401",
+              headerTitleStyle: { fontWeight: "900" },
+              headerBackTitleVisible: false,
+              contentStyle: { backgroundColor: "#f8f9fa" },
+            }}
+          >
+            <Stack.Screen
+              name="MealsCategories"
+              options={{ headerShown: false }}
+              component={DrawerNavigator}
+            />
+            <Stack.Screen
+              name="MealsOverview"
+              component={MealsOverviewScreen}
+            />
+            <Stack.Screen
+              name="MealDetail"
+              options={{ title: "About the Meal" }}
+              component={MealDetailScreen}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   );
 }
-
-// npx expo start --localhost
