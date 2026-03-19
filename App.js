@@ -71,8 +71,6 @@ function DrawerNavigator() {
 
 export default function App() {
   const [isAppReady, setIsAppReady] = useState(false);
-  const [dbLoaded, setDbLoaded] = useState(false);
-
   useEffect(() => {
     async function prepare() {
       try {
@@ -81,24 +79,20 @@ export default function App() {
         await new Promise((resolve) => setTimeout(resolve, 200));
       } catch (e) {
         console.warn(e);
-      } finally {
-        setDbLoaded(true);
       }
     }
     prepare();
   }, []);
-  const onSplashScreenAnimationStart = async () => {
+
+  const onSplashAnimationStart = async () => {
     await ExpoSplashScreen.hideAsync();
   };
 
-  if (!dbLoaded) {
-    return null;
-  }
   if (!isAppReady) {
     return (
       <SplashScreen
         onFinish={() => setIsAppReady(true)}
-        onAnimationReady={onSplashScreenAnimationStart}
+        onAnimationReady={onSplashAnimationStart}
       />
     );
   }

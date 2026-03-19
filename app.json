@@ -6,11 +6,25 @@
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "splash": {
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#351401"
+      "backgroundColor": "#351401",
+      "media": {
+        "android": "./assets/splash.png",
+        "ios": "./assets/splash.png"
+      }
     },
     "android": {
-      "edgeToEdgeEnabled": true
-    }
+      "edgeToEdgeEnabled": true,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#351401"
+      }
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourcompany.marsworldcuisine"
+    },
+    "assetBundlePatterns": ["**/*"]
   }
 }
