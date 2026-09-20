@@ -3676,7 +3676,7 @@ export const MEALS = [
     ],
     [
       "Whisk egg yolks and sugar over a water bath, then fold in mascarpone.",
-      "Gently fold in whipped egg whites (یا خامه فرم گرفته) to make the cream.",
+      "Gently fold in whipped egg whites (or whipped cream) to make the cream.",
       "Quickly dip ladyfingers in cold espresso and layer them in a dish.",
       "Spread half the cream over the ladyfingers; repeat with another layer.",
       "Dust generously with cocoa powder and refrigerate for at least 6 hours.",

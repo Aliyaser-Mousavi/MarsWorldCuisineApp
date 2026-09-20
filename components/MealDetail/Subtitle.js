@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
+import { colors, type, spacing } from "../../constants/theme";
 
 const Subtitle = ({ title }) => {
   return (
@@ -9,22 +10,16 @@ const Subtitle = ({ title }) => {
 };
 
 export default Subtitle;
+
 const styles = StyleSheet.create({
   subtitleContainer: {
-    paddingVertical: 8,
-    paddingHorizontal: 4,
-    marginHorizontal: 24,
-    marginVertical: 16,
-    borderBottomColor: "#351401",
-    borderBottomWidth: 3,
-    borderRadius: 1,
+    marginHorizontal: spacing.lg,
+    marginTop: spacing.lg,
+    marginBottom: spacing.sm,
   },
   subtitle: {
-    fontSize: 22,
-    fontWeight: "900",
-    color: "#351401",
-    textAlign: "left",
-    letterSpacing: 1.2,
-    textTransform: "uppercase",
+    ...type.heading,
+    fontSize: 16,
+    color: colors.ink,
   },
 });

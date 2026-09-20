@@ -7,13 +7,21 @@ const favoritesSlice = createSlice({
   },
   reducers: {
     addFavorite: (state, action) => {
-      state.ids.push(action.payload.id);
+      const id = action.payload.id;
+      if (!state.ids.includes(id)) {
+        state.ids.push(id);
+      }
     },
     removeFavorite: (state, action) => {
-      state.ids.splice(state.ids.indexOf(action.payload.id), 1);
+      const idx = state.ids.indexOf(action.payload.id);
+      if (idx >= 0) state.ids.splice(idx, 1);
+    },
+    hydrateFavorites: (state, action) => {
+      state.ids = Array.isArray(action.payload) ? action.payload : [];
     },
   },
 });
-export const addFavorite = favoritesSlice.actions.addFavorite;
-export const removeFavorite = favoritesSlice.actions.removeFavorite;
+
+export const { addFavorite, removeFavorite, hydrateFavorites } =
+  favoritesSlice.actions;
 export default favoritesSlice.reducer;

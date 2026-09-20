@@ -1,44 +1,36 @@
 import { useEffect, useRef } from "react";
 import { Animated } from "react-native";
 
-const FadeInView = ({ children, index, direction = "up" }) => {
+const FadeInView = ({ children, index = 0, style }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const translateAnim = useRef(
-    new Animated.Value(direction === "up" ? 50 : 0),
-  ).current;
-  const scaleAnim = useRef(new Animated.Value(0.85)).current;
+  const translateAnim = useRef(new Animated.Value(12)).current;
 
   useEffect(() => {
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 700,
-        delay: index * 80,
+        duration: 320,
+        delay: Math.min(index, 8) * 40,
         useNativeDriver: true,
       }),
       Animated.timing(translateAnim, {
         toValue: 0,
-        duration: 700,
-        delay: index * 80,
-        useNativeDriver: true,
-      }),
-      Animated.spring(scaleAnim, {
-        toValue: 1,
-        friction: 8,
-        tension: 40,
-        delay: index * 80,
+        duration: 320,
+        delay: Math.min(index, 8) * 40,
         useNativeDriver: true,
       }),
     ]).start();
-  }, [index]);
+  }, [index, fadeAnim, translateAnim]);
 
   return (
     <Animated.View
-      style={{
-        opacity: fadeAnim,
-        flex: 1,
-        transform: [{ translateY: translateAnim }, { scale: scaleAnim }],
-      }}
+      style={[
+        style,
+        {
+          opacity: fadeAnim,
+          transform: [{ translateY: translateAnim }],
+        },
+      ]}
     >
       {children}
     </Animated.View>

@@ -1,31 +1,79 @@
 {
   "expo": {
-    "name": "marsWorldCuisine",
+    "name": "Mars World Cuisine",
     "slug": "marsWorldCuisine",
+    "scheme": "marsworldcuisine",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#351401",
-      "media": {
-        "android": "./assets/splash.png",
-        "ios": "./assets/splash.png"
-      }
-    },
+    "icon": "./assets/icon.png",
     "android": {
-      "package": "com.yourcompany.marsworldcuisine",
-      "edgeToEdgeEnabled": true,
+      "package": "com.aliyaser.marsworldcuisine",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#351401"
-      }
+        "backgroundColor": "#24160F"
+      },
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": false,
+          "data": [
+            {
+              "scheme": "marsworldcuisine",
+              "host": "reset-password"
+            },
+            {
+              "scheme": "marsworldcuisine",
+              "host": "auth"
+            },
+            {
+              "scheme": "marsworldcuisine"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourcompany.marsworldcuisine"
+      "bundleIdentifier": "com.aliyaser.marsworldcuisine",
+      "buildNumber": "1",
+      "icon": "./assets/icon.png",
+      "infoPlist": {
+        "UISupportsDocumentBrowser": true
+      }
     },
-    "assetBundlePatterns": ["**/*"]
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "plugins": [
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 220,
+          "resizeMode": "contain",
+          "backgroundColor": "#24160F"
+        }
+      ],
+      "expo-sharing",
+      [
+        "expo-document-picker",
+        {
+          "iCloudContainerEnvironment": "Production"
+        }
+      ],
+      "expo-secure-store"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "028ef2ef-4ffb-473d-a720-c408eed8b434"
+      }
+    }
   }
 }

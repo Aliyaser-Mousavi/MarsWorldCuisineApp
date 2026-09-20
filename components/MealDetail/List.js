@@ -1,8 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
+import { colors, type, spacing } from "../../constants/theme";
 
-const List = ({ data }) => {
-  return data.map((dataPoint) => (
-    <View key={dataPoint} style={styles.listItem}>
+const List = ({ data, numbered = false }) => {
+  return (data || []).map((dataPoint, index) => (
+    <View key={`${index}-${dataPoint}`} style={styles.listItem}>
+      <View style={styles.marker}>
+        <Text style={styles.markerText}>
+          {numbered ? `${index + 1}` : "•"}
+        </Text>
+      </View>
       <Text style={styles.itemText}>{dataPoint}</Text>
     </View>
   ));
@@ -12,26 +18,26 @@ export default List;
 
 const styles = StyleSheet.create({
   listItem: {
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    marginVertical: 6,
-    marginHorizontal: 24,
-    backgroundColor: "white",
-    borderLeftColor: "#351401",
-    borderLeftWidth: 5,
-    // Soft Shadow
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 4,
-    elevation: 3,
+    flexDirection: "row",
+    alignItems: "flex-start",
+    paddingVertical: 10,
+    marginHorizontal: spacing.lg,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.border,
+  },
+  marker: {
+    width: 24,
+    marginRight: 10,
+    marginTop: 1,
+  },
+  markerText: {
+    ...type.label,
+    color: colors.accent,
+    textAlign: "center",
   },
   itemText: {
-    color: "#4a4a4a",
-    textAlign: "left",
-    fontSize: 15,
-    fontWeight: "500",
-    lineHeight: 20,
+    ...type.body,
+    flex: 1,
+    color: colors.ink,
   },
 });
