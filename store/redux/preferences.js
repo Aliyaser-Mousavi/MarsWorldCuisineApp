@@ -8,6 +8,7 @@ const preferencesSlice = createSlice({
     vegetarian: false,
     lactoseFree: false,
     defaultMaxDuration: 240,
+    darkMode: false,
   },
   reducers: {
     setPreference: (state, action) => {
@@ -17,16 +18,28 @@ const preferencesSlice = createSlice({
     setPreferences: (state, action) => {
       return { ...state, ...action.payload };
     },
-    resetPreferences: () => ({
+    toggleDarkMode: (state) => {
+      state.darkMode = !state.darkMode;
+    },
+    setDarkMode: (state, action) => {
+      state.darkMode = !!action.payload;
+    },
+    resetPreferences: (state) => ({
       glutenFree: false,
       vegan: false,
       vegetarian: false,
       lactoseFree: false,
       defaultMaxDuration: 240,
+      darkMode: state.darkMode, // preserve theme setting on reset
     }),
   },
 });
 
-export const { setPreference, setPreferences, resetPreferences } =
-  preferencesSlice.actions;
+export const {
+  setPreference,
+  setPreferences,
+  toggleDarkMode,
+  setDarkMode,
+  resetPreferences,
+} = preferencesSlice.actions;
 export default preferencesSlice.reducer;

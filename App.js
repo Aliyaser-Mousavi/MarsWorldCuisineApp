@@ -39,6 +39,7 @@ import {
 } from "./store/redux/authSlice";
 import { hydrateKitchenFromRemote } from "./services/hydrateKitchen";
 import ThemedSpinner from "./components/UI/ThemedSpinner";
+import OfflineBanner from "./components/UI/OfflineBanner";
 import CategoriesScreen from "./screens/CategoriesScreen";
 import MealsOverviewScreen from "./screens/MealsOverviewScreen";
 import MealDetailScreen from "./screens/MealDetailScreen";
@@ -68,10 +69,22 @@ import StoreWalkScreen from "./screens/StoreWalkScreen";
 import UseSoonScreen from "./screens/UseSoonScreen";
 import BatchFreezeScreen from "./screens/BatchFreezeScreen";
 import FlavorPassportScreen from "./screens/FlavorPassportScreen";
-import OfflineBanner from "./components/UI/OfflineBanner";
+import * as SystemUI from "expo-system-ui";
+import CustomDrawerContent from "./components/CustomDrawerContent";
+import HeaderThemeButton from "./components/UI/HeaderThemeButton";
 import { store, persistor } from "./store/redux/store";
 import { MEALS } from "./data/dummy-data";
-import { colors, navTheme, spacing, type } from "./constants/theme";
+import {
+  colors,
+  navTheme,
+  spacing,
+  type,
+  getNavTheme,
+  AppLightTheme,
+  AppDarkTheme,
+  setGlobalThemeMode,
+  ThemeProvider,
+} from "./constants/theme";
 
 ExpoSplashScreen.preventAutoHideAsync().catch(() => {});
 
@@ -96,11 +109,12 @@ async function fetchUserProfile(userId, dispatch) {
 }
 
 function AuthNavigator({ initialRouteName = "Login" }) {
+  const isDark = useSelector((state) => state.preferences?.darkMode ?? false);
   return (
     <AuthStack.Navigator
       initialRouteName={initialRouteName}
       screenOptions={{
-        ...navTheme,
+        ...getNavTheme(isDark),
         headerBackTitleVisible: false,
       }}
     >
@@ -133,13 +147,15 @@ function AuthNavigator({ initialRouteName = "Login" }) {
 }
 
 function DrawerNavigator() {
+  const isDark = useSelector((state) => state.preferences?.darkMode ?? false);
   return (
     <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
-        ...navTheme,
+        ...getNavTheme(isDark),
         drawerContentStyle: { backgroundColor: colors.surface },
         drawerInactiveTintColor: colors.inkMuted,
-        drawerActiveTintColor: colors.brand,
+        drawerActiveTintColor: colors.accent,
         drawerActiveBackgroundColor: colors.accentSoft,
         drawerLabelStyle: {
           fontFamily: "DMSans_500Medium",
@@ -150,6 +166,7 @@ function DrawerNavigator() {
           marginHorizontal: 10,
           marginVertical: 2,
         },
+        headerRight: () => <HeaderThemeButton />,
       }}
     >
       <Drawer.Screen
@@ -383,10 +400,11 @@ function DrawerNavigator() {
 }
 
 function MainNavigator() {
+  const isDark = useSelector((state) => state.preferences?.darkMode ?? false);
   return (
     <Stack.Navigator
       screenOptions={{
-        ...navTheme,
+        ...getNavTheme(isDark),
         headerBackTitleVisible: false,
       }}
     >
@@ -433,7 +451,13 @@ function AppNavigation() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const isLoading = useSelector((state) => state.auth.isLoading);
   const passwordRecovery = useSelector((state) => state.auth.passwordRecovery);
+  const isDark = useSelector((state) => state.preferences?.darkMode ?? false);
   const handledUrlRef = useRef(null);
+
+  useEffect(() => {
+    setGlobalThemeMode(isDark);
+    SystemUI.setBackgroundColorAsync(isDark ? "#12100E" : "#F2F0ED").catch(() => {});
+  }, [isDark]);
 
   useEffect(() => {
     let mounted = true;
@@ -531,10 +555,11 @@ function AppNavigation() {
 
   return (
     <>
-      <StatusBar style="dark" />
+      <StatusBar style={isDark ? "light" : "dark"} />
       <OfflineBanner />
       <NavigationContainer
         ref={navigationRef}
+        theme={isDark ? AppDarkTheme : AppLightTheme}
         linking={{
           prefixes: [Linking.createURL("/"), "marsworldcuisine://"],
         }}
@@ -581,7 +606,9 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <AppNavigation />
+        <ThemeProvider>
+          <AppNavigation />
+        </ThemeProvider>
       </PersistGate>
     </Provider>
   );

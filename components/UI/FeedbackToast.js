@@ -11,27 +11,34 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { colors, radii, spacing, type, shadows } from "../../constants/theme";
 
-const TONE = {
-  success: {
-    bg: colors.brand,
-    ink: colors.surface,
-    icon: "checkmark-circle",
-  },
-  error: {
-    bg: colors.danger,
-    ink: colors.surface,
-    icon: "alert-circle",
-  },
-  info: {
-    bg: colors.accent,
-    ink: colors.surface,
-    icon: "information-circle",
-  },
-  offline: {
-    bg: colors.brand,
-    ink: colors.surface,
-    icon: "cloud-offline",
-  },
+const getTone = (variant) => {
+  switch (variant) {
+    case "error":
+      return {
+        bg: colors.danger,
+        ink: "#FFFFFF",
+        icon: "alert-circle",
+      };
+    case "info":
+      return {
+        bg: colors.accent,
+        ink: "#FFFFFF",
+        icon: "information-circle",
+      };
+    case "offline":
+      return {
+        bg: colors.brand,
+        ink: colors.surface,
+        icon: "cloud-offline",
+      };
+    case "success":
+    default:
+      return {
+        bg: colors.brand,
+        ink: colors.surface,
+        icon: "checkmark-circle",
+      };
+  }
 };
 
 /**
@@ -83,7 +90,7 @@ const FeedbackToast = ({
 
   if (!visible || !message) return null;
 
-  const tone = TONE[variant] || TONE.success;
+  const tone = getTone(variant);
 
   return (
     <Animated.View

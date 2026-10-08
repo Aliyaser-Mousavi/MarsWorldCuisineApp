@@ -1,6 +1,22 @@
 import "react-native-url-polyfill/auto";
+import * as ExpoCrypto from "expo-crypto";
 import { createClient } from "@supabase/supabase-js";
 import * as SecureStore from "expo-secure-store";
+
+// Polyfill WebCrypto for Supabase PKCE
+if (typeof global.crypto === "undefined") {
+  global.crypto = {};
+}
+if (typeof global.crypto.getRandomValues === "undefined") {
+  global.crypto.getRandomValues = ExpoCrypto.getRandomValues;
+}
+if (typeof global.crypto.subtle === "undefined") {
+  global.crypto.subtle = {
+    digest: (algorithm, data) => {
+      return ExpoCrypto.digest(ExpoCrypto.CryptoDigestAlgorithm.SHA256, data);
+    },
+  };
+}
 
 const ExpoSecureStoreAdapter = {
   getItem: (key) => SecureStore.getItemAsync(key),

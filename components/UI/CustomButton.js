@@ -3,43 +3,52 @@ import { Ionicons } from "@expo/vector-icons";
 import ThemedSpinner from "./ThemedSpinner";
 import { colors, radii, spacing, type, shadows } from "../../constants/theme";
 
-const VARIANTS = {
-  primary: {
-    bg: colors.brand,
-    text: colors.surface,
-    border: colors.brand,
-    spinner: colors.surface,
-  },
-  secondary: {
-    bg: colors.surface,
-    text: colors.brand,
-    border: colors.border,
-    spinner: colors.brand,
-  },
-  accent: {
-    bg: colors.accent,
-    text: colors.surface,
-    border: colors.accent,
-    spinner: colors.surface,
-  },
-  danger: {
-    bg: colors.dangerSoft,
-    text: colors.danger,
-    border: colors.dangerSoft,
-    spinner: colors.danger,
-  },
-  ghost: {
-    bg: "transparent",
-    text: colors.inkMuted,
-    border: "transparent",
-    spinner: colors.inkMuted,
-  },
-  outlineDanger: {
-    bg: colors.surface,
-    text: colors.danger,
-    border: colors.border,
-    spinner: colors.danger,
-  },
+const getVariant = (variant) => {
+  switch (variant) {
+    case "secondary":
+      return {
+        bg: colors.surface,
+        text: colors.ink,
+        border: colors.border,
+        spinner: colors.ink,
+      };
+    case "accent":
+      return {
+        bg: colors.accent,
+        text: colors.surface,
+        border: colors.accent,
+        spinner: colors.surface,
+      };
+    case "danger":
+      return {
+        bg: colors.dangerSoft,
+        text: colors.danger,
+        border: colors.dangerSoft,
+        spinner: colors.danger,
+      };
+    case "ghost":
+      return {
+        bg: "transparent",
+        text: colors.inkMuted,
+        border: "transparent",
+        spinner: colors.inkMuted,
+      };
+    case "outlineDanger":
+      return {
+        bg: colors.surface,
+        text: colors.danger,
+        border: colors.border,
+        spinner: colors.danger,
+      };
+    case "primary":
+    default:
+      return {
+        bg: colors.brand,
+        text: colors.surface,
+        border: colors.brand,
+        spinner: colors.surface,
+      };
+  }
 };
 
 /**
@@ -57,7 +66,7 @@ const CustomButton = ({
   textStyle,
   fullWidth = true,
 }) => {
-  const palette = VARIANTS[variant] || VARIANTS.primary;
+  const palette = getVariant(variant);
   const isDisabled = disabled || loading;
 
   return (

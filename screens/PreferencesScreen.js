@@ -10,10 +10,14 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as Haptics from "expo-haptics";
+import { Ionicons } from "@expo/vector-icons";
 import {
   setPreference,
   resetPreferences,
+  setDarkMode,
+  toggleDarkMode,
 } from "../store/redux/preferences";
+import ThemeToggle from "../components/UI/ThemeToggle";
 import { clearAuth } from "../store/redux/authSlice";
 import {
   exportKitchenBackup,
@@ -234,6 +238,88 @@ const PreferencesScreen = () => {
             variant="outlineDanger"
             icon="log-out-outline"
           />
+        </View>
+
+        {/* Appearance & Theme Section */}
+        <View style={[styles.appearanceCard, shadows.soft]}>
+          <View style={styles.appearanceHeader}>
+            <Text style={styles.cardTitle}>Appearance & Theme</Text>
+            <Text style={styles.cardBody}>
+              {prefs.darkMode
+                ? "Night Kitchen is active. Warm obsidian tones reduce eye strain during cooking."
+                : "Daylight Kitchen is active. Crisp parchment tones for bright environments."}
+            </Text>
+          </View>
+
+          <ThemeToggle variant="card" style={styles.themeToggleRow} />
+
+          <View style={styles.themePresetsRow}>
+            <Pressable
+              onPress={() => {
+                Haptics.selectionAsync();
+                dispatch(setDarkMode(false));
+              }}
+              style={[
+                styles.themePreset,
+                !prefs.darkMode && styles.themePresetActive,
+              ]}
+              accessibilityRole="button"
+              accessibilityLabel="Select Daylight Kitchen theme"
+            >
+              <View style={[styles.presetSwatch, styles.lightSwatch]}>
+                <Ionicons name="sunny" size={18} color="#D97706" />
+                <View style={styles.swatchMiniRow}>
+                  <View
+                    style={[styles.swatchDot, { backgroundColor: "#3D5A45" }]}
+                  />
+                  <View
+                    style={[styles.swatchDot, { backgroundColor: "#1A1410" }]}
+                  />
+                </View>
+              </View>
+              <Text
+                style={[
+                  styles.presetText,
+                  !prefs.darkMode && styles.presetTextActive,
+                ]}
+              >
+                Daylight
+              </Text>
+            </Pressable>
+
+            <Pressable
+              onPress={() => {
+                Haptics.selectionAsync();
+                dispatch(setDarkMode(true));
+              }}
+              style={[
+                styles.themePreset,
+                prefs.darkMode && styles.themePresetActive,
+              ]}
+              accessibilityRole="button"
+              accessibilityLabel="Select Night Kitchen theme"
+            >
+              <View style={[styles.presetSwatch, styles.darkSwatch]}>
+                <Ionicons name="moon" size={18} color="#A5B4FC" />
+                <View style={styles.swatchMiniRow}>
+                  <View
+                    style={[styles.swatchDot, { backgroundColor: "#5E8B68" }]}
+                  />
+                  <View
+                    style={[styles.swatchDot, { backgroundColor: "#F5F2ED" }]}
+                  />
+                </View>
+              </View>
+              <Text
+                style={[
+                  styles.presetText,
+                  prefs.darkMode && styles.presetTextActive,
+                ]}
+              >
+                Night Kitchen
+              </Text>
+            </Pressable>
+          </View>
         </View>
 
         <View style={styles.card}>
@@ -531,5 +617,74 @@ const styles = StyleSheet.create({
   },
   resetText: {
     color: colors.danger,
+  },
+  appearanceCard: {
+    backgroundColor: colors.surface,
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
+    padding: spacing.md,
+    marginBottom: spacing.md,
+  },
+  appearanceHeader: {
+    marginBottom: spacing.sm,
+  },
+  themeToggleRow: {
+    marginBottom: spacing.md,
+  },
+  themePresetsRow: {
+    flexDirection: "row",
+    gap: spacing.md,
+  },
+  themePreset: {
+    flex: 1,
+    padding: spacing.sm + 4,
+    borderRadius: radii.md,
+    backgroundColor: colors.bg,
+    borderWidth: 1.5,
+    borderColor: colors.border,
+    alignItems: "center",
+  },
+  themePresetActive: {
+    borderColor: colors.accent,
+    backgroundColor: colors.accentSoft,
+  },
+  presetSwatch: {
+    width: "100%",
+    height: 48,
+    borderRadius: radii.sm,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: spacing.sm + 2,
+    marginBottom: spacing.xs + 2,
+  },
+  lightSwatch: {
+    backgroundColor: "#F2F0ED",
+    borderWidth: 1,
+    borderColor: "#E5E1DC",
+  },
+  darkSwatch: {
+    backgroundColor: "#12100E",
+    borderWidth: 1,
+    borderColor: "#2D2621",
+  },
+  swatchMiniRow: {
+    flexDirection: "row",
+    gap: 4,
+  },
+  swatchDot: {
+    width: 10,
+    height: 10,
+    borderRadius: radii.pill,
+  },
+  presetText: {
+    ...type.label,
+    fontSize: 13,
+    color: colors.inkMuted,
+  },
+  presetTextActive: {
+    color: colors.ink,
+    fontFamily: "DMSans_600SemiBold",
   },
 });

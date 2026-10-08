@@ -11,27 +11,34 @@ import {
   shadows,
 } from "../constants/theme";
 
-const ICON_MAP = {
-  info: {
-    name: "information-circle-outline",
-    color: colors.accent,
-    bg: colors.accentSoft,
-  },
-  success: {
-    name: "checkmark-circle-outline",
-    color: colors.success,
-    bg: colors.successSoft,
-  },
-  danger: {
-    name: "alert-circle-outline",
-    color: colors.danger,
-    bg: colors.dangerSoft,
-  },
-  warning: {
-    name: "warning-outline",
-    color: colors.warning,
-    bg: colors.warningSoft,
-  },
+const getIconMeta = (variant) => {
+  switch (variant) {
+    case "success":
+      return {
+        name: "checkmark-circle-outline",
+        color: colors.success,
+        bg: colors.successSoft,
+      };
+    case "danger":
+      return {
+        name: "alert-circle-outline",
+        color: colors.danger,
+        bg: colors.dangerSoft,
+      };
+    case "warning":
+      return {
+        name: "warning-outline",
+        color: colors.warning,
+        bg: colors.warningSoft,
+      };
+    case "info":
+    default:
+      return {
+        name: "information-circle-outline",
+        color: colors.accent,
+        bg: colors.accentSoft,
+      };
+  }
 };
 
 /**
@@ -48,7 +55,7 @@ const CustomModal = ({
 }) => {
   const scale = useRef(new Animated.Value(0.94)).current;
   const opacity = useRef(new Animated.Value(0)).current;
-  const iconMeta = ICON_MAP[variant] || ICON_MAP.info;
+  const iconMeta = getIconMeta(variant);
 
   useEffect(() => {
     if (visible) {
