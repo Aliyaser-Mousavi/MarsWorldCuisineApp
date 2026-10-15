@@ -76,14 +76,13 @@ import { store, persistor } from "./store/redux/store";
 import { MEALS } from "./data/dummy-data";
 import {
   colors,
-  navTheme,
   spacing,
   type,
   getNavTheme,
   AppLightTheme,
   AppDarkTheme,
-  setGlobalThemeMode,
   ThemeProvider,
+  useTheme,
 } from "./constants/theme";
 
 ExpoSplashScreen.preventAutoHideAsync().catch(() => {});
@@ -109,7 +108,7 @@ async function fetchUserProfile(userId, dispatch) {
 }
 
 function AuthNavigator({ initialRouteName = "Login" }) {
-  const isDark = useSelector((state) => state.preferences?.darkMode ?? false);
+  const { isDark } = useTheme();
   return (
     <AuthStack.Navigator
       initialRouteName={initialRouteName}
@@ -147,7 +146,7 @@ function AuthNavigator({ initialRouteName = "Login" }) {
 }
 
 function DrawerNavigator() {
-  const isDark = useSelector((state) => state.preferences?.darkMode ?? false);
+  const { isDark, colors } = useTheme();
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
@@ -400,7 +399,7 @@ function DrawerNavigator() {
 }
 
 function MainNavigator() {
-  const isDark = useSelector((state) => state.preferences?.darkMode ?? false);
+  const { isDark } = useTheme();
   return (
     <Stack.Navigator
       screenOptions={{
@@ -451,13 +450,12 @@ function AppNavigation() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const isLoading = useSelector((state) => state.auth.isLoading);
   const passwordRecovery = useSelector((state) => state.auth.passwordRecovery);
-  const isDark = useSelector((state) => state.preferences?.darkMode ?? false);
+  const { isDark, colors } = useTheme();
   const handledUrlRef = useRef(null);
 
   useEffect(() => {
-    setGlobalThemeMode(isDark);
-    SystemUI.setBackgroundColorAsync(isDark ? "#12100E" : "#F2F0ED").catch(() => {});
-  }, [isDark]);
+    SystemUI.setBackgroundColorAsync(colors.bg).catch(() => {});
+  }, [colors.bg]);
 
   useEffect(() => {
     let mounted = true;
@@ -543,9 +541,11 @@ function AppNavigation() {
 
   if (isLoading) {
     return (
-      <View style={styles.loading}>
-        <ThemedSpinner size="lg" color={colors.brand} />
-        <Text style={styles.loadingText}>Opening your kitchen…</Text>
+      <View style={[styles.loading, { backgroundColor: colors.bg }]}>
+        <ThemedSpinner size="lg" color={colors.accent} />
+        <Text style={[styles.loadingText, { color: colors.inkMuted }]}>
+          Opening your kitchen…
+        </Text>
       </View>
     );
   }

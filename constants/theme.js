@@ -2,7 +2,7 @@ import { createElement, createContext, useContext, useMemo } from "react";
 import { StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { DefaultTheme, DarkTheme } from "@react-navigation/native";
-import { toggleDarkMode, setDarkMode } from "../store/redux/preferences.js";
+import { toggleDarkMode, setDarkMode } from "../store/redux/preferences";
 
 export const lightColors = {
   bg: "#F2F0ED",
@@ -22,6 +22,7 @@ export const lightColors = {
   warningSoft: "#F3EDE3",
   overlay: "rgba(26, 20, 16, 0.45)",
   surfaceMuted: "rgba(255,255,255,0.72)",
+  onBrand: "#FFFFFF",
   onBrandMuted: "rgba(255,255,255,0.68)",
   onBrandSoft: "rgba(255,255,255,0.82)",
 };
@@ -44,52 +45,13 @@ export const darkColors = {
   warningSoft: "#2C2214",
   overlay: "rgba(0, 0, 0, 0.72)",
   surfaceMuted: "rgba(28, 24, 21, 0.78)",
+  onBrand: "#FFFFFF",
   onBrandMuted: "rgba(255, 255, 255, 0.65)",
   onBrandSoft: "rgba(255, 255, 255, 0.85)",
 };
 
-let isDarkModeGlobal = false;
-const themeListeners = new Set();
-
-export function getGlobalThemeMode() {
-  return isDarkModeGlobal;
-}
-
-export function setGlobalThemeMode(isDark) {
-  const next = !!isDark;
-  if (isDarkModeGlobal !== next) {
-    isDarkModeGlobal = next;
-    themeListeners.forEach((fn) => {
-      try {
-        fn(isDarkModeGlobal);
-      } catch (e) {
-        console.warn("Theme listener error:", e);
-      }
-    });
-  }
-}
-
-export function subscribeToTheme(listener) {
-  themeListeners.add(listener);
-  return () => themeListeners.delete(listener);
-}
-
-// Proxy for dynamic color resolution
-export const colors = new Proxy(lightColors, {
-  get(target, prop) {
-    const active = isDarkModeGlobal ? darkColors : lightColors;
-    return prop in active ? active[prop] : target[prop];
-  },
-  ownKeys() {
-    return Reflect.ownKeys(isDarkModeGlobal ? darkColors : lightColors);
-  },
-  getOwnPropertyDescriptor(target, prop) {
-    return Reflect.getOwnPropertyDescriptor(
-      isDarkModeGlobal ? darkColors : lightColors,
-      prop,
-    );
-  },
-});
+// Safe static default exports for fallback
+export const colors = lightColors;
 
 export const lightShadows = {
   soft: {
@@ -125,12 +87,7 @@ export const darkShadows = {
   },
 };
 
-export const shadows = new Proxy(lightShadows, {
-  get(target, prop) {
-    const active = isDarkModeGlobal ? darkShadows : lightShadows;
-    return prop in active ? active[prop] : target[prop];
-  },
-});
+export const shadows = lightShadows;
 
 export const spacing = {
   xs: 4,
@@ -225,14 +182,9 @@ export const darkType = {
   },
 };
 
-export const type = new Proxy(lightType, {
-  get(target, prop) {
-    const active = isDarkModeGlobal ? darkType : lightType;
-    return prop in active ? active[prop] : target[prop];
-  },
-});
+export const type = lightType;
 
-export function getNavTheme(isDark = isDarkModeGlobal) {
+export function getNavTheme(isDark = false) {
   const currentColors = isDark ? darkColors : lightColors;
   return {
     headerStyle: {
@@ -252,15 +204,7 @@ export function getNavTheme(isDark = isDarkModeGlobal) {
   };
 }
 
-export const navTheme = new Proxy(
-  {},
-  {
-    get(target, prop) {
-      const active = getNavTheme(isDarkModeGlobal);
-      return active[prop];
-    },
-  },
-);
+export const navTheme = getNavTheme(false);
 
 export const AppLightTheme = {
   ...DefaultTheme,
@@ -288,65 +232,6 @@ export const AppDarkTheme = {
   },
 };
 
-// --- Color token transformation map for reactive StyleSheet.create ---
-const colorMap = new Map();
-for (const [k, v] of Object.entries(lightColors)) {
-  if (darkColors[k] && typeof v === "string") {
-    colorMap.set(v.toLowerCase(), darkColors[k]);
-  }
-}
-
-function convertValue(val) {
-  if (typeof val === "string") {
-    const lower = val.toLowerCase();
-    if (colorMap.has(lower)) {
-      return colorMap.get(lower);
-    }
-  }
-  return val;
-}
-
-function convertStyleObject(obj) {
-  if (!obj || typeof obj !== "object" || Array.isArray(obj)) return obj;
-  const darkObj = {};
-  for (const [k, v] of Object.entries(obj)) {
-    if (typeof v === "object" && v !== null && !Array.isArray(v)) {
-      darkObj[k] = convertStyleObject(v);
-    } else {
-      darkObj[k] = convertValue(v);
-    }
-  }
-  return darkObj;
-}
-
-// Enhance StyleSheet.create with reactive theme getters
-const nativeCreate = StyleSheet.create;
-if (!StyleSheet.__isEnhancedForTheme) {
-  StyleSheet.create = function (stylesObj) {
-    const original = nativeCreate(stylesObj);
-    if (!stylesObj || typeof stylesObj !== "object") return original;
-
-    const reactiveResult = {};
-    for (const key of Object.keys(original)) {
-      const origStyle = original[key];
-      if (origStyle && typeof origStyle === "object" && !Array.isArray(origStyle)) {
-        const darkStyle = convertStyleObject(origStyle);
-        Object.defineProperty(reactiveResult, key, {
-          get() {
-            return isDarkModeGlobal ? darkStyle : origStyle;
-          },
-          enumerable: true,
-          configurable: true,
-        });
-      } else {
-        reactiveResult[key] = origStyle;
-      }
-    }
-    return reactiveResult;
-  };
-  StyleSheet.__isEnhancedForTheme = true;
-}
-
 // React Theme Context & Hook
 export const ThemeContext = createContext({
   isDark: false,
@@ -362,10 +247,6 @@ export const ThemeContext = createContext({
 export const ThemeProvider = ({ children }) => {
   const dispatch = useDispatch();
   const isDark = useSelector((state) => state.preferences?.darkMode ?? false);
-
-  useMemo(() => {
-    setGlobalThemeMode(isDark);
-  }, [isDark]);
 
   const value = useMemo(
     () => ({
@@ -385,3 +266,11 @@ export const ThemeProvider = ({ children }) => {
 };
 
 export const useTheme = () => useContext(ThemeContext);
+
+export const useThemedStyles = (stylesFactory) => {
+  const theme = useTheme();
+  return useMemo(
+    () => StyleSheet.create(stylesFactory(theme)),
+    [theme, stylesFactory],
+  );
+};

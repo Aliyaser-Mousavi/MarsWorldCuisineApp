@@ -19,7 +19,7 @@ import {
   addPrepItem,
   buildPrepFromMeals,
 } from "../store/redux/prepList";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 function todayKey() {
   const jsDay = new Date().getDay();
@@ -27,6 +27,11 @@ function todayKey() {
 }
 
 const PrepScreen = ({ navigation }) => {
+  const { colors, radii, spacing, type } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const dispatch = useDispatch();
   const week = useSelector((state) => state.mealPlan.week);
   const items = useSelector((state) => state.prepList?.items || []);
@@ -81,7 +86,7 @@ const PrepScreen = ({ navigation }) => {
             </Pressable>
           ))}
           <Pressable style={styles.generateBtn} onPress={generate}>
-            <Ionicons name="sparkles-outline" size={16} color={colors.surface} />
+            <Ionicons name="sparkles-outline" size={16} color={colors.onBrand} />
             <Text style={styles.generateText}>
               {items.length ? "Refresh from plan" : "Generate checklist"}
             </Text>
@@ -127,7 +132,7 @@ const PrepScreen = ({ navigation }) => {
           onSubmitEditing={addCustom}
         />
         <Pressable style={styles.addBtn} onPress={addCustom}>
-          <Ionicons name="add" size={22} color={colors.surface} />
+          <Ionicons name="add" size={22} color={colors.onBrand} />
         </Pressable>
       </View>
 
@@ -165,7 +170,8 @@ const PrepScreen = ({ navigation }) => {
 
 export default PrepScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   intro: {
     paddingHorizontal: spacing.lg,
@@ -189,7 +195,7 @@ const styles = StyleSheet.create({
   todayMeal: {
     ...type.heading,
     fontSize: 15,
-    color: colors.surface,
+    color: colors.onBrand,
     marginBottom: 4,
   },
   generateBtn: {
@@ -202,7 +208,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: radii.md,
   },
-  generateText: { ...type.heading, fontSize: 14, color: colors.surface },
+  generateText: { ...type.heading, fontSize: 14, color: colors.onBrand },
   emptyPlan: {
     marginHorizontal: spacing.md,
     marginTop: spacing.md,

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -18,9 +18,14 @@ import {
   createCookbook,
   deleteCookbook,
 } from "../store/redux/cookbooks";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const CookbooksScreen = ({ navigation }) => {
+  const { colors, type, spacing, radii } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const books = useSelector((state) => state.cookbooks.books);
   const dispatch = useDispatch();
   const [modalOpen, setModalOpen] = useState(false);
@@ -47,7 +52,7 @@ const CookbooksScreen = ({ navigation }) => {
       </View>
 
       <Pressable style={styles.createBtn} onPress={() => setModalOpen(true)}>
-        <Ionicons name="add" size={18} color={colors.surface} />
+        <Ionicons name="add" size={18} color={colors.onBrand} />
         <Text style={styles.createText}>New cookbook</Text>
       </Pressable>
 
@@ -170,11 +175,12 @@ const CookbooksScreen = ({ navigation }) => {
 
 export default CookbooksScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
   intro: {
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.md,
@@ -206,7 +212,7 @@ const styles = StyleSheet.create({
   createText: {
     ...type.heading,
     fontSize: 15,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   list: {
     padding: spacing.md,
@@ -318,6 +324,6 @@ const styles = StyleSheet.create({
   modalSaveText: {
     ...type.heading,
     fontSize: 14,
-    color: colors.surface,
+    color: colors.onBrand,
   },
 });

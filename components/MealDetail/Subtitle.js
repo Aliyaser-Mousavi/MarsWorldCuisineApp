@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View } from "react-native";
-import { colors, type, spacing } from "../../constants/theme";
+import { useTheme } from "../../constants/theme";
 
 const Subtitle = ({ title }) => {
+  const { colors } = useTheme();
   return (
     <View style={styles.subtitleContainer}>
-      <Text style={styles.subtitle}>{title}</Text>
+      <Text style={[styles.subtitle, { color: colors.ink }]}>{title}</Text>
     </View>
   );
 };
@@ -13,13 +14,13 @@ export default Subtitle;
 
 const styles = StyleSheet.create({
   subtitleContainer: {
-    marginHorizontal: spacing.lg,
-    marginTop: spacing.lg,
-    marginBottom: spacing.sm,
+    marginHorizontal: 24,
+    marginTop: 24,
+    marginBottom: 8,
   },
   subtitle: {
-    ...type.heading,
+    fontFamily: "DMSans_600SemiBold",
     fontSize: 16,
-    color: colors.ink,
+    lineHeight: 22,
   },
 });

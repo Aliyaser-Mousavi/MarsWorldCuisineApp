@@ -1,18 +1,15 @@
 import { useRef, useEffect } from "react";
 import { Pressable, StyleSheet, Animated } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import { toggleDarkMode } from "../../store/redux/preferences";
-import { colors, radii, spacing } from "../../constants/theme";
+import { useTheme } from "../../constants/theme";
 
 /**
  * Animated icon button for navigation headers.
  * Rotates and scales smoothly when toggling between sun and moon.
  */
 const HeaderThemeButton = ({ style }) => {
-  const dispatch = useDispatch();
-  const isDark = useSelector((state) => state.preferences?.darkMode ?? false);
+  const { isDark, toggleTheme, colors } = useTheme();
 
   const rotateAnim = useRef(new Animated.Value(isDark ? 1 : 0)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
@@ -43,7 +40,7 @@ const HeaderThemeButton = ({ style }) => {
 
   const handlePress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    dispatch(toggleDarkMode());
+    toggleTheme();
   };
 
   const spin = rotateAnim.interpolate({
@@ -57,10 +54,15 @@ const HeaderThemeButton = ({ style }) => {
       hitSlop={8}
       style={({ pressed }) => [
         styles.button,
+        {
+          backgroundColor: colors.surface,
+          borderColor: colors.border,
+        },
         pressed && styles.buttonPressed,
         style,
       ]}
       accessibilityRole="button"
+      accessibilityState={{ checked: isDark }}
       accessibilityLabel={
         isDark ? "Switch to daylight mode" : "Switch to night kitchen mode"
       }
@@ -73,7 +75,7 @@ const HeaderThemeButton = ({ style }) => {
         <Ionicons
           name={isDark ? "moon" : "sunny-outline"}
           size={20}
-          color={isDark ? "#A5B4FC" : colors.ink}
+          color={isDark ? colors.accent : colors.ink}
         />
       </Animated.View>
     </Pressable>
@@ -86,13 +88,11 @@ const styles = StyleSheet.create({
   button: {
     width: 38,
     height: 38,
-    borderRadius: radii.md,
-    backgroundColor: colors.bg,
+    borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: colors.border,
-    marginRight: spacing.sm,
+    marginRight: 16,
   },
   buttonPressed: {
     opacity: 0.75,

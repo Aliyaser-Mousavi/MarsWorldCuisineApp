@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import {
-  View,
   Text,
   StyleSheet,
   Animated,
@@ -9,9 +8,9 @@ import {
   StatusBar,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, radii, spacing, type, shadows } from "../../constants/theme";
+import { useTheme } from "../../constants/theme";
 
-const getTone = (variant) => {
+const getTone = (variant, colors) => {
   switch (variant) {
     case "error":
       return {
@@ -28,14 +27,14 @@ const getTone = (variant) => {
     case "offline":
       return {
         bg: colors.brand,
-        ink: colors.surface,
+        ink: colors.onBrand,
         icon: "cloud-offline",
       };
     case "success":
     default:
       return {
         bg: colors.brand,
-        ink: colors.surface,
+        ink: colors.onBrand,
         icon: "checkmark-circle",
       };
   }
@@ -51,6 +50,7 @@ const FeedbackToast = ({
   duration = 2800,
   onHide,
 }) => {
+  const { colors, shadows } = useTheme();
   const slide = useRef(new Animated.Value(-120)).current;
   const opacity = useRef(new Animated.Value(0)).current;
 
@@ -90,7 +90,7 @@ const FeedbackToast = ({
 
   if (!visible || !message) return null;
 
-  const tone = getTone(variant);
+  const tone = getTone(variant, colors);
 
   return (
     <Animated.View
@@ -122,20 +122,20 @@ const styles = StyleSheet.create({
   host: {
     position: "absolute",
     top: Platform.OS === "android" ? (StatusBar.currentHeight ?? 0) + 12 : 56,
-    left: spacing.md,
-    right: spacing.md,
+    left: 16,
+    right: 16,
     zIndex: 12000,
   },
   toast: {
     flexDirection: "row",
     alignItems: "center",
-    gap: spacing.sm,
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.md,
-    borderRadius: radii.lg,
+    gap: 8,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    borderRadius: 16,
   },
   text: {
-    ...type.heading,
+    fontFamily: "DMSans_600SemiBold",
     flex: 1,
     fontSize: 14,
     lineHeight: 20,

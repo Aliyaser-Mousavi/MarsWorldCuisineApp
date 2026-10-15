@@ -7,9 +7,14 @@ import { MEALS } from "../data/dummy-data";
 import { WEEK_DAYS } from "../store/redux/mealPlan";
 import { getCookingStreak } from "../utils/discover";
 import { buildActivityCalendar, activityLevel } from "../utils/activity";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const InsightsScreen = ({ navigation }) => {
+  const { colors, radii, spacing, type } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const favoriteIds = useSelector((state) => state.favoriteMeals.ids);
   const metaById = useSelector((state) => state.recipeMeta.byId);
   const week = useSelector((state) => state.mealPlan.week);
@@ -102,7 +107,7 @@ const InsightsScreen = ({ navigation }) => {
         style={styles.questBanner}
         onPress={() => navigation.navigate("Quests")}
       >
-        <Ionicons name="ribbon-outline" size={20} color={colors.brand} />
+        <Ionicons name="ribbon-outline" size={20} color={colors.warning} />
         <View style={{ flex: 1 }}>
           <Text style={styles.questTitle}>Kitchen quests</Text>
           <Text style={styles.questSub}>
@@ -185,24 +190,32 @@ const InsightsScreen = ({ navigation }) => {
           label="Planned this week"
           value={stats.planned}
           onPress={() => navigation.navigate("MealPlan")}
+          styles={styles}
+          colors={colors}
         />
         <StatTile
           icon="basket-outline"
           label="Shopping left"
           value={stats.shoppingLeft}
           onPress={() => navigation.navigate("ShoppingList")}
+          styles={styles}
+          colors={colors}
         />
         <StatTile
           icon="leaf-outline"
           label="Pantry items"
           value={stats.pantry}
           onPress={() => navigation.navigate("Pantry")}
+          styles={styles}
+          colors={colors}
         />
         <StatTile
           icon="checkbox-outline"
           label="Prep left"
           value={stats.prepLeft}
           onPress={() => navigation.navigate("Prep")}
+          styles={styles}
+          colors={colors}
         />
       </View>
 
@@ -278,7 +291,7 @@ const InsightsScreen = ({ navigation }) => {
   );
 };
 
-const StatTile = ({ icon, label, value, onPress }) => (
+const StatTile = ({ icon, label, value, onPress, styles, colors }) => (
   <Pressable
     style={styles.tile}
     onPress={onPress}
@@ -292,7 +305,8 @@ const StatTile = ({ icon, label, value, onPress }) => (
 
 export default InsightsScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.bg,
@@ -381,7 +395,7 @@ const styles = StyleSheet.create({
   heroNumber: {
     fontFamily: "Fraunces_600SemiBold",
     fontSize: 28,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   heroLabel: {
     ...type.caption,
@@ -427,7 +441,7 @@ const styles = StyleSheet.create({
   },
   dayToday: {
     borderWidth: 1,
-    borderColor: colors.brand,
+    borderColor: colors.accent,
   },
   legend: {
     flexDirection: "row",

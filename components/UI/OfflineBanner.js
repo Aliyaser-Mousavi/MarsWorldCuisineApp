@@ -9,9 +9,10 @@ import {
 } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, spacing, type, radii } from "../../constants/theme";
+import { useTheme } from "../../constants/theme";
 
 const OfflineBanner = () => {
+  const { colors } = useTheme();
   const [show, setShow] = useState(false);
   const slideAnim = useRef(new Animated.Value(-200)).current;
   const timerRef = useRef(null);
@@ -55,19 +56,32 @@ const OfflineBanner = () => {
 
   return (
     <Animated.View
-      style={[styles.container, { transform: [{ translateY: slideAnim }] }]}
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.brand,
+          transform: [{ translateY: slideAnim }],
+        },
+      ]}
       pointerEvents="none"
       accessibilityRole="alert"
     >
       <View style={styles.content}>
-        <View style={styles.iconWrap}>
+        <View
+          style={[
+            styles.iconWrap,
+            { backgroundColor: colors.onBrandMuted },
+          ]}
+        >
           <Ionicons
             name="cloud-offline-outline"
             size={16}
-            color={colors.surface}
+            color={colors.onBrand}
           />
         </View>
-        <Text style={styles.text}>Offline — recipes still available</Text>
+        <Text style={[styles.text, { color: colors.onBrand }]}>
+          Offline — recipes still available
+        </Text>
       </View>
     </Animated.View>
   );
@@ -81,31 +95,30 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    backgroundColor: colors.brand,
-    paddingBottom: spacing.md - 2,
+    paddingBottom: 14,
     zIndex: 10000,
     paddingTop:
       Platform.OS === "android"
-        ? (StatusBar.currentHeight ?? 0) + spacing.sm
-        : spacing.xl + spacing.md,
+        ? (StatusBar.currentHeight ?? 0) + 8
+        : 56,
   },
   content: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    gap: spacing.sm,
-    paddingHorizontal: spacing.md,
+    gap: 8,
+    paddingHorizontal: 16,
   },
   iconWrap: {
     width: 28,
     height: 28,
-    borderRadius: radii.pill,
-    backgroundColor: colors.onBrandMuted,
+    borderRadius: 999,
     alignItems: "center",
     justifyContent: "center",
   },
   text: {
-    ...type.label,
-    color: colors.surface,
+    fontFamily: "DMSans_500Medium",
+    fontSize: 13,
+    lineHeight: 18,
   },
 });

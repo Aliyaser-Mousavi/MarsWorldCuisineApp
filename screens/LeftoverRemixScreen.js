@@ -11,9 +11,14 @@ import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { MEALS } from "../data/dummy-data";
 import { suggestLeftoverRemixes } from "../utils/leftovers";
-import { colors, radii, spacing, type, shadows } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const LeftoverRemixScreen = ({ navigation }) => {
+  const { colors, radii, spacing, type, shadows } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii, shadows),
+    [colors, type, spacing, radii, shadows],
+  );
   const metaById = useSelector((state) => state.recipeMeta.byId);
   const pantryItems = useSelector((state) => state.pantry.items);
   const prefs = useSelector((state) => state.preferences);
@@ -144,7 +149,8 @@ const LeftoverRemixScreen = ({ navigation }) => {
 
 export default LeftoverRemixScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii, shadows) =>
+  StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { paddingBottom: spacing.xl },
   intro: {
@@ -249,6 +255,6 @@ const styles = StyleSheet.create({
   emptyBtnText: {
     ...type.heading,
     fontSize: 14,
-    color: colors.surface,
+    color: colors.onBrand,
   },
 });

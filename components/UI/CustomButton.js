@@ -1,9 +1,9 @@
 import { Pressable, Text, StyleSheet, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import ThemedSpinner from "./ThemedSpinner";
-import { colors, radii, spacing, type, shadows } from "../../constants/theme";
+import { useTheme } from "../../constants/theme";
 
-const getVariant = (variant) => {
+const getVariant = (variant, colors) => {
   switch (variant) {
     case "secondary":
       return {
@@ -15,9 +15,9 @@ const getVariant = (variant) => {
     case "accent":
       return {
         bg: colors.accent,
-        text: colors.surface,
+        text: colors.onBrand,
         border: colors.accent,
-        spinner: colors.surface,
+        spinner: colors.onBrand,
       };
     case "danger":
       return {
@@ -44,9 +44,9 @@ const getVariant = (variant) => {
     default:
       return {
         bg: colors.brand,
-        text: colors.surface,
+        text: colors.onBrand,
         border: colors.brand,
-        spinner: colors.surface,
+        spinner: colors.onBrand,
       };
   }
 };
@@ -66,7 +66,8 @@ const CustomButton = ({
   textStyle,
   fullWidth = true,
 }) => {
-  const palette = getVariant(variant);
+  const { colors, shadows } = useTheme();
+  const palette = getVariant(variant, colors);
   const isDisabled = disabled || loading;
 
   return (
@@ -112,9 +113,9 @@ export default CustomButton;
 const styles = StyleSheet.create({
   base: {
     minHeight: 52,
-    paddingVertical: spacing.md - 2,
-    paddingHorizontal: spacing.md,
-    borderRadius: radii.md,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderRadius: 12,
     borderWidth: 1,
     alignItems: "center",
     justifyContent: "center",
@@ -125,11 +126,12 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     alignItems: "center",
-    gap: spacing.sm,
+    gap: 8,
   },
   label: {
-    ...type.heading,
+    fontFamily: "DMSans_600SemiBold",
     fontSize: 15,
+    lineHeight: 22,
   },
   pressed: {
     opacity: 0.88,

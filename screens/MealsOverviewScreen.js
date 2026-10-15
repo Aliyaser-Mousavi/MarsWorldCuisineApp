@@ -14,9 +14,14 @@ import { Ionicons } from "@expo/vector-icons";
 import MealsList from "../components/MealsList/MealsList";
 import { MEALS, CATEGORIES } from "../data/dummy-data";
 import IconButton from "../components/IconButton";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const MealsOverviewScreen = ({ route, navigation }) => {
+  const { colors, type, spacing, radii } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const catId = route.params?.categoryId;
   const prefs = useSelector((state) => state.preferences);
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false);
@@ -71,7 +76,7 @@ const MealsOverviewScreen = ({ route, navigation }) => {
         </View>
       ),
     });
-  }, [catId, navigation, activeFilterCount]);
+  }, [catId, navigation, activeFilterCount, colors, styles]);
 
   return (
     <View style={styles.screen}>
@@ -104,21 +109,29 @@ const MealsOverviewScreen = ({ route, navigation }) => {
                 label="Gluten-free"
                 value={filters.glutenFree}
                 onToggle={(val) => updateFilter("glutenFree", val)}
+                colors={colors}
+                styles={styles}
               />
               <FilterItem
                 label="Vegan"
                 value={filters.vegan}
                 onToggle={(val) => updateFilter("vegan", val)}
+                colors={colors}
+                styles={styles}
               />
               <FilterItem
                 label="Vegetarian"
                 value={filters.vegetarian}
                 onToggle={(val) => updateFilter("vegetarian", val)}
+                colors={colors}
+                styles={styles}
               />
               <FilterItem
                 label="Lactose-free"
                 value={filters.lactoseFree}
                 onToggle={(val) => updateFilter("lactoseFree", val)}
+                colors={colors}
+                styles={styles}
               />
 
               <View style={styles.timeSectionHeader}>
@@ -170,25 +183,27 @@ const MealsOverviewScreen = ({ route, navigation }) => {
   );
 };
 
-const FilterItem = ({ label, value, onToggle }) => (
+const FilterItem = ({ label, value, onToggle, colors, styles }) => (
   <View style={styles.filterRow}>
     <Text style={styles.filterLabel}>{label}</Text>
     <Switch
       value={value}
       onValueChange={onToggle}
       trackColor={{ false: colors.border, true: colors.accent }}
-      thumbColor={Platform.OS === "android" ? colors.surface : undefined}
+      thumbColor={Platform.OS === "android" ? colors.onBrand : undefined}
+      ios_backgroundColor={colors.border}
     />
   </View>
 );
 
 export default MealsOverviewScreen;
 
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
+    screen: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
   filterTrigger: {
     position: "relative",
   },
@@ -205,7 +220,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 3,
   },
   badgeText: {
-    color: colors.surface,
+    color: colors.onBrand,
     fontSize: 10,
     fontFamily: "DMSans_600SemiBold",
   },
@@ -292,7 +307,7 @@ const styles = StyleSheet.create({
     color: colors.ink,
   },
   timeTextActive: {
-    color: colors.surface,
+    color: colors.onBrand,
   },
   applyButton: {
     backgroundColor: colors.brand,
@@ -303,6 +318,6 @@ const styles = StyleSheet.create({
   applyButtonText: {
     ...type.heading,
     fontSize: 15,
-    color: colors.surface,
+    color: colors.onBrand,
   },
 });

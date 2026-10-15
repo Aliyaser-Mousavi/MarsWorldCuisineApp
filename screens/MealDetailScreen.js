@@ -40,7 +40,7 @@ import {
 import { scaleIngredients } from "../utils/servings";
 import { getSimilarMeals } from "../utils/discover";
 import { getSubstitutions } from "../utils/substitutions";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const HEADER_MAX_HEIGHT = 280;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT;
@@ -57,6 +57,11 @@ const DAY_LABELS = {
 };
 
 const MealDetailScreen = ({ route, navigation }) => {
+  const { colors, type, spacing, radii } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPlanModalVisible, setIsPlanModalVisible] = useState(false);
   const [isSaveModalVisible, setIsSaveModalVisible] = useState(false);
@@ -209,7 +214,7 @@ const MealDetailScreen = ({ route, navigation }) => {
         </View>
       ),
     });
-  }, [navigation, mealIsFavorite, changeFavoriteStatusHandler, shareHandler]);
+  }, [navigation, mealIsFavorite, changeFavoriteStatusHandler, shareHandler, colors, styles]);
 
   if (!selectedMeal) {
     return (
@@ -240,7 +245,7 @@ const MealDetailScreen = ({ route, navigation }) => {
             style={styles.closeButton}
             onPress={() => setIsModalVisible(false)}
           >
-            <Ionicons name="close" size={28} color={colors.surface} />
+            <Ionicons name="close" size={28} color="#FFFFFF" />
           </Pressable>
           <Image
             source={{ uri: selectedMeal.imageUrl }}
@@ -477,7 +482,7 @@ const MealDetailScreen = ({ route, navigation }) => {
             style={styles.cookBtn}
             onPress={() => navigation.navigate("CookingMode", { mealId })}
           >
-            <Ionicons name="flame-outline" size={18} color={colors.surface} />
+            <Ionicons name="flame-outline" size={18} color={colors.onBrand} />
             <Text style={styles.cookBtnText}>Start cooking</Text>
           </Pressable>
 
@@ -487,7 +492,7 @@ const MealDetailScreen = ({ route, navigation }) => {
               navigation.navigate("BatchFreeze", { mealId })
             }
           >
-            <Ionicons name="snow-outline" size={16} color={colors.brand} />
+            <Ionicons name="snow-outline" size={16} color={colors.accent} />
             <Text style={styles.batchBtnText}>Batch & freeze this</Text>
           </Pressable>
 
@@ -602,7 +607,7 @@ const MealDetailScreen = ({ route, navigation }) => {
               <Subtitle title="Ingredients" />
               <View style={styles.servingsRow}>
                 <Text style={styles.servingsLabel}>Servings</Text>
-                {[1, 2, 4, 6].map((n) => (
+                {[1, 2, 3, 4, 5, 6].map((n) => (
                   <Pressable
                     key={n}
                     style={[
@@ -699,11 +704,12 @@ const MealDetailScreen = ({ route, navigation }) => {
 
 export default MealDetailScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
   headerActions: {
     flexDirection: "row",
     alignItems: "center",
@@ -782,7 +788,7 @@ const styles = StyleSheet.create({
   cookBtnText: {
     ...type.heading,
     fontSize: 15,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   batchBtn: {
     flexDirection: "row",
@@ -800,7 +806,7 @@ const styles = StyleSheet.create({
   batchBtnText: {
     ...type.heading,
     fontSize: 14,
-    color: colors.brand,
+    color: colors.accent,
   },
   actionRow: {
     flexDirection: "row",
@@ -881,7 +887,7 @@ const styles = StyleSheet.create({
   newBookBtnText: {
     ...type.heading,
     fontSize: 14,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   noBooks: {
     ...type.body,
@@ -941,7 +947,7 @@ const styles = StyleSheet.create({
     color: colors.ink,
   },
   servingChipTextActive: {
-    color: colors.surface,
+    color: colors.onBrand,
   },
   scaleHint: {
     ...type.caption,

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -14,8 +14,6 @@ import { Ionicons } from "@expo/vector-icons";
 import {
   setPreference,
   resetPreferences,
-  setDarkMode,
-  toggleDarkMode,
 } from "../store/redux/preferences";
 import ThemeToggle from "../components/UI/ThemeToggle";
 import { clearAuth } from "../store/redux/authSlice";
@@ -27,15 +25,10 @@ import { supabase } from "../services/supabase";
 import CustomModal from "../components/CustomModal";
 import CustomButton from "../components/UI/CustomButton";
 import FeedbackToast from "../components/UI/FeedbackToast";
-import {
-  colors,
-  radii,
-  spacing,
-  type,
-  shadows,
-} from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const PreferencesScreen = () => {
+  const { isDark, colors, type, spacing, radii, shadows, setDarkMode } = useTheme();
   const prefs = useSelector((state) => state.preferences);
   const user = useSelector((state) => state.auth.user);
   const profile = useSelector((state) => state.auth.profile);
@@ -43,6 +36,8 @@ const PreferencesScreen = () => {
   const [busy, setBusy] = useState(null);
   const [dialog, setDialog] = useState(null);
   const [toast, setToast] = useState(null);
+
+  const styles = useMemo(() => createStyles(colors, type, spacing, radii), [colors, type, spacing, radii]);
 
   const toggle = (key) => (value) =>
     dispatch(setPreference({ key, value }));
@@ -245,7 +240,7 @@ const PreferencesScreen = () => {
           <View style={styles.appearanceHeader}>
             <Text style={styles.cardTitle}>Appearance & Theme</Text>
             <Text style={styles.cardBody}>
-              {prefs.darkMode
+              {isDark
                 ? "Night Kitchen is active. Warm obsidian tones reduce eye strain during cooking."
                 : "Daylight Kitchen is active. Crisp parchment tones for bright environments."}
             </Text>
@@ -257,11 +252,11 @@ const PreferencesScreen = () => {
             <Pressable
               onPress={() => {
                 Haptics.selectionAsync();
-                dispatch(setDarkMode(false));
+                setDarkMode(false);
               }}
               style={[
                 styles.themePreset,
-                !prefs.darkMode && styles.themePresetActive,
+                !isDark && styles.themePresetActive,
               ]}
               accessibilityRole="button"
               accessibilityLabel="Select Daylight Kitchen theme"
@@ -280,7 +275,7 @@ const PreferencesScreen = () => {
               <Text
                 style={[
                   styles.presetText,
-                  !prefs.darkMode && styles.presetTextActive,
+                  !isDark && styles.presetTextActive,
                 ]}
               >
                 Daylight
@@ -290,17 +285,17 @@ const PreferencesScreen = () => {
             <Pressable
               onPress={() => {
                 Haptics.selectionAsync();
-                dispatch(setDarkMode(true));
+                setDarkMode(true);
               }}
               style={[
                 styles.themePreset,
-                prefs.darkMode && styles.themePresetActive,
+                isDark && styles.themePresetActive,
               ]}
               accessibilityRole="button"
               accessibilityLabel="Select Night Kitchen theme"
             >
               <View style={[styles.presetSwatch, styles.darkSwatch]}>
-                <Ionicons name="moon" size={18} color="#A5B4FC" />
+                <Ionicons name="moon" size={18} color={colors.accent} />
                 <View style={styles.swatchMiniRow}>
                   <View
                     style={[styles.swatchDot, { backgroundColor: "#5E8B68" }]}
@@ -313,7 +308,7 @@ const PreferencesScreen = () => {
               <Text
                 style={[
                   styles.presetText,
-                  prefs.darkMode && styles.presetTextActive,
+                  isDark && styles.presetTextActive,
                 ]}
               >
                 Night Kitchen
@@ -332,21 +327,29 @@ const PreferencesScreen = () => {
             label="Gluten-free"
             value={prefs.glutenFree}
             onChange={toggle("glutenFree")}
+            colors={colors}
+            styles={styles}
           />
           <PrefRow
             label="Vegan"
             value={prefs.vegan}
             onChange={toggle("vegan")}
+            colors={colors}
+            styles={styles}
           />
           <PrefRow
             label="Vegetarian"
             value={prefs.vegetarian}
             onChange={toggle("vegetarian")}
+            colors={colors}
+            styles={styles}
           />
           <PrefRow
             label="Lactose-free"
             value={prefs.lactoseFree}
             onChange={toggle("lactoseFree")}
+            colors={colors}
+            styles={styles}
           />
         </View>
 
@@ -449,14 +452,14 @@ const PreferencesScreen = () => {
   );
 };
 
-const PrefRow = ({ label, value, onChange }) => (
+const PrefRow = ({ label, value, onChange, colors, styles }) => (
   <View style={styles.row}>
     <Text style={styles.rowLabel}>{label}</Text>
     <Switch
       value={value}
       onValueChange={onChange}
       trackColor={{ false: colors.border, true: colors.accent }}
-      thumbColor={Platform.OS === "android" ? colors.surface : undefined}
+      thumbColor={Platform.OS === "android" ? colors.onBrand : undefined}
       ios_backgroundColor={colors.border}
     />
   </View>
@@ -464,227 +467,230 @@ const PrefRow = ({ label, value, onChange }) => (
 
 export default PreferencesScreen;
 
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
-  content: {
-    padding: spacing.md,
-    paddingBottom: spacing.xl,
-  },
-  accountCard: {
-    backgroundColor: colors.surface,
-    borderRadius: radii.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-  },
-  accountHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: spacing.md,
-    marginBottom: spacing.sm,
-  },
-  avatar: {
-    width: 52,
-    height: 52,
-    borderRadius: radii.md,
-    backgroundColor: colors.accentSoft,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  avatarLetter: {
-    ...type.title,
-    fontSize: 22,
-    color: colors.accent,
-  },
-  accountMeta: {
-    flex: 1,
-  },
-  accountKicker: {
-    ...type.label,
-    color: colors.accent,
-    marginBottom: 2,
-  },
-  accountTitle: {
-    ...type.title,
-    fontSize: 20,
-    marginBottom: 2,
-  },
-  accountEmail: {
-    ...type.caption,
-    color: colors.inkMuted,
-  },
-  accountBody: {
-    ...type.body,
-    fontSize: 14,
-    color: colors.inkMuted,
-    marginBottom: spacing.md,
-  },
-  card: {
-    backgroundColor: colors.surface,
-    borderRadius: radii.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-  },
-  backupCard: {
-    backgroundColor: colors.brand,
-    borderRadius: radii.lg,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-  },
-  backupKicker: {
-    ...type.label,
-    color: colors.onBrandMuted,
-    marginBottom: spacing.xs,
-  },
-  backupTitle: {
-    ...type.title,
-    fontSize: 22,
-    color: colors.surface,
-    marginBottom: spacing.sm,
-  },
-  backupBody: {
-    color: colors.onBrandSoft,
-  },
-  backupPrimary: {
-    marginTop: spacing.sm,
-  },
-  backupSecondary: {
-    marginTop: spacing.sm,
-  },
-  cardTitle: {
-    ...type.heading,
-    fontSize: 15,
-    marginBottom: spacing.xs,
-  },
-  cardBody: {
-    ...type.body,
-    fontSize: 14,
-    marginBottom: spacing.sm,
-    color: colors.inkMuted,
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: spacing.sm + 4,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.border,
-  },
-  rowLabel: {
-    ...type.body,
-    color: colors.ink,
-  },
-  durationRow: {
-    flexDirection: "row",
-    gap: spacing.sm,
-    marginTop: spacing.sm,
-  },
-  timeBtn: {
-    flex: 1,
-    paddingVertical: spacing.sm + 2,
-    borderRadius: radii.sm,
-    backgroundColor: colors.bg,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  timeBtnActive: {
-    backgroundColor: colors.brand,
-    borderColor: colors.brand,
-  },
-  timeBtnPressed: {
-    opacity: 0.85,
-  },
-  timeText: {
-    ...type.label,
-    color: colors.ink,
-  },
-  timeTextActive: {
-    color: colors.surface,
-  },
-  resetBtn: {
-    marginTop: spacing.xs,
-  },
-  resetText: {
-    color: colors.danger,
-  },
-  appearanceCard: {
-    backgroundColor: colors.surface,
-    borderRadius: radii.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.md,
-    marginBottom: spacing.md,
-  },
-  appearanceHeader: {
-    marginBottom: spacing.sm,
-  },
-  themeToggleRow: {
-    marginBottom: spacing.md,
-  },
-  themePresetsRow: {
-    flexDirection: "row",
-    gap: spacing.md,
-  },
-  themePreset: {
-    flex: 1,
-    padding: spacing.sm + 4,
-    borderRadius: radii.md,
-    backgroundColor: colors.bg,
-    borderWidth: 1.5,
-    borderColor: colors.border,
-    alignItems: "center",
-  },
-  themePresetActive: {
-    borderColor: colors.accent,
-    backgroundColor: colors.accentSoft,
-  },
-  presetSwatch: {
-    width: "100%",
-    height: 48,
-    borderRadius: radii.sm,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: spacing.sm + 2,
-    marginBottom: spacing.xs + 2,
-  },
-  lightSwatch: {
-    backgroundColor: "#F2F0ED",
-    borderWidth: 1,
-    borderColor: "#E5E1DC",
-  },
-  darkSwatch: {
-    backgroundColor: "#12100E",
-    borderWidth: 1,
-    borderColor: "#2D2621",
-  },
-  swatchMiniRow: {
-    flexDirection: "row",
-    gap: 4,
-  },
-  swatchDot: {
-    width: 10,
-    height: 10,
-    borderRadius: radii.pill,
-  },
-  presetText: {
-    ...type.label,
-    fontSize: 13,
-    color: colors.inkMuted,
-  },
-  presetTextActive: {
-    color: colors.ink,
-    fontFamily: "DMSans_600SemiBold",
-  },
-});
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
+    root: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
+    container: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
+    content: {
+      padding: spacing.md,
+      paddingBottom: spacing.xl,
+    },
+    accountCard: {
+      backgroundColor: colors.surface,
+      borderRadius: radii.lg,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+    },
+    accountHeader: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: spacing.md,
+      marginBottom: spacing.sm,
+    },
+    avatar: {
+      width: 52,
+      height: 52,
+      borderRadius: radii.md,
+      backgroundColor: colors.accentSoft,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    avatarLetter: {
+      ...type.title,
+      fontSize: 22,
+      color: colors.accent,
+    },
+    accountMeta: {
+      flex: 1,
+    },
+    accountKicker: {
+      ...type.label,
+      color: colors.accent,
+      marginBottom: 2,
+    },
+    accountTitle: {
+      ...type.title,
+      fontSize: 20,
+      color: colors.ink,
+      marginBottom: 2,
+    },
+    accountEmail: {
+      ...type.caption,
+      color: colors.inkMuted,
+    },
+    accountBody: {
+      ...type.body,
+      fontSize: 14,
+      color: colors.inkMuted,
+      marginBottom: spacing.md,
+    },
+    card: {
+      backgroundColor: colors.surface,
+      borderRadius: radii.md,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+    },
+    backupCard: {
+      backgroundColor: colors.brand,
+      borderRadius: radii.lg,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+    },
+    backupKicker: {
+      ...type.label,
+      color: colors.onBrandMuted,
+      marginBottom: spacing.xs,
+    },
+    backupTitle: {
+      ...type.title,
+      fontSize: 22,
+      color: colors.onBrand,
+      marginBottom: spacing.sm,
+    },
+    backupBody: {
+      color: colors.onBrandSoft,
+    },
+    backupPrimary: {
+      marginTop: spacing.sm,
+    },
+    backupSecondary: {
+      marginTop: spacing.sm,
+    },
+    cardTitle: {
+      ...type.heading,
+      fontSize: 15,
+      color: colors.ink,
+      marginBottom: spacing.xs,
+    },
+    cardBody: {
+      ...type.body,
+      fontSize: 14,
+      marginBottom: spacing.sm,
+      color: colors.inkMuted,
+    },
+    row: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingVertical: spacing.sm + 4,
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderTopColor: colors.border,
+    },
+    rowLabel: {
+      ...type.body,
+      color: colors.ink,
+    },
+    durationRow: {
+      flexDirection: "row",
+      gap: spacing.sm,
+      marginTop: spacing.sm,
+    },
+    timeBtn: {
+      flex: 1,
+      paddingVertical: spacing.sm + 2,
+      borderRadius: radii.sm,
+      backgroundColor: colors.bg,
+      alignItems: "center",
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    timeBtnActive: {
+      backgroundColor: colors.brand,
+      borderColor: colors.brand,
+    },
+    timeBtnPressed: {
+      opacity: 0.85,
+    },
+    timeText: {
+      ...type.label,
+      color: colors.ink,
+    },
+    timeTextActive: {
+      color: colors.onBrand,
+    },
+    resetBtn: {
+      marginTop: spacing.xs,
+    },
+    resetText: {
+      color: colors.danger,
+    },
+    appearanceCard: {
+      backgroundColor: colors.surface,
+      borderRadius: radii.lg,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: spacing.md,
+      marginBottom: spacing.md,
+    },
+    appearanceHeader: {
+      marginBottom: spacing.sm,
+    },
+    themeToggleRow: {
+      marginBottom: spacing.md,
+    },
+    themePresetsRow: {
+      flexDirection: "row",
+      gap: spacing.md,
+    },
+    themePreset: {
+      flex: 1,
+      padding: spacing.sm + 4,
+      borderRadius: radii.md,
+      backgroundColor: colors.bg,
+      borderWidth: 1.5,
+      borderColor: colors.border,
+      alignItems: "center",
+    },
+    themePresetActive: {
+      borderColor: colors.accent,
+      backgroundColor: colors.accentSoft,
+    },
+    presetSwatch: {
+      width: "100%",
+      height: 48,
+      borderRadius: radii.sm,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingHorizontal: spacing.sm + 2,
+      marginBottom: spacing.xs + 2,
+    },
+    lightSwatch: {
+      backgroundColor: "#F2F0ED",
+      borderWidth: 1,
+      borderColor: "#E5E1DC",
+    },
+    darkSwatch: {
+      backgroundColor: "#12100E",
+      borderWidth: 1,
+      borderColor: "#2D2621",
+    },
+    swatchMiniRow: {
+      flexDirection: "row",
+      gap: 4,
+    },
+    swatchDot: {
+      width: 10,
+      height: 10,
+      borderRadius: radii.pill,
+    },
+    presetText: {
+      ...type.label,
+      fontSize: 13,
+      color: colors.inkMuted,
+    },
+    presetTextActive: {
+      color: colors.ink,
+      fontFamily: "DMSans_600SemiBold",
+    },
+  });

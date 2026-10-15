@@ -15,7 +15,7 @@ import { WEEK_DAYS, addToDay } from "../store/redux/mealPlan";
 import { addIngredients } from "../store/redux/shoppingList";
 import { scaleIngredients } from "../utils/servings";
 import { planBatchFreeze } from "../utils/serviceTimeline";
-import { colors, radii, spacing, type, shadows } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const DAY_LABELS = {
   monday: "Mon",
@@ -28,6 +28,11 @@ const DAY_LABELS = {
 };
 
 const BatchFreezeScreen = ({ route, navigation }) => {
+  const { colors, radii, spacing, type, shadows } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii, shadows),
+    [colors, type, spacing, radii, shadows],
+  );
   const mealId = route.params?.mealId;
   const initialMeal = MEALS.find((m) => m.id === mealId) || null;
   const dispatch = useDispatch();
@@ -214,7 +219,7 @@ const BatchFreezeScreen = ({ route, navigation }) => {
             <Ionicons
               name={done ? "checkmark" : "snow-outline"}
               size={18}
-              color={done ? colors.accent : colors.surface}
+              color={done ? colors.accent : colors.onBrand}
             />
             <Text style={[styles.applyText, done && styles.applyTextDone]}>
               {done
@@ -230,7 +235,8 @@ const BatchFreezeScreen = ({ route, navigation }) => {
 
 export default BatchFreezeScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii, shadows) =>
+  StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { paddingBottom: spacing.xl },
   intro: {
@@ -343,7 +349,7 @@ const styles = StyleSheet.create({
     borderColor: colors.brand,
   },
   dayText: { ...type.label, color: colors.ink },
-  dayTextOn: { color: colors.surface },
+  dayTextOn: { color: colors.onBrand },
   ingLine: {
     ...type.body,
     paddingHorizontal: spacing.lg,
@@ -366,6 +372,6 @@ const styles = StyleSheet.create({
     borderRadius: radii.md,
   },
   applyDone: { backgroundColor: colors.accentSoft },
-  applyText: { ...type.heading, fontSize: 15, color: colors.surface },
+  applyText: { ...type.heading, fontSize: 15, color: colors.onBrand },
   applyTextDone: { color: colors.accent },
 });

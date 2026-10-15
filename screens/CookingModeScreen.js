@@ -14,9 +14,14 @@ import { useDispatch } from "react-redux";
 import { MEALS } from "../data/dummy-data";
 import { markCooked } from "../store/redux/recipeMeta";
 import { extractStepTimer, formatCountdown } from "../utils/stepTimers";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const CookingModeScreen = ({ route, navigation }) => {
+  const { colors, radii, spacing, type } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const mealId = route.params?.mealId;
   const meal = MEALS.find((m) => m.id === mealId);
   const steps = meal?.steps || [];
@@ -38,14 +43,14 @@ const CookingModeScreen = ({ route, navigation }) => {
     navigation.setOptions({
       title: "Cooking mode",
       headerStyle: { backgroundColor: colors.brand },
-      headerTintColor: colors.surface,
+      headerTintColor: colors.onBrand,
       headerTitleStyle: {
         fontFamily: "Fraunces_600SemiBold",
         fontSize: 18,
-        color: colors.surface,
+        color: colors.onBrand,
       },
     });
-  }, [navigation]);
+  }, [navigation, colors]);
 
   useEffect(() => {
     activateKeepAwakeAsync("cooking-mode");
@@ -96,7 +101,7 @@ const CookingModeScreen = ({ route, navigation }) => {
         <Text
           style={{
             ...type.heading,
-            color: colors.surface,
+            color: colors.onBrand,
             textAlign: "center",
           }}
         >
@@ -192,7 +197,7 @@ const CookingModeScreen = ({ route, navigation }) => {
                     <Ionicons
                       name={stepRunning ? "pause" : "play"}
                       size={20}
-                      color={colors.brand}
+                      color={colors.accent}
                     />
                   </Pressable>
                 )}
@@ -216,7 +221,7 @@ const CookingModeScreen = ({ route, navigation }) => {
           <Ionicons
             name={running ? "pause" : "play"}
             size={18}
-            color={colors.surface}
+            color={colors.onBrand}
           />
           <Text style={styles.timerBtnText}>
             {running ? "Pause session" : "Start session"}
@@ -240,7 +245,7 @@ const CookingModeScreen = ({ route, navigation }) => {
           <Ionicons
             name={isLast ? "checkmark" : "chevron-forward"}
             size={20}
-            color={colors.surface}
+            color={colors.onBrand}
           />
         </Pressable>
       </View>
@@ -250,7 +255,8 @@ const CookingModeScreen = ({ route, navigation }) => {
 
 export default CookingModeScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: colors.brand,
@@ -264,7 +270,7 @@ const styles = StyleSheet.create({
   mealTitle: {
     fontFamily: "Fraunces_600SemiBold",
     fontSize: 20,
-    color: colors.surface,
+    color: colors.onBrand,
     marginBottom: 4,
   },
   stepCount: {
@@ -324,7 +330,7 @@ const styles = StyleSheet.create({
   stepCountdown: {
     fontFamily: "Fraunces_600SemiBold",
     fontSize: 32,
-    color: colors.brand,
+    color: colors.ink,
     letterSpacing: 1,
   },
   stepCountdownDone: {
@@ -343,7 +349,7 @@ const styles = StyleSheet.create({
   timer: {
     fontFamily: "Fraunces_600SemiBold",
     fontSize: 40,
-    color: colors.surface,
+    color: colors.onBrand,
     letterSpacing: 2,
   },
   timerBtn: {
@@ -357,7 +363,7 @@ const styles = StyleSheet.create({
   },
   timerBtnText: {
     ...type.label,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   navRow: {
     flexDirection: "row",
@@ -387,6 +393,6 @@ const styles = StyleSheet.create({
   navPrimaryText: {
     ...type.heading,
     fontSize: 15,
-    color: colors.surface,
+    color: colors.onBrand,
   },
 });

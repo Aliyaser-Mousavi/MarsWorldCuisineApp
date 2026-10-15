@@ -1,13 +1,15 @@
 import { View, FlatList, StyleSheet, Text } from "react-native";
 import MealItem from "./MealItem";
 import FadeInView from "../UI/FadeInView";
-import { type, spacing } from "../../constants/theme";
+import { useTheme } from "../../constants/theme";
 
 const MealsList = ({ items, emptyMessage, ListHeaderComponent }) => {
+  const { colors } = useTheme();
+
   if (!items || items.length === 0) {
     return (
       <View style={styles.empty}>
-        <Text style={styles.emptyText}>
+        <Text style={[styles.emptyText, { color: colors.inkMuted }]}>
           {emptyMessage || "No recipes match your filters."}
         </Text>
       </View>
@@ -46,17 +48,19 @@ export default MealsList;
 
 const styles = StyleSheet.create({
   list: {
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.xl,
+    paddingTop: 8,
+    paddingBottom: 32,
   },
   empty: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    padding: spacing.xl,
+    padding: 32,
   },
   emptyText: {
-    ...type.body,
+    fontFamily: "DMSans_400Regular",
+    fontSize: 15,
+    lineHeight: 22,
     textAlign: "center",
   },
 });

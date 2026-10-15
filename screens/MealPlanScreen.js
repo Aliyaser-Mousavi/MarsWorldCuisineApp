@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,13 +6,9 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { MEALS } from "../data/dummy-data";
-import {
-  WEEK_DAYS,
-  removeFromDay,
-  clearWeek,
-} from "../store/redux/mealPlan";
+import { WEEK_DAYS, removeFromDay, clearWeek } from "../store/redux/mealPlan";
 import { addIngredients } from "../store/redux/shoppingList";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const DAY_LABELS = {
   monday: "Mon",
@@ -25,6 +21,11 @@ const DAY_LABELS = {
 };
 
 const MealPlanScreen = () => {
+  const { colors, type, spacing, radii } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const week = useSelector((state) => state.mealPlan.week);
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -75,7 +76,7 @@ const MealPlanScreen = () => {
           <Ionicons
             name={shopped ? "checkmark" : "basket-outline"}
             size={18}
-            color={shopped ? colors.accent : colors.surface}
+            color={shopped ? colors.accent : colors.onBrand}
           />
           <Text
             style={[styles.shopWeekText, shopped && styles.shopWeekTextDone]}
@@ -149,104 +150,105 @@ const MealPlanScreen = () => {
 
 export default MealPlanScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
-  toolbar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-    backgroundColor: colors.surface,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.border,
-  },
-  count: {
-    ...type.label,
-    color: colors.ink,
-  },
-  clear: {
-    ...type.label,
-    color: colors.danger,
-  },
-  shopWeek: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    marginHorizontal: spacing.md,
-    marginTop: spacing.md,
-    backgroundColor: colors.brand,
-    paddingVertical: 12,
-    borderRadius: radii.md,
-  },
-  shopWeekDone: {
-    backgroundColor: colors.accentSoft,
-  },
-  shopWeekText: {
-    ...type.heading,
-    fontSize: 14,
-    color: colors.surface,
-  },
-  shopWeekTextDone: {
-    color: colors.accent,
-  },
-  scroll: {
-    padding: spacing.md,
-    paddingBottom: spacing.xl,
-  },
-  dayBlock: {
-    backgroundColor: colors.surface,
-    borderRadius: radii.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.md,
-    marginBottom: spacing.sm,
-  },
-  dayTitle: {
-    ...type.heading,
-    fontSize: 14,
-    marginBottom: 8,
-  },
-  emptyDay: {
-    ...type.caption,
-  },
-  mealRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 8,
-    gap: 8,
-  },
-  mealPress: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-  },
-  thumb: {
-    width: 48,
-    height: 48,
-    borderRadius: radii.sm,
-    backgroundColor: colors.border,
-  },
-  mealMeta: {
-    flex: 1,
-  },
-  mealTitle: {
-    ...type.label,
-    color: colors.ink,
-  },
-  mealSub: {
-    ...type.caption,
-    marginTop: 2,
-  },
-  hint: {
-    ...type.caption,
-    textAlign: "center",
-    marginTop: spacing.md,
-    paddingHorizontal: spacing.lg,
-  },
-});
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
+    toolbar: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.md,
+      backgroundColor: colors.surface,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: colors.border,
+    },
+    count: {
+      ...type.label,
+      color: colors.ink,
+    },
+    clear: {
+      ...type.label,
+      color: colors.danger,
+    },
+    shopWeek: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 8,
+      marginHorizontal: spacing.md,
+      marginTop: spacing.md,
+      backgroundColor: colors.brand,
+      paddingVertical: 12,
+      borderRadius: radii.md,
+    },
+    shopWeekDone: {
+      backgroundColor: colors.accentSoft,
+    },
+    shopWeekText: {
+      ...type.heading,
+      fontSize: 14,
+      color: colors.onBrand,
+    },
+    shopWeekTextDone: {
+      color: colors.accent,
+    },
+    scroll: {
+      padding: spacing.md,
+      paddingBottom: spacing.xl,
+    },
+    dayBlock: {
+      backgroundColor: colors.surface,
+      borderRadius: radii.md,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: spacing.md,
+      marginBottom: spacing.sm,
+    },
+    dayTitle: {
+      ...type.heading,
+      fontSize: 14,
+      marginBottom: 8,
+    },
+    emptyDay: {
+      ...type.caption,
+    },
+    mealRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginTop: 8,
+      gap: 8,
+    },
+    mealPress: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 10,
+    },
+    thumb: {
+      width: 48,
+      height: 48,
+      borderRadius: radii.sm,
+      backgroundColor: colors.border,
+    },
+    mealMeta: {
+      flex: 1,
+    },
+    mealTitle: {
+      ...type.label,
+      color: colors.ink,
+    },
+    mealSub: {
+      ...type.caption,
+      marginTop: 2,
+    },
+    hint: {
+      ...type.caption,
+      textAlign: "center",
+      marginTop: spacing.md,
+      paddingHorizontal: spacing.lg,
+    },
+  });

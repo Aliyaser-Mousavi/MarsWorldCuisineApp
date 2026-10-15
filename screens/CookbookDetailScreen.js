@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useMemo } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
@@ -8,9 +8,14 @@ import {
   removeMealFromCookbook,
   deleteCookbook,
 } from "../store/redux/cookbooks";
-import { colors, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const CookbookDetailScreen = ({ route, navigation }) => {
+  const { colors, type, spacing } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing),
+    [colors, type, spacing],
+  );
   const { cookbookId } = route.params ?? {};
   const book = useSelector((state) =>
     (state.cookbooks?.books || []).find((b) => b.id === cookbookId),
@@ -34,7 +39,7 @@ const CookbookDetailScreen = ({ route, navigation }) => {
           </Pressable>
         ) : null,
     });
-  }, [navigation, book, dispatch]);
+  }, [navigation, book, dispatch, colors]);
 
   if (!book) {
     return (
@@ -63,19 +68,20 @@ const CookbookDetailScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.toolbar}>
-        <Text style={styles.count}>
-          {meals.length} recipe{meals.length === 1 ? "" : "s"}
-        </Text>
+        <Text style={styles.count}>{meals.length} recipes</Text>
         <Pressable
+          hitSlop={8}
           onPress={() => {
-            const last = (book.mealIds || [])[0];
+            const last = meals[meals.length - 1];
             if (last) {
               dispatch(
-                removeMealFromCookbook({ cookbookId: book.id, mealId: last }),
+                removeMealFromCookbook({
+                  cookbookId: book.id,
+                  mealId: last.id,
+                }),
               );
             }
           }}
-          hitSlop={8}
         >
           <Text style={styles.removeHint}>Remove latest</Text>
         </Pressable>
@@ -87,50 +93,54 @@ const CookbookDetailScreen = ({ route, navigation }) => {
 
 export default CookbookDetailScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
-  toolbar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.sm,
-  },
-  count: {
-    ...type.label,
-    color: colors.ink,
-  },
-  removeHint: {
-    ...type.label,
-    color: colors.danger,
-  },
-  empty: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: spacing.xl,
-    backgroundColor: colors.bg,
-  },
-  emptyTitle: {
-    ...type.heading,
-    marginTop: spacing.sm,
-    marginBottom: 6,
-  },
-  emptyBody: {
-    ...type.body,
-    textAlign: "center",
-  },
-  missing: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: colors.bg,
-  },
-  missingText: {
-    ...type.body,
-  },
-});
+const createStyles = (colors, type, spacing) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
+    toolbar: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: spacing.lg,
+      paddingTop: spacing.md,
+      paddingBottom: spacing.sm,
+    },
+    count: {
+      ...type.label,
+      color: colors.ink,
+    },
+    removeHint: {
+      ...type.label,
+      color: colors.danger,
+    },
+    empty: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      padding: spacing.xl,
+      backgroundColor: colors.bg,
+    },
+    emptyTitle: {
+      ...type.heading,
+      color: colors.ink,
+      marginTop: spacing.sm,
+      marginBottom: 6,
+    },
+    emptyBody: {
+      ...type.body,
+      color: colors.inkMuted,
+      textAlign: "center",
+    },
+    missing: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: colors.bg,
+    },
+    missingText: {
+      ...type.body,
+      color: colors.inkMuted,
+    },
+  });

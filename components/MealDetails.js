@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import { colors, radii, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const MealDetails = ({
   duration,
@@ -9,6 +9,7 @@ const MealDetails = ({
   textStyle,
   compact = false,
 }) => {
+  const { colors } = useTheme();
   const items = [
     `${duration} min`,
     complexity,
@@ -16,13 +17,23 @@ const MealDetails = ({
   ];
 
   return (
-    <View style={[styles.details, compact && styles.compact, style]}>
+    <View
+      style={[
+        styles.details,
+        { backgroundColor: colors.accentSoft },
+        compact && styles.compact,
+        style,
+      ]}
+    >
       {items.map((item, index) => (
         <View key={item} style={styles.chipRow}>
-          {index > 0 && <Text style={styles.dot}>·</Text>}
+          {index > 0 && (
+            <Text style={[styles.dot, { color: colors.inkSoft }]}>·</Text>
+          )}
           <Text
             style={[
               styles.detailItem,
+              { color: colors.inkMuted },
               compact && styles.detailCompact,
               textStyle,
             ]}
@@ -44,8 +55,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 10,
     paddingHorizontal: 14,
-    backgroundColor: colors.accentSoft,
-    borderRadius: radii.sm,
+    borderRadius: 8,
     marginVertical: 8,
     marginHorizontal: 16,
   },
@@ -61,15 +71,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   detailItem: {
-    ...type.label,
+    fontFamily: "DMSans_500Medium",
+    fontSize: 13,
+    lineHeight: 18,
     textTransform: "capitalize",
-    color: colors.inkMuted,
   },
   detailCompact: {
     fontSize: 12,
   },
   dot: {
     marginHorizontal: 6,
-    color: colors.inkSoft,
   },
 });

@@ -6,16 +6,18 @@ import {
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import ThemeToggle from "./UI/ThemeToggle";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 /**
  * Custom Drawer content with styled brand header, navigation items,
- * and persistent bottom Night Kitchen / Daylight theme toggle.
+ * and compact Night Kitchen / Daylight theme toggle.
  */
 const CustomDrawerContent = (props) => {
-  const isDark = useSelector((state) => state.preferences?.darkMode ?? false);
+  const { isDark, colors, type, spacing, radii } = useTheme();
   const user = useSelector((state) => state.auth?.user);
   const profile = useSelector((state) => state.auth?.profile);
+  const insets = useSafeAreaInsets();
 
   const displayName =
     profile?.full_name ||
@@ -24,53 +26,59 @@ const CustomDrawerContent = (props) => {
     "Chef";
 
   return (
-    <View style={styles.root}>
-      <DrawerContentScrollView
-        {...props}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
+    <View style={[styles.root, { backgroundColor: colors.surface }]}>
+      <View style={{ paddingTop: insets.top }}>
         {/* Brand Header */}
         <View style={styles.header}>
-          <View style={styles.brandBadge}>
-            <Ionicons name="restaurant" size={20} color={colors.surface} />
+          <View style={[styles.brandBadge, { backgroundColor: colors.brand }]}>
+            <Ionicons name="restaurant" size={20} color={colors.onBrand} />
           </View>
           <View style={styles.headerText}>
-            <Text style={styles.brandTitle}>Mars Cuisine</Text>
-            <Text style={styles.userSubtitle} numberOfLines={1}>
+            <Text style={[styles.brandTitle, { color: colors.ink }]}>
+              Mars Cuisine
+            </Text>
+            <Text
+              style={[styles.userSubtitle, { color: colors.inkMuted }]}
+              numberOfLines={1}
+            >
               {displayName}
             </Text>
           </View>
         </View>
 
-        <View style={styles.divider} />
+        <View style={[styles.divider, { backgroundColor: colors.border }]} />
+      </View>
 
+      <DrawerContentScrollView
+        {...props}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Drawer Navigation List */}
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
 
-      {/* Footer Theme Bar */}
-      <View style={styles.footer}>
-        <View style={styles.footerCard}>
-          <View style={styles.footerLabelGroup}>
-            <View style={styles.footerIcon}>
-              <Ionicons
-                name={isDark ? "moon" : "sunny"}
-                size={18}
-                color={isDark ? "#A5B4FC" : "#D97706"}
-              />
-            </View>
-            <View>
-              <Text style={styles.footerTitle}>
-                {isDark ? "Night Kitchen" : "Daylight Mode"}
-              </Text>
-              <Text style={styles.footerSubtitle}>
-                {isDark ? "Obsidian palette" : "Warm parchment"}
-              </Text>
-            </View>
-          </View>
-          <ThemeToggle variant="compact" />
+      {/* Simplified, Compact Theme Footer */}
+      <View
+        style={[
+          styles.footer,
+          {
+            backgroundColor: colors.surface,
+            borderTopColor: colors.border,
+          },
+        ]}
+      >
+        <View style={styles.footerLabelGroup}>
+          <Ionicons
+            name={isDark ? "moon-outline" : "sunny-outline"}
+            size={19}
+            color={isDark ? colors.accent : colors.inkMuted}
+          />
+          <Text style={[styles.footerTitle, { color: colors.ink }]}>
+            {isDark ? "Night Kitchen" : "Daylight Mode"}
+          </Text>
         </View>
+        <ThemeToggle variant="compact" />
       </View>
     </View>
   );
@@ -81,24 +89,22 @@ export default CustomDrawerContent;
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: colors.surface,
   },
   scrollContent: {
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.md,
+    paddingTop: 10,
+    paddingBottom: 16,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-    gap: spacing.md,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    gap: 14,
   },
   brandBadge: {
     width: 44,
     height: 44,
-    borderRadius: radii.md,
-    backgroundColor: colors.brand,
+    borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -108,62 +114,35 @@ const styles = StyleSheet.create({
   brandTitle: {
     fontFamily: "Fraunces_600SemiBold",
     fontSize: 20,
-    color: colors.ink,
     lineHeight: 24,
   },
   userSubtitle: {
-    ...type.caption,
-    color: colors.inkMuted,
+    fontFamily: "DMSans_400Regular",
+    fontSize: 12,
+    lineHeight: 16,
     marginTop: 2,
   },
   divider: {
     height: 1,
-    backgroundColor: colors.border,
-    marginHorizontal: spacing.md,
-    marginBottom: spacing.sm,
+    marginHorizontal: 16,
+    marginBottom: 8,
   },
   footer: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.md,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-    backgroundColor: colors.surface,
-  },
-  footerCard: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: colors.bg,
-    borderRadius: radii.lg,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm + 4,
-    borderWidth: 1,
-    borderColor: colors.border,
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+    borderTopWidth: 1,
   },
   footerLabelGroup: {
     flexDirection: "row",
     alignItems: "center",
-    gap: spacing.sm + 2,
-    flex: 1,
-  },
-  footerIcon: {
-    width: 34,
-    height: 34,
-    borderRadius: radii.sm,
-    backgroundColor: colors.surface,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: colors.border,
+    gap: 10,
   },
   footerTitle: {
-    ...type.heading,
+    fontFamily: "DMSans_500Medium",
     fontSize: 14,
     lineHeight: 18,
-  },
-  footerSubtitle: {
-    ...type.caption,
-    fontSize: 11,
-    lineHeight: 14,
   },
 });

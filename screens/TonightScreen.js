@@ -21,7 +21,7 @@ import {
 } from "../utils/tonight";
 import { getCookingStreak } from "../utils/discover";
 import { WEEK_DAYS, addToDay } from "../store/redux/mealPlan";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const HERO_HEIGHT = Math.min(420, SCREEN_WIDTH * 1.05);
@@ -32,6 +32,11 @@ function todayKey() {
 }
 
 const TonightScreen = ({ navigation }) => {
+  const { colors, type, spacing, radii } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const dispatch = useDispatch();
   const prefs = useSelector((state) => state.preferences);
   const metaById = useSelector((state) => state.recipeMeta.byId);
@@ -170,7 +175,7 @@ const TonightScreen = ({ navigation }) => {
             navigation.navigate("CookingMode", { mealId: pick.id })
           }
         >
-          <Ionicons name="flame-outline" size={18} color={colors.surface} />
+          <Ionicons name="flame-outline" size={18} color={colors.onBrand} />
           <Text style={styles.primaryCtaText}>Cook this</Text>
         </Pressable>
         <Pressable
@@ -212,7 +217,7 @@ const TonightScreen = ({ navigation }) => {
             <Text style={styles.prepKicker}>Before you cook</Text>
             <Text style={styles.prepTitle}>Open today’s prep list</Text>
           </View>
-          <Ionicons name="checkbox-outline" size={22} color={colors.surface} />
+          <Ionicons name="checkbox-outline" size={22} color={colors.onBrand} />
         </Pressable>
       )}
 
@@ -271,11 +276,12 @@ const TonightScreen = ({ navigation }) => {
 
 export default TonightScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
   content: {
     paddingBottom: spacing.xl,
   },
@@ -321,7 +327,7 @@ const styles = StyleSheet.create({
     color: colors.ink,
   },
   moodLabelActive: {
-    color: colors.surface,
+    color: colors.onBrand,
   },
   hero: {
     marginTop: spacing.sm,
@@ -355,7 +361,7 @@ const styles = StyleSheet.create({
     fontFamily: "Fraunces_600SemiBold",
     fontSize: 28,
     lineHeight: 34,
-    color: colors.surface,
+    color: colors.onBrand,
     marginBottom: 6,
   },
   heroMeta: {
@@ -377,7 +383,7 @@ const styles = StyleSheet.create({
   },
   reasonText: {
     ...type.caption,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   ctaRow: {
     flexDirection: "row",
@@ -399,7 +405,7 @@ const styles = StyleSheet.create({
   primaryCtaText: {
     ...type.heading,
     fontSize: 15,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   secondaryCta: {
     flex: 1,
@@ -464,7 +470,7 @@ const styles = StyleSheet.create({
   prepTitle: {
     ...type.heading,
     fontSize: 16,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   section: {
     marginTop: spacing.xl,

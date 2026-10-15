@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const PRESETS = [
   { label: "Eggs", seconds: 7 * 60 },
@@ -32,6 +32,11 @@ function formatTime(total) {
 let timerSeq = 1;
 
 const TimersScreen = () => {
+  const { colors, radii, spacing, type } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const [timers, setTimers] = useState([]);
   const intervalRef = useRef(null);
 
@@ -192,7 +197,8 @@ const TimersScreen = () => {
 
 export default TimersScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.bg,
@@ -263,7 +269,7 @@ const styles = StyleSheet.create({
   },
   customBtnText: {
     ...type.label,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   empty: {
     alignItems: "center",

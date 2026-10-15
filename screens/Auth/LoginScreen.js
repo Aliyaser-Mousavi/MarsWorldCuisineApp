@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -16,15 +16,14 @@ import { setError } from "../../store/redux/authSlice";
 import CustomTextInput from "../../components/UI/CustomTextInput";
 import CustomButton from "../../components/UI/CustomButton";
 import FeedbackBanner from "../../components/UI/FeedbackBanner";
-import {
-  colors,
-  radii,
-  spacing,
-  type,
-  shadows,
-} from "../../constants/theme";
+import { useTheme } from "../../constants/theme";
 
 const LoginScreen = ({ navigation }) => {
+  const { colors, type, spacing, radii, shadows } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -76,7 +75,7 @@ const LoginScreen = ({ navigation }) => {
         >
           <View style={styles.brandMark}>
             <View style={styles.brandIcon}>
-              <Ionicons name="restaurant-outline" size={22} color={colors.surface} />
+              <Ionicons name="restaurant-outline" size={22} color={colors.onBrand} />
             </View>
             <Text style={styles.kicker}>Mars World Cuisine</Text>
           </View>
@@ -163,11 +162,12 @@ const LoginScreen = ({ navigation }) => {
 
 export default LoginScreen;
 
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
+    root: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
   flex: { flex: 1 },
   container: {
     flexGrow: 1,

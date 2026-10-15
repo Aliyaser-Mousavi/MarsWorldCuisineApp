@@ -11,9 +11,14 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { evaluateQuests } from "../utils/quests";
 import { claimQuest } from "../store/redux/quests";
-import { colors, radii, spacing, type, shadows } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const QuestsScreen = () => {
+  const { colors, radii, spacing, type, shadows } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii, shadows),
+    [colors, type, spacing, radii, shadows],
+  );
   const dispatch = useDispatch();
   const recipeMeta = useSelector((state) => state.recipeMeta);
   const pantry = useSelector((state) => state.pantry);
@@ -84,7 +89,7 @@ const QuestsScreen = () => {
               <Ionicons
                 name={quest.claimed ? "ribbon" : quest.icon}
                 size={22}
-                color={quest.claimed ? colors.accent : colors.brand}
+                color={quest.claimed ? colors.accent : colors.warning}
               />
             </View>
             <View style={styles.cardBody}>
@@ -119,7 +124,8 @@ const QuestsScreen = () => {
 
 export default QuestsScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii, shadows) =>
+  StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { paddingBottom: spacing.xl },
   intro: {
@@ -214,6 +220,6 @@ const styles = StyleSheet.create({
   },
   claimText: {
     ...type.label,
-    color: colors.surface,
+    color: colors.onBrand,
   },
 });

@@ -13,13 +13,13 @@ import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import { CATEGORIES, MEALS } from "../data/dummy-data";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const { width: SCREEN_W } = Dimensions.get("window");
 const GRID_GAP = 12;
-const GRID_PAD = spacing.md;
+const GRID_PAD = 16;
 const CARD_W = (SCREEN_W - GRID_PAD * 2 - GRID_GAP) / 2;
-const CAT_W = (SCREEN_W - spacing.md * 2 - 10) / 2;
+const CAT_W = (SCREEN_W - 16 * 2 - 10) / 2;
 
 const TIME_OPTIONS = [
   { id: "any", label: "Any" },
@@ -47,6 +47,11 @@ const SUGGESTIONS = [
 ];
 
 const SearchScreen = ({ navigation }) => {
+  const { colors, type, spacing, radii } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const prefs = useSelector((state) => state.preferences);
   const recentIds = useSelector((state) => state.recentMeals.ids);
   const [query, setQuery] = useState("");
@@ -257,6 +262,12 @@ const SearchScreen = ({ navigation }) => {
 };
 
 const RecipeCard = ({ meal, width, onPress }) => {
+  const { colors, type, spacing, radii } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
+
   const imageH = width * 1.15;
   return (
     <Pressable
@@ -292,6 +303,12 @@ const IdleDiscover = ({
   onMeal,
   onCategory,
 }) => {
+  const { colors, type, spacing, radii } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
+
   const showcase = recentMeals.length > 0 ? recentMeals : featured;
   const showcaseLabel =
     recentMeals.length > 0 ? "Recently opened" : "Quick to cook";
@@ -366,11 +383,12 @@ const IdleDiscover = ({
 
 export default SearchScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
   listContent: {
     paddingBottom: spacing.xl * 1.5,
   },
@@ -446,7 +464,7 @@ const styles = StyleSheet.create({
     color: colors.ink,
   },
   timeTextActive: {
-    color: colors.surface,
+    color: colors.onBrand,
   },
   dietRow: {
     flexDirection: "row",

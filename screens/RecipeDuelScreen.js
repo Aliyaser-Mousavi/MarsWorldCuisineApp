@@ -14,12 +14,16 @@ import * as Haptics from "expo-haptics";
 import { LinearGradient } from "expo-linear-gradient";
 import { MEALS } from "../data/dummy-data";
 import { duelMeals, pickDuelPair } from "../utils/duel";
-import { colors, radii, spacing, type, shadows } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const { width } = Dimensions.get("window");
-const COL = (width - spacing.lg * 2 - spacing.sm) / 2;
 
 const RecipeDuelScreen = ({ navigation }) => {
+  const { colors, radii, spacing, type, shadows } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii, shadows),
+    [colors, type, spacing, radii, shadows],
+  );
   const prefs = useSelector((state) => state.preferences);
   const pantryItems = useSelector((state) => state.pantry.items);
   const metaById = useSelector((state) => state.recipeMeta.byId);
@@ -80,6 +84,8 @@ const RecipeDuelScreen = ({ navigation }) => {
           tags={duel.tagsA}
           crowned={duel.suggested === "a"}
           onPress={() => pickSide("a")}
+          styles={styles}
+          colors={colors}
         />
         <View style={styles.vsBadge}>
           <Text style={styles.vsText}>VS</Text>
@@ -89,6 +95,8 @@ const RecipeDuelScreen = ({ navigation }) => {
           tags={duel.tagsB}
           crowned={duel.suggested === "b"}
           onPress={() => pickSide("b")}
+          styles={styles}
+          colors={colors}
         />
       </View>
 
@@ -136,14 +144,14 @@ const RecipeDuelScreen = ({ navigation }) => {
       </View>
 
       <Pressable style={styles.reshuffle} onPress={reshuffle}>
-        <Ionicons name="shuffle" size={18} color={colors.surface} />
+        <Ionicons name="shuffle" size={18} color={colors.onBrand} />
         <Text style={styles.reshuffleText}>New duel</Text>
       </Pressable>
     </ScrollView>
   );
 };
 
-function Contender({ meal, tags, crowned, onPress }) {
+function Contender({ meal, tags, crowned, onPress, styles, colors }) {
   return (
     <Pressable style={styles.contender} onPress={onPress}>
       <View style={styles.imageWrap}>
@@ -184,7 +192,9 @@ function Contender({ meal, tags, crowned, onPress }) {
 
 export default RecipeDuelScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii, shadows) => {
+  const COL = (width - spacing.lg * 2 - spacing.sm) / 2;
+  return StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { paddingBottom: spacing.xl },
   intro: {
@@ -242,7 +252,7 @@ const styles = StyleSheet.create({
     bottom: 10,
     fontFamily: "Fraunces_600SemiBold",
     fontSize: 15,
-    color: colors.surface,
+    color: colors.onBrand,
     lineHeight: 20,
   },
   contenderMeta: {
@@ -266,7 +276,7 @@ const styles = StyleSheet.create({
   tagText: { ...type.caption, color: colors.accent, fontSize: 10 },
   pickCta: {
     ...type.label,
-    color: colors.brand,
+    color: colors.accent,
     padding: 10,
   },
   vsBadge: {
@@ -286,7 +296,7 @@ const styles = StyleSheet.create({
   vsText: {
     fontFamily: "Fraunces_600SemiBold",
     fontSize: 14,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   hintBanner: {
     flexDirection: "row",
@@ -365,7 +375,7 @@ const styles = StyleSheet.create({
   reshuffleText: {
     ...type.heading,
     fontSize: 15,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   emptyRoot: {
     flex: 1,
@@ -377,3 +387,4 @@ const styles = StyleSheet.create({
   emptyTitle: { ...type.heading, marginTop: spacing.md, marginBottom: 6 },
   emptyBody: { ...type.body, textAlign: "center" },
 });
+};

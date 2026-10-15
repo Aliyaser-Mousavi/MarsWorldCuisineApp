@@ -1,13 +1,19 @@
+import { useMemo } from "react";
 import { useNavigation } from "@react-navigation/native";
 import MealsList from "../components/MealsList/MealsList";
 import { MEALS } from "../data/dummy-data";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { useSelector } from "react-redux";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const FavoritesScreen = () => {
   const navigation = useNavigation();
+  const { colors, type, spacing, radii } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const favoriteMealIds = useSelector((state) => state.favoriteMeals.ids);
 
   const favoriteMeals = MEALS.filter((meal) =>
@@ -37,33 +43,36 @@ const FavoritesScreen = () => {
 
 export default FavoritesScreen;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: colors.bg,
-    padding: spacing.xl,
-  },
-  title: {
-    ...type.heading,
-    marginTop: spacing.md,
-    marginBottom: 6,
-  },
-  text: {
-    ...type.body,
-    textAlign: "center",
-    marginBottom: spacing.lg,
-  },
-  button: {
-    backgroundColor: colors.brand,
-    paddingVertical: 12,
-    paddingHorizontal: 22,
-    borderRadius: radii.md,
-  },
-  buttonText: {
-    ...type.heading,
-    fontSize: 15,
-    color: colors.surface,
-  },
-});
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
+    rootContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: colors.bg,
+      padding: spacing.xl,
+    },
+    title: {
+      ...type.heading,
+      color: colors.ink,
+      marginTop: spacing.md,
+      marginBottom: 6,
+    },
+    text: {
+      ...type.body,
+      color: colors.inkMuted,
+      textAlign: "center",
+      marginBottom: spacing.lg,
+    },
+    button: {
+      backgroundColor: colors.brand,
+      paddingVertical: 12,
+      paddingHorizontal: 22,
+      borderRadius: radii.md,
+    },
+    buttonText: {
+      ...type.heading,
+      fontSize: 15,
+      color: colors.onBrand,
+    },
+  });

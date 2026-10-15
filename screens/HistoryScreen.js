@@ -10,7 +10,7 @@ import { Image } from "expo-image";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { MEALS } from "../data/dummy-data";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 function formatDay(iso) {
   const d = new Date(iso);
@@ -28,6 +28,11 @@ function dayKey(iso) {
 }
 
 const HistoryScreen = ({ navigation }) => {
+  const { colors, radii, spacing, type } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const metaById = useSelector((state) => state.recipeMeta.byId);
 
   const sections = useMemo(() => {
@@ -134,7 +139,8 @@ const HistoryScreen = ({ navigation }) => {
 
 export default HistoryScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   intro: {
     paddingHorizontal: spacing.lg,

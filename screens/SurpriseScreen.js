@@ -15,12 +15,16 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { LinearGradient } from "expo-linear-gradient";
 import { MEALS } from "../data/dummy-data";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const { width } = Dimensions.get("window");
-const CARD = Math.min(width - spacing.md * 2, 360);
 
 const SurpriseScreen = ({ navigation }) => {
+  const { colors, radii, spacing, type } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const prefs = useSelector((state) => state.preferences);
   const spin = useRef(new Animated.Value(0)).current;
   const fade = useRef(new Animated.Value(1)).current;
@@ -199,7 +203,7 @@ const SurpriseScreen = ({ navigation }) => {
         onPress={surprise}
         disabled={spinning}
       >
-        <Ionicons name="dice-outline" size={20} color={colors.surface} />
+        <Ionicons name="dice-outline" size={20} color={colors.onBrand} />
         <Text style={styles.spinText}>
           {spinning ? "Spinning…" : "Spin again"}
         </Text>
@@ -223,7 +227,7 @@ const SurpriseScreen = ({ navigation }) => {
           }
           disabled={spinning}
         >
-          <Ionicons name="flame-outline" size={16} color={colors.brand} />
+          <Ionicons name="flame-outline" size={16} color={colors.accent} />
           <Text style={styles.cookText}>Cook</Text>
         </Pressable>
       </View>
@@ -233,7 +237,9 @@ const SurpriseScreen = ({ navigation }) => {
 
 export default SurpriseScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii) => {
+  const CARD = Math.min(width - spacing.md * 2, 360);
+  return StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.bg,
@@ -295,7 +301,7 @@ const styles = StyleSheet.create({
     fontFamily: "Fraunces_600SemiBold",
     fontSize: 26,
     lineHeight: 32,
-    color: colors.surface,
+    color: colors.onBrand,
     marginBottom: 4,
   },
   meta: {
@@ -320,7 +326,7 @@ const styles = StyleSheet.create({
   spinText: {
     ...type.heading,
     fontSize: 15,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   secondaryRow: {
     marginTop: spacing.sm,
@@ -348,7 +354,7 @@ const styles = StyleSheet.create({
   },
   cookText: {
     ...type.label,
-    color: colors.brand,
+    color: colors.accent,
   },
   empty: {
     flex: 1,
@@ -362,3 +368,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+};

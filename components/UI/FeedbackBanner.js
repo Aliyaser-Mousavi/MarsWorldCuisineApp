@@ -1,33 +1,41 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, radii, spacing, type } from "../../constants/theme";
+import { useTheme } from "../../constants/theme";
 
-const TONE = {
-  error: {
-    bg: colors.dangerSoft,
-    ink: colors.danger,
-    icon: "alert-circle-outline",
-  },
-  success: {
-    bg: colors.successSoft,
-    ink: colors.success,
-    icon: "checkmark-circle-outline",
-  },
-  info: {
-    bg: colors.accentSoft,
-    ink: colors.accent,
-    icon: "information-circle-outline",
-  },
-  warning: {
-    bg: colors.warningSoft,
-    ink: colors.warning,
-    icon: "warning-outline",
-  },
-  offline: {
-    bg: colors.brand,
-    ink: colors.surface,
-    icon: "cloud-offline-outline",
-  },
+const getTone = (variant, colors) => {
+  switch (variant) {
+    case "success":
+      return {
+        bg: colors.successSoft,
+        ink: colors.success,
+        icon: "checkmark-circle-outline",
+      };
+    case "info":
+      return {
+        bg: colors.accentSoft,
+        ink: colors.accent,
+        icon: "information-circle-outline",
+      };
+    case "warning":
+      return {
+        bg: colors.warningSoft,
+        ink: colors.warning,
+        icon: "warning-outline",
+      };
+    case "offline":
+      return {
+        bg: colors.brand,
+        ink: colors.onBrand,
+        icon: "cloud-offline-outline",
+      };
+    case "error":
+    default:
+      return {
+        bg: colors.dangerSoft,
+        ink: colors.danger,
+        icon: "alert-circle-outline",
+      };
+  }
 };
 
 /**
@@ -39,8 +47,9 @@ const FeedbackBanner = ({
   onDismiss,
   style,
 }) => {
+  const { colors } = useTheme();
   if (!message) return null;
-  const tone = TONE[variant] || TONE.error;
+  const tone = getTone(variant, colors);
 
   return (
     <View
@@ -64,14 +73,14 @@ const styles = StyleSheet.create({
   banner: {
     flexDirection: "row",
     alignItems: "center",
-    gap: spacing.sm,
-    paddingVertical: spacing.sm + 2,
-    paddingHorizontal: spacing.md,
-    borderRadius: radii.md,
-    marginTop: spacing.md,
+    gap: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    marginTop: 16,
   },
   text: {
-    ...type.body,
+    fontFamily: "DMSans_400Regular",
     flex: 1,
     fontSize: 14,
     lineHeight: 20,

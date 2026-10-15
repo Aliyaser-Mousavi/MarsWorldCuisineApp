@@ -18,7 +18,7 @@ import {
   shiftDateIso,
   useByUrgency,
 } from "../utils/pantry";
-import { colors, radii, spacing, type, shadows } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const QUICK_DATES = [
   { label: "Today", days: 0 },
@@ -30,6 +30,11 @@ const QUICK_DATES = [
 const EMPTY_USE_BY = Object.freeze({});
 
 const UseSoonScreen = ({ navigation }) => {
+  const { colors, radii, spacing, type, shadows } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii, shadows),
+    [colors, type, spacing, radii, shadows],
+  );
   const dispatch = useDispatch();
   const pantry = useSelector((state) => state.pantry.items);
   const useBy = useSelector((state) => state.pantry.useBy ?? EMPTY_USE_BY);
@@ -230,7 +235,8 @@ function suggestDays(dateStr) {
 
 export default UseSoonScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii, shadows) =>
+  StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { paddingBottom: spacing.xl },
   intro: {
@@ -284,7 +290,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.warningSoft,
   },
   itemChipActive: {
-    borderColor: colors.brand,
+    borderColor: colors.accent,
   },
   itemChipText: {
     ...type.heading,
@@ -309,7 +315,7 @@ const styles = StyleSheet.create({
   },
   dateBtnText: {
     ...type.label,
-    color: colors.surface,
+    color: colors.onBrand,
     fontSize: 12,
   },
   clearBtn: {

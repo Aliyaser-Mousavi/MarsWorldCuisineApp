@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { View, StyleSheet, Animated, Easing } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, spacing } from "../../constants/theme";
+import { useTheme } from "../../constants/theme";
 
 const SIZE_MAP = {
   sm: { box: 18, icon: 14 },
@@ -14,11 +14,13 @@ const SIZE_MAP = {
  */
 const ThemedSpinner = ({
   size = "md",
-  color = colors.brand,
+  color,
   label,
 }) => {
+  const { colors } = useTheme();
   const spin = useRef(new Animated.Value(0)).current;
   const dims = SIZE_MAP[size] || SIZE_MAP.md;
+  const spinnerColor = color || colors.accent;
 
   useEffect(() => {
     const loop = Animated.loop(
@@ -41,9 +43,9 @@ const ThemedSpinner = ({
   return (
     <View style={styles.wrap} accessibilityRole="progressbar">
       <Animated.View style={{ transform: [{ rotate }] }}>
-        <Ionicons name="sync-outline" size={dims.icon} color={color} />
+        <Ionicons name="sync-outline" size={dims.icon} color={spinnerColor} />
       </Animated.View>
-      {label ? <View style={{ height: spacing.xs }} /> : null}
+      {label ? <View style={{ height: 4 }} /> : null}
     </View>
   );
 };

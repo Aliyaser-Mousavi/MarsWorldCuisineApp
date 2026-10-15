@@ -16,9 +16,14 @@ import {
   clearAll,
 } from "../store/redux/shoppingList";
 import { groupItemsByAisle } from "../utils/aisles";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const ShoppingListScreen = ({ navigation }) => {
+  const { colors, type, spacing, radii } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const items = useSelector((state) => state.shoppingList.items);
   const dispatch = useDispatch();
   const remaining = items.filter((i) => !i.checked).length;
@@ -70,7 +75,7 @@ const ShoppingListScreen = ({ navigation }) => {
         onPress={() => navigation.navigate("StoreWalk")}
       >
         <View style={styles.walkIcon}>
-          <Ionicons name="walk-outline" size={22} color={colors.surface} />
+          <Ionicons name="walk-outline" size={22} color={colors.onBrand} />
         </View>
         <View style={styles.walkText}>
           <Text style={styles.walkTitle}>Store walk</Text>
@@ -144,11 +149,12 @@ const ShoppingListScreen = ({ navigation }) => {
 
 export default ShoppingListScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
   walkBanner: {
     flexDirection: "row",
     alignItems: "center",

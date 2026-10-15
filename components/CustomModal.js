@@ -3,43 +3,7 @@ import { useEffect, useRef } from "react";
 import { Animated } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import CustomButton from "./UI/CustomButton";
-import {
-  colors,
-  radii,
-  spacing,
-  type,
-  shadows,
-} from "../constants/theme";
-
-const getIconMeta = (variant) => {
-  switch (variant) {
-    case "success":
-      return {
-        name: "checkmark-circle-outline",
-        color: colors.success,
-        bg: colors.successSoft,
-      };
-    case "danger":
-      return {
-        name: "alert-circle-outline",
-        color: colors.danger,
-        bg: colors.dangerSoft,
-      };
-    case "warning":
-      return {
-        name: "warning-outline",
-        color: colors.warning,
-        bg: colors.warningSoft,
-      };
-    case "info":
-    default:
-      return {
-        name: "information-circle-outline",
-        color: colors.accent,
-        bg: colors.accentSoft,
-      };
-  }
-};
+import { useTheme } from "../constants/theme";
 
 /**
  * Custom-styled dialog replacing system Alert.alert.
@@ -53,9 +17,36 @@ const CustomModal = ({
   secondaryAction,
   onClose,
 }) => {
+  const { colors, shadows, radii, spacing, type } = useTheme();
   const scale = useRef(new Animated.Value(0.94)).current;
   const opacity = useRef(new Animated.Value(0)).current;
-  const iconMeta = getIconMeta(variant);
+
+  const iconMeta = {
+    success: {
+      name: "checkmark-circle-outline",
+      color: colors.success,
+      bg: colors.successSoft,
+    },
+    danger: {
+      name: "alert-circle-outline",
+      color: colors.danger,
+      bg: colors.dangerSoft,
+    },
+    warning: {
+      name: "warning-outline",
+      color: colors.warning,
+      bg: colors.warningSoft,
+    },
+    info: {
+      name: "information-circle-outline",
+      color: colors.accent,
+      bg: colors.accentSoft,
+    },
+  }[variant] || {
+    name: "information-circle-outline",
+    color: colors.accent,
+    bg: colors.accentSoft,
+  };
 
   useEffect(() => {
     if (visible) {
@@ -86,21 +77,32 @@ const CustomModal = ({
       statusBarTranslucent
       onRequestClose={onClose}
     >
-      <View style={styles.backdrop}>
+      <View style={[styles.backdrop, { backgroundColor: colors.overlay }]}>
         <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
         <Animated.View
           style={[
             styles.sheet,
             shadows.lift,
-            { opacity, transform: [{ scale }] },
+            {
+              backgroundColor: colors.surface,
+              borderColor: colors.border,
+              opacity,
+              transform: [{ scale }],
+            },
           ]}
         >
           <View style={[styles.iconBadge, { backgroundColor: iconMeta.bg }]}>
             <Ionicons name={iconMeta.name} size={26} color={iconMeta.color} />
           </View>
 
-          {title ? <Text style={styles.title}>{title}</Text> : null}
-          {message ? <Text style={styles.message}>{message}</Text> : null}
+          {title ? (
+            <Text style={[styles.title, { color: colors.ink }]}>{title}</Text>
+          ) : null}
+          {message ? (
+            <Text style={[styles.message, { color: colors.inkMuted }]}>
+              {message}
+            </Text>
+          ) : null}
 
           <View style={styles.actions}>
             {secondaryAction ? (
@@ -131,34 +133,35 @@ export default CustomModal;
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: colors.overlay,
     justifyContent: "center",
-    padding: spacing.lg,
+    padding: 24,
   },
   sheet: {
-    backgroundColor: colors.surface,
-    borderRadius: radii.lg,
-    padding: spacing.lg,
+    borderRadius: 16,
+    padding: 24,
     borderWidth: 1,
-    borderColor: colors.border,
   },
   iconBadge: {
     width: 52,
     height: 52,
-    borderRadius: radii.md,
+    borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: spacing.md,
+    marginBottom: 16,
   },
   title: {
-    ...type.title,
-    marginBottom: spacing.sm,
+    fontFamily: "Fraunces_600SemiBold",
+    fontSize: 22,
+    lineHeight: 28,
+    marginBottom: 8,
   },
   message: {
-    ...type.body,
-    marginBottom: spacing.lg,
+    fontFamily: "DMSans_400Regular",
+    fontSize: 15,
+    lineHeight: 22,
+    marginBottom: 24,
   },
   actions: {
-    gap: spacing.sm,
+    gap: 8,
   },
 });

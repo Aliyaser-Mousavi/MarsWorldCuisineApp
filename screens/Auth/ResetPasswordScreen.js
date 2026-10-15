@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -16,15 +16,14 @@ import CustomTextInput from "../../components/UI/CustomTextInput";
 import CustomButton from "../../components/UI/CustomButton";
 import FeedbackBanner from "../../components/UI/FeedbackBanner";
 import CustomModal from "../../components/CustomModal";
-import {
-  colors,
-  radii,
-  spacing,
-  type,
-  shadows,
-} from "../../constants/theme";
+import { useTheme } from "../../constants/theme";
 
 const ResetPasswordScreen = ({ navigation }) => {
+  const { colors, type, spacing, radii, shadows } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const dispatch = useDispatch();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -97,7 +96,7 @@ const ResetPasswordScreen = ({ navigation }) => {
               <Ionicons
                 name="shield-checkmark-outline"
                 size={22}
-                color={colors.surface}
+                color={colors.onBrand}
               />
             </View>
             <Text style={styles.kicker}>Mars World Cuisine</Text>
@@ -173,7 +172,8 @@ const ResetPasswordScreen = ({ navigation }) => {
 
 export default ResetPasswordScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: colors.bg,

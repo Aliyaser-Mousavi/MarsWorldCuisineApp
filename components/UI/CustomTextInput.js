@@ -8,7 +8,7 @@ import {
   Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, radii, spacing, type } from "../../constants/theme";
+import { useTheme } from "../../constants/theme";
 
 /**
  * Themed text field with focus ring, optional password toggle, and error state.
@@ -25,6 +25,7 @@ const CustomTextInput = ({
   inputStyle,
   ...rest
 }) => {
+  const { colors } = useTheme();
   const [focused, setFocused] = useState(false);
   const [hidden, setHidden] = useState(secureTextEntry);
 
@@ -36,13 +37,18 @@ const CustomTextInput = ({
 
   return (
     <View style={[styles.wrap, style]}>
-      {label ? <Text style={styles.label}>{label}</Text> : null}
+      {label ? (
+        <Text style={[styles.label, { color: colors.ink }]}>{label}</Text>
+      ) : null}
       <View
         style={[
           styles.field,
-          { borderColor },
-          focused && !error && styles.fieldFocused,
-          error && styles.fieldError,
+          {
+            backgroundColor: colors.bg,
+            borderColor,
+          },
+          focused && !error && { backgroundColor: colors.surface },
+          error && { backgroundColor: colors.dangerSoft },
         ]}
       >
         {leftIcon ? (
@@ -54,7 +60,7 @@ const CustomTextInput = ({
           />
         ) : null}
         <TextInput
-          style={[styles.input, inputStyle]}
+          style={[styles.input, { color: colors.ink }, inputStyle]}
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
@@ -89,39 +95,34 @@ export default CustomTextInput;
 
 const styles = StyleSheet.create({
   wrap: {
-    marginTop: spacing.sm,
+    marginTop: 8,
   },
   label: {
-    ...type.label,
-    color: colors.ink,
-    marginBottom: spacing.xs + 2,
+    fontFamily: "DMSans_500Medium",
+    fontSize: 13,
+    lineHeight: 18,
+    marginBottom: 6,
   },
   field: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: colors.bg,
     borderWidth: 1.5,
-    borderRadius: radii.md,
-    paddingHorizontal: spacing.md,
+    borderRadius: 12,
+    paddingHorizontal: 16,
     minHeight: 52,
   },
-  fieldFocused: {
-    backgroundColor: colors.surface,
-  },
-  fieldError: {
-    backgroundColor: colors.dangerSoft,
-  },
   leftIcon: {
-    marginRight: spacing.sm,
+    marginRight: 8,
   },
   input: {
-    ...type.body,
+    fontFamily: "DMSans_400Regular",
+    fontSize: 15,
+    lineHeight: 22,
     flex: 1,
-    color: colors.ink,
     paddingVertical: Platform.OS === "ios" ? 14 : 10,
   },
   eye: {
-    marginLeft: spacing.sm,
-    padding: spacing.xs,
+    marginLeft: 8,
+    padding: 4,
   },
 });

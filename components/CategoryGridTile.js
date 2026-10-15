@@ -3,20 +3,21 @@ import {
   Text,
   View,
   Pressable,
-  Platform,
   ImageBackground,
 } from "react-native";
 import * as Haptics from "expo-haptics";
-import { colors, radii, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const CategoryGridTile = ({ title, color, onPress }) => {
+  const { colors } = useTheme();
+
   const handlePress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     onPress();
   };
 
   return (
-    <View style={styles.gridItem}>
+    <View style={[styles.gridItem, { backgroundColor: colors.border }]}>
       <Pressable
         android_ripple={{ color: "rgba(255,255,255,0.2)" }}
         style={({ pressed }) => [
@@ -31,7 +32,7 @@ const CategoryGridTile = ({ title, color, onPress }) => {
           imageStyle={styles.image}
         >
           <View style={styles.overlay}>
-            <Text style={styles.title} numberOfLines={2}>
+            <Text style={[styles.title, { color: colors.onBrand }]} numberOfLines={2}>
               {title}
             </Text>
           </View>
@@ -48,9 +49,8 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 8,
     height: 132,
-    borderRadius: radii.md,
+    borderRadius: 12,
     overflow: "hidden",
-    backgroundColor: colors.border,
   },
   button: {
     flex: 1,
@@ -63,16 +63,15 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   image: {
-    borderRadius: radii.md,
+    borderRadius: 12,
   },
   overlay: {
     padding: 12,
     backgroundColor: "rgba(26, 20, 16, 0.42)",
   },
   title: {
-    ...type.heading,
+    fontFamily: "DMSans_600SemiBold",
     fontSize: 15,
     lineHeight: 20,
-    color: colors.surface,
   },
 });

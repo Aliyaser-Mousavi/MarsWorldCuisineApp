@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -19,9 +19,14 @@ import {
   deleteMenu,
   COURSE_KEYS,
 } from "../store/redux/dinnerMenus";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const DinnerMenusScreen = ({ navigation }) => {
+  const { colors, radii, spacing, type } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const menus = useSelector((state) => state.dinnerMenus.menus);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -53,7 +58,7 @@ const DinnerMenusScreen = ({ navigation }) => {
       </View>
 
       <Pressable style={styles.createBtn} onPress={() => setOpen(true)}>
-        <Ionicons name="add" size={18} color={colors.surface} />
+        <Ionicons name="add" size={18} color={colors.onBrand} />
         <Text style={styles.createText}>Plan a dinner</Text>
       </Pressable>
 
@@ -107,7 +112,7 @@ const DinnerMenusScreen = ({ navigation }) => {
                 {covers.length > 0 ? (
                   covers.map((meal, index) => (
                     <Image
-                      key={`${item.id}-${meal.id}`}
+                      key={`${item.id}-${meal.id}-${index}`}
                       source={{ uri: meal.imageUrl }}
                       style={[
                         styles.cover,
@@ -191,7 +196,8 @@ const DinnerMenusScreen = ({ navigation }) => {
 
 export default DinnerMenusScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   intro: {
     paddingHorizontal: spacing.lg,
@@ -211,7 +217,7 @@ const styles = StyleSheet.create({
     paddingVertical: 13,
     borderRadius: radii.md,
   },
-  createText: { ...type.heading, fontSize: 15, color: colors.surface },
+  createText: { ...type.heading, fontSize: 15, color: colors.onBrand },
   list: { padding: spacing.md, paddingBottom: spacing.xl },
   card: {
     flexDirection: "row",
@@ -288,5 +294,5 @@ const styles = StyleSheet.create({
     borderRadius: radii.md,
     backgroundColor: colors.brand,
   },
-  saveText: { ...type.heading, fontSize: 14, color: colors.surface },
+  saveText: { ...type.heading, fontSize: 14, color: colors.onBrand },
 });

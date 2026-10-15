@@ -12,13 +12,18 @@ import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { buildFlavorPassport } from "../utils/passport";
-import { colors, radii, spacing, type, shadows } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const { width } = Dimensions.get("window");
 const GAP = 10;
-const COL = (width - spacing.lg * 2 - GAP) / 2;
+const COL = (width - 24 * 2 - GAP) / 2;
 
 const FlavorPassportScreen = ({ navigation }) => {
+  const { colors, radii, spacing, type, shadows } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii, shadows),
+    [colors, type, spacing, radii, shadows],
+  );
   const metaById = useSelector((state) => state.recipeMeta.byId);
   const passport = useMemo(() => buildFlavorPassport(metaById), [metaById]);
 
@@ -84,7 +89,7 @@ const FlavorPassportScreen = ({ navigation }) => {
                 />
                 {locked ? (
                   <View style={styles.lockBadge}>
-                    <Ionicons name="lock-closed" size={14} color={colors.surface} />
+                    <Ionicons name="lock-closed" size={14} color={colors.onBrand} />
                   </View>
                 ) : frequent ? (
                   <View style={styles.goldBadge}>
@@ -92,7 +97,7 @@ const FlavorPassportScreen = ({ navigation }) => {
                   </View>
                 ) : (
                   <View style={styles.visitBadge}>
-                    <Ionicons name="checkmark" size={14} color={colors.surface} />
+                    <Ionicons name="checkmark" size={14} color={colors.onBrand} />
                   </View>
                 )}
               </View>
@@ -119,7 +124,8 @@ const FlavorPassportScreen = ({ navigation }) => {
 
 export default FlavorPassportScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii, shadows) =>
+  StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { paddingBottom: spacing.xl },
   intro: {
@@ -147,7 +153,7 @@ const styles = StyleSheet.create({
   heroNumber: {
     fontFamily: "Fraunces_600SemiBold",
     fontSize: 36,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   heroLabel: {
     ...type.label,

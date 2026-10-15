@@ -19,17 +19,19 @@ import {
   clearPantry,
 } from "../store/redux/pantry";
 import { PANTRY_STAPLES, rankMealsByPantry } from "../utils/pantry";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const PantryScreen = ({ navigation }) => {
+  const { colors, type, spacing, radii } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const dispatch = useDispatch();
   const pantry = useSelector((state) => state.pantry.items);
   const [custom, setCustom] = useState("");
 
-  const matches = useMemo(
-    () => rankMealsByPantry(MEALS, pantry, 12),
-    [pantry],
-  );
+  const matches = useMemo(() => rankMealsByPantry(MEALS, pantry, 12), [pantry]);
 
   const addCustom = () => {
     const value = custom.trim();
@@ -79,7 +81,7 @@ const PantryScreen = ({ navigation }) => {
           returnKeyType="done"
         />
         <Pressable style={styles.addBtn} onPress={addCustom}>
-          <Ionicons name="add" size={22} color={colors.surface} />
+          <Ionicons name="add" size={22} color={colors.onBrand} />
         </Pressable>
       </View>
 
@@ -115,8 +117,7 @@ const PantryScreen = ({ navigation }) => {
       </View>
 
       {pantry.filter(
-        (p) =>
-          !PANTRY_STAPLES.some((s) => s.toLowerCase() === p.toLowerCase()),
+        (p) => !PANTRY_STAPLES.some((s) => s.toLowerCase() === p.toLowerCase()),
       ).length > 0 && (
         <View style={styles.customBlock}>
           <Text style={styles.sectionTitle}>Your items</Text>
@@ -173,7 +174,10 @@ const PantryScreen = ({ navigation }) => {
             </Text>
             <View style={styles.barTrack}>
               <View
-                style={[styles.barFill, { width: `${Math.round(ratio * 100)}%` }]}
+                style={[
+                  styles.barFill,
+                  { width: `${Math.round(ratio * 100)}%` },
+                ]}
               />
             </View>
           </View>
@@ -186,168 +190,170 @@ const PantryScreen = ({ navigation }) => {
 
 export default PantryScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
-  content: {
-    paddingBottom: spacing.xl,
-  },
-  intro: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.md,
-  },
-  kicker: {
-    ...type.label,
-    color: colors.accent,
-    marginBottom: 4,
-  },
-  headline: {
-    ...type.title,
-    fontSize: 24,
-    marginBottom: 6,
-  },
-  body: {
-    ...type.body,
-  },
-  useSoonBanner: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    marginHorizontal: spacing.md,
-    marginTop: spacing.md,
-    padding: spacing.md,
-    backgroundColor: colors.warningSoft,
-    borderRadius: radii.md,
-  },
-  useSoonTitle: {
-    fontFamily: "Fraunces_600SemiBold",
-    fontSize: 15,
-    color: colors.ink,
-  },
-  useSoonSub: {
-    ...type.caption,
-    marginTop: 2,
-  },
-  addRow: {
-    flexDirection: "row",
-    gap: 8,
-    marginHorizontal: spacing.md,
-    marginTop: spacing.md,
-  },
-  input: {
-    flex: 1,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radii.md,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    ...type.body,
-    color: colors.ink,
-  },
-  addBtn: {
-    width: 48,
-    borderRadius: radii.md,
-    backgroundColor: colors.brand,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  sectionHead: {
-    marginTop: spacing.lg,
-    marginHorizontal: spacing.lg,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  sectionTitle: {
-    ...type.heading,
-    fontSize: 15,
-  },
-  clear: {
-    ...type.label,
-    color: colors.danger,
-  },
-  chipWrap: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.sm,
-  },
-  chip: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: radii.pill,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  chipActive: {
-    backgroundColor: colors.accentSoft,
-    borderColor: colors.accentSoft,
-  },
-  chipText: {
-    ...type.label,
-    color: colors.ink,
-  },
-  chipTextActive: {
-    color: colors.accent,
-  },
-  customBlock: {
-    marginTop: spacing.lg,
-  },
-  matchesHead: {
-    marginTop: spacing.xl,
-    marginHorizontal: spacing.lg,
-    marginBottom: spacing.sm,
-  },
-  matchCount: {
-    ...type.caption,
-    marginTop: 4,
-  },
-  matchCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    marginHorizontal: spacing.md,
-    marginBottom: 10,
-    padding: 10,
-    backgroundColor: colors.surface,
-    borderRadius: radii.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  matchImage: {
-    width: 64,
-    height: 64,
-    borderRadius: radii.sm,
-    backgroundColor: colors.border,
-  },
-  matchMeta: {
-    flex: 1,
-  },
-  matchTitle: {
-    ...type.heading,
-    fontSize: 15,
-    marginBottom: 4,
-  },
-  matchSub: {
-    ...type.caption,
-    marginBottom: 6,
-  },
-  barTrack: {
-    height: 3,
-    borderRadius: 2,
-    backgroundColor: colors.bg,
-    overflow: "hidden",
-  },
-  barFill: {
-    height: "100%",
-    backgroundColor: colors.accent,
-  },
-});
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
+    content: {
+      paddingBottom: spacing.xl,
+    },
+    intro: {
+      paddingHorizontal: spacing.lg,
+      paddingTop: spacing.md,
+    },
+    kicker: {
+      ...type.label,
+      color: colors.accent,
+      marginBottom: 4,
+    },
+    headline: {
+      ...type.title,
+      fontSize: 24,
+      marginBottom: 6,
+    },
+    body: {
+      ...type.body,
+    },
+    useSoonBanner: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 10,
+      marginHorizontal: spacing.md,
+      marginTop: spacing.md,
+      padding: spacing.md,
+      backgroundColor: colors.warningSoft,
+      borderRadius: radii.md,
+    },
+    useSoonTitle: {
+      fontFamily: "Fraunces_600SemiBold",
+      fontSize: 15,
+      color: colors.ink,
+    },
+    useSoonSub: {
+      ...type.caption,
+      marginTop: 2,
+    },
+    addRow: {
+      flexDirection: "row",
+      gap: 8,
+      marginHorizontal: spacing.md,
+      marginTop: spacing.md,
+    },
+    input: {
+      flex: 1,
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: radii.md,
+      paddingHorizontal: 14,
+      paddingVertical: 12,
+      ...type.body,
+      color: colors.ink,
+    },
+    addBtn: {
+      width: 48,
+      borderRadius: radii.md,
+      backgroundColor: colors.brand,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    sectionHead: {
+      marginTop: spacing.lg,
+      marginHorizontal: spacing.lg,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
+    sectionTitle: {
+      ...type.heading,
+      fontSize: 15,
+      paddingLeft: 20,
+    },
+    clear: {
+      ...type.label,
+      color: colors.danger,
+    },
+    chipWrap: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 8,
+      paddingHorizontal: spacing.lg,
+      paddingTop: spacing.sm,
+    },
+    chip: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 4,
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      borderRadius: radii.pill,
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    chipActive: {
+      backgroundColor: colors.accentSoft,
+      borderColor: colors.accentSoft,
+    },
+    chipText: {
+      ...type.label,
+      color: colors.ink,
+    },
+    chipTextActive: {
+      color: colors.accent,
+    },
+    customBlock: {
+      marginTop: spacing.lg,
+    },
+    matchesHead: {
+      marginTop: spacing.xl,
+      marginHorizontal: spacing.lg,
+      marginBottom: spacing.sm,
+    },
+    matchCount: {
+      ...type.caption,
+      marginTop: 4,
+    },
+    matchCard: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 12,
+      marginHorizontal: spacing.md,
+      marginBottom: 10,
+      padding: 10,
+      backgroundColor: colors.surface,
+      borderRadius: radii.md,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    matchImage: {
+      width: 64,
+      height: 64,
+      borderRadius: radii.sm,
+      backgroundColor: colors.border,
+    },
+    matchMeta: {
+      flex: 1,
+    },
+    matchTitle: {
+      ...type.heading,
+      fontSize: 15,
+      marginBottom: 4,
+    },
+    matchSub: {
+      ...type.caption,
+      marginBottom: 6,
+    },
+    barTrack: {
+      height: 3,
+      borderRadius: 2,
+      backgroundColor: colors.bg,
+      overflow: "hidden",
+    },
+    barFill: {
+      height: "100%",
+      backgroundColor: colors.accent,
+    },
+  });

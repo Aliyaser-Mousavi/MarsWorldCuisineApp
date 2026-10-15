@@ -24,9 +24,14 @@ import {
 } from "../store/redux/dinnerMenus";
 import { addIngredients } from "../store/redux/shoppingList";
 import { buildServiceTimeline } from "../utils/serviceTimeline";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const DinnerMenuDetailScreen = ({ route, navigation }) => {
+  const { colors, radii, spacing, type } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const { menuId } = route.params ?? {};
   const menu = useSelector((state) =>
     (state.dinnerMenus?.menus || []).find((m) => m.id === menuId),
@@ -54,7 +59,7 @@ const DinnerMenuDetailScreen = ({ route, navigation }) => {
           </Pressable>
         ) : null,
     });
-  }, [navigation, menu, dispatch]);
+  }, [navigation, menu, dispatch, colors]);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -186,7 +191,7 @@ const DinnerMenuDetailScreen = ({ route, navigation }) => {
             <Ionicons
               name={shopped ? "checkmark" : "basket-outline"}
               size={18}
-              color={shopped ? colors.accent : colors.surface}
+              color={shopped ? colors.accent : colors.onBrand}
             />
             <Text style={[styles.shopText, shopped && styles.shopTextDone]}>
               {shopped ? "Added to shopping list" : "Shop this menu"}
@@ -316,7 +321,8 @@ const DinnerMenuDetailScreen = ({ route, navigation }) => {
 
 export default DinnerMenuDetailScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { padding: spacing.md, paddingBottom: spacing.xl },
   guestCard: {
@@ -328,7 +334,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  guestLabel: { ...type.heading, color: colors.surface, fontSize: 15 },
+  guestLabel: { ...type.heading, color: colors.onBrand, fontSize: 15 },
   guestRow: { flexDirection: "row", alignItems: "center", gap: 12 },
   guestBtn: {
     width: 36,
@@ -341,7 +347,7 @@ const styles = StyleSheet.create({
   guestCount: {
     fontFamily: "Fraunces_600SemiBold",
     fontSize: 28,
-    color: colors.surface,
+    color: colors.onBrand,
     minWidth: 36,
     textAlign: "center",
   },
@@ -387,7 +393,7 @@ const styles = StyleSheet.create({
     borderRadius: radii.md,
   },
   shopBtnDone: { backgroundColor: colors.accentSoft },
-  shopText: { ...type.heading, fontSize: 15, color: colors.surface },
+  shopText: { ...type.heading, fontSize: 15, color: colors.onBrand },
   shopTextDone: { color: colors.accent },
   timelineCard: {
     marginTop: spacing.md,
@@ -425,7 +431,7 @@ const styles = StyleSheet.create({
     borderColor: colors.brand,
   },
   serveChipText: { ...type.label, fontSize: 12, color: colors.ink },
-  serveChipTextOn: { color: colors.surface },
+  serveChipTextOn: { color: colors.onBrand },
   timelineStep: {
     flexDirection: "row",
     gap: 12,

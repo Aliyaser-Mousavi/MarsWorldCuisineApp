@@ -1,3 +1,4 @@
+import { useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -9,8 +10,7 @@ import {
 } from "react-native";
 import * as Linking from "expo-linking";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, radii, spacing, type, shadows } from "../constants/theme";
-import { useState } from "react";
+import { useTheme } from "../constants/theme";
 
 const TECH_STACK = [
   "HTML and CSS",
@@ -73,6 +73,11 @@ async function openLink(url) {
 }
 
 const AboutDeveloperScreen = () => {
+  const { colors, type, spacing, radii, shadows } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const [isImageVisible, setIsImageVisible] = useState(false);
   return (
     <ScrollView
@@ -148,7 +153,7 @@ const AboutDeveloperScreen = () => {
 
       <View style={[styles.supportCard, shadows.soft]}>
         <View style={styles.supportIcon}>
-          <Ionicons name="people-outline" size={20} color={colors.surface} />
+          <Ionicons name="people-outline" size={20} color={colors.onBrand} />
         </View>
         <View style={styles.supportMeta}>
           <Text style={styles.supportKicker}>Affiliation</Text>
@@ -201,7 +206,8 @@ const AboutDeveloperScreen = () => {
 
 export default AboutDeveloperScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: colors.bg,
@@ -321,7 +327,7 @@ const styles = StyleSheet.create({
   },
   supportTitle: {
     ...type.heading,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   contactList: {
     gap: spacing.sm,

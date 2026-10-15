@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -16,15 +16,14 @@ import CustomTextInput from "../../components/UI/CustomTextInput";
 import CustomButton from "../../components/UI/CustomButton";
 import FeedbackBanner from "../../components/UI/FeedbackBanner";
 import CustomModal from "../../components/CustomModal";
-import {
-  colors,
-  radii,
-  spacing,
-  type,
-  shadows,
-} from "../../constants/theme";
+import { useTheme } from "../../constants/theme";
 
 const ForgotPasswordScreen = ({ navigation }) => {
+  const { colors, type, spacing, radii, shadows } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const [email, setEmail] = useState("");
   const [localError, setLocalError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -73,7 +72,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
         >
           <View style={styles.brandMark}>
             <View style={styles.brandIcon}>
-              <Ionicons name="key-outline" size={22} color={colors.surface} />
+              <Ionicons name="key-outline" size={22} color={colors.onBrand} />
             </View>
             <Text style={styles.kicker}>Mars World Cuisine</Text>
           </View>
@@ -153,7 +152,8 @@ const ForgotPasswordScreen = ({ navigation }) => {
 
 export default ForgotPasswordScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: colors.bg,

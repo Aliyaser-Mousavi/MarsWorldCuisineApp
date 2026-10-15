@@ -13,9 +13,14 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { toggleItem } from "../store/redux/shoppingList";
 import { groupItemsByAisle } from "../utils/aisles";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const StoreWalkScreen = ({ navigation }) => {
+  const { colors, radii, spacing, type } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const items = useSelector((state) => state.shoppingList.items);
   const dispatch = useDispatch();
   const [aisleIndex, setAisleIndex] = useState(0);
@@ -101,7 +106,7 @@ const StoreWalkScreen = ({ navigation }) => {
       <StatusBar barStyle="light-content" />
       <View style={styles.topBar}>
         <Pressable onPress={() => navigation.goBack()} hitSlop={12}>
-          <Ionicons name="close" size={26} color={colors.surface} />
+          <Ionicons name="close" size={26} color={colors.onBrand} />
         </Pressable>
         <Text style={styles.topTitle}>Store walk</Text>
         <Text style={styles.topCount}>
@@ -134,7 +139,7 @@ const StoreWalkScreen = ({ navigation }) => {
             onPress={() => checkItem(item.id)}
           >
             <View style={styles.checkCircle}>
-              <Ionicons name="ellipse-outline" size={28} color={colors.brand} />
+              <Ionicons name="ellipse-outline" size={28} color={colors.inkSoft} />
             </View>
             <View style={styles.itemText}>
               <Text style={styles.itemName}>{item.name}</Text>
@@ -164,7 +169,7 @@ const StoreWalkScreen = ({ navigation }) => {
           disabled={aisleIndex >= activeAisles.length - 1}
         >
           <Text style={styles.navPrimaryText}>Next aisle</Text>
-          <Ionicons name="chevron-forward" size={20} color={colors.surface} />
+          <Ionicons name="chevron-forward" size={20} color={colors.onBrand} />
         </Pressable>
       </View>
     </View>
@@ -173,7 +178,8 @@ const StoreWalkScreen = ({ navigation }) => {
 
 export default StoreWalkScreen;
 
-const styles = StyleSheet.create({
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: colors.brand,
@@ -190,7 +196,7 @@ const styles = StyleSheet.create({
   topTitle: {
     fontFamily: "Fraunces_600SemiBold",
     fontSize: 18,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   topCount: {
     ...type.label,
@@ -217,7 +223,7 @@ const styles = StyleSheet.create({
   aisleTitle: {
     fontFamily: "Fraunces_600SemiBold",
     fontSize: 28,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   aisleSub: {
     ...type.label,
@@ -279,7 +285,7 @@ const styles = StyleSheet.create({
   navPrimaryText: {
     ...type.heading,
     fontSize: 15,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   emptyRoot: {
     flex: 1,
@@ -291,7 +297,7 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontFamily: "Fraunces_600SemiBold",
     fontSize: 26,
-    color: colors.surface,
+    color: colors.onBrand,
     marginTop: spacing.md,
     marginBottom: 8,
   },
@@ -310,6 +316,6 @@ const styles = StyleSheet.create({
   closeBtnText: {
     ...type.heading,
     fontSize: 15,
-    color: colors.surface,
+    color: colors.onBrand,
   },
 });

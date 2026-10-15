@@ -12,12 +12,17 @@ import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { buildDiscoverShelves, getCookingStreak } from "../utils/discover";
-import { colors, radii, spacing, type } from "../constants/theme";
+import { useTheme } from "../constants/theme";
 
 const { width } = Dimensions.get("window");
 const CARD_W = Math.min(168, width * 0.42);
 
 const DiscoverScreen = ({ navigation }) => {
+  const { colors, type, spacing, radii } = useTheme();
+  const styles = useMemo(
+    () => createStyles(colors, type, spacing, radii),
+    [colors, type, spacing, radii],
+  );
   const prefs = useSelector((state) => state.preferences);
   const favoriteIds = useSelector((state) => state.favoriteMeals.ids);
   const metaById = useSelector((state) => state.recipeMeta.byId);
@@ -72,21 +77,21 @@ const DiscoverScreen = ({ navigation }) => {
           style={styles.shortcut}
           onPress={() => navigation.navigate("Surprise")}
         >
-          <Ionicons name="dice-outline" size={18} color={colors.brand} />
+          <Ionicons name="dice-outline" size={18} color={colors.accent} />
           <Text style={styles.shortcutText}>Surprise</Text>
         </Pressable>
         <Pressable
           style={styles.shortcut}
           onPress={() => navigation.navigate("Tonight")}
         >
-          <Ionicons name="moon-outline" size={18} color={colors.brand} />
+          <Ionicons name="moon-outline" size={18} color={colors.accent} />
           <Text style={styles.shortcutText}>Tonight</Text>
         </Pressable>
         <Pressable
           style={styles.shortcut}
           onPress={() => navigation.navigate("Search")}
         >
-          <Ionicons name="search-outline" size={18} color={colors.brand} />
+          <Ionicons name="search-outline" size={18} color={colors.accent} />
           <Text style={styles.shortcutText}>Search</Text>
         </Pressable>
       </View>
@@ -167,11 +172,12 @@ const DiscoverScreen = ({ navigation }) => {
 
 export default DiscoverScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
+const createStyles = (colors, type, spacing, radii) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
   content: {
     paddingBottom: spacing.xl * 1.5,
   },
@@ -284,7 +290,7 @@ const styles = StyleSheet.create({
     left: 10,
     bottom: 10,
     ...type.caption,
-    color: colors.surface,
+    color: colors.onBrand,
   },
   cardTitle: {
     ...type.heading,
@@ -325,6 +331,6 @@ const styles = StyleSheet.create({
   emptyBtnText: {
     ...type.heading,
     fontSize: 15,
-    color: colors.surface,
+    color: colors.onBrand,
   },
 });
