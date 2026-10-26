@@ -9,18 +9,12 @@ import {
 import { Image } from "expo-image";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 import { MEALS } from "../data/dummy-data";
+import { MEALS_FA } from "../data/dummy-data.fa";
 import { useTheme } from "../constants/theme";
-
-function formatDay(iso) {
-  const d = new Date(iso);
-  return d.toLocaleDateString(undefined, {
-    weekday: "long",
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-}
+import { useLocale } from "../constants/locale";
+import { formatClockTime, formatNumber } from "../utils/formatters";
 
 function dayKey(iso) {
   const d = new Date(iso);
@@ -29,11 +23,23 @@ function dayKey(iso) {
 
 const HistoryScreen = ({ navigation }) => {
   const { colors, radii, spacing, type } = useTheme();
+  const { t } = useTranslation();
+  const { isRTL, language } = useLocale();
   const styles = useMemo(
-    () => createStyles(colors, type, spacing, radii),
-    [colors, type, spacing, radii],
+    () => createStyles(colors, type, spacing, radii, isRTL),
+    [colors, type, spacing, radii, isRTL],
   );
   const metaById = useSelector((state) => state.recipeMeta.byId);
+
+  const formatDay = (iso) => {
+    const d = new Date(iso);
+    return d.toLocaleDateString(language === "fa" ? "fa-IR" : "en-US", {
+      weekday: "long",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
 
   const sections = useMemo(() => {
     const entries = [];
@@ -62,10 +68,9 @@ const HistoryScreen = ({ navigation }) => {
     return (
       <View style={styles.empty}>
         <Ionicons name="time-outline" size={36} color={colors.inkSoft} />
-        <Text style={styles.emptyTitle}>No cooking history yet</Text>
+        <Text style={styles.emptyTitle}>{t("history.emptyTitle")}</Text>
         <Text style={styles.emptyBody}>
-          Finish cooking mode or tap “Made it” on a recipe — your timeline will
-          grow here.
+          {t("history.emptyBody")}
         </Text>
       </View>
     );
@@ -74,10 +79,12 @@ const HistoryScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.intro}>
-        <Text style={styles.kicker}>Memory lane</Text>
-        <Text style={styles.headline}>Cooking history</Text>
+        <Text style={styles.kicker}>{t("history.kicker")}</Text>
+        <Text style={styles.headline}>{t("history.headline")}</Text>
         <Text style={styles.body}>
-          {total} meal{total === 1 ? "" : "s"} cooked on this phone.
+          {total === 1
+            ? t("history.cookedCount_one", { count: 1 })
+            : t("history.cookedCount_other", { count: total })}
         </Text>
       </View>
 
@@ -113,18 +120,17 @@ const HistoryScreen = ({ navigation }) => {
                 />
                 <View style={styles.meta}>
                   <Text style={styles.title} numberOfLines={2}>
-                    {item.meal.title}
+                    {(language === "fa" && MEALS_FA[item.meal.id]?.title)
+                      ? MEALS_FA[item.meal.id].title
+                      : item.meal.title}
                   </Text>
                   <Text style={styles.sub}>
-                    {new Date(item.at).toLocaleTimeString(undefined, {
-                      hour: "numeric",
-                      minute: "2-digit",
-                    })}
-                    {item.rating ? ` · ${item.rating}★` : ""}
+                    {formatClockTime(item.at, isRTL, t)}
+                    {item.rating ? ` · ${formatNumber(item.rating, isRTL)}★` : ""}
                   </Text>
                 </View>
                 <Ionicons
-                  name="chevron-forward"
+                  name={isRTL ? "chevron-back" : "chevron-forward"}
                   size={16}
                   color={colors.inkSoft}
                 />
@@ -139,7 +145,7 @@ const HistoryScreen = ({ navigation }) => {
 
 export default HistoryScreen;
 
-const createStyles = (colors, type, spacing, radii) =>
+const createStyles = (colors, type, spacing, radii, isRTL) =>
   StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   intro: {
@@ -147,17 +153,31 @@ const createStyles = (colors, type, spacing, radii) =>
     paddingTop: spacing.md,
     paddingBottom: spacing.sm,
   },
-  kicker: { ...type.label, color: colors.accent, marginBottom: 4 },
-  headline: { ...type.title, fontSize: 24, marginBottom: 6 },
-  body: { ...type.body },
+  kicker: {
+    ...type.label,
+    color: colors.accent,
+    marginBottom: 4,
+    textAlign: isRTL ? "right" : "left",
+  },
+  headline: {
+    ...type.title,
+    fontSize: 24,
+    marginBottom: 6,
+    textAlign: isRTL ? "right" : "left",
+  },
+  body: {
+    ...type.body,
+    textAlign: isRTL ? "right" : "left",
+  },
   list: { paddingBottom: spacing.xl, paddingHorizontal: spacing.md },
   sectionHeader: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     gap: 10,
     marginTop: spacing.md,
     marginBottom: spacing.sm,
-    paddingLeft: 4,
+    paddingLeft: isRTL ? 0 : 4,
+    paddingRight: isRTL ? 4 : 0,
   },
   dot: {
     width: 10,
@@ -165,8 +185,15 @@ const createStyles = (colors, type, spacing, radii) =>
     borderRadius: 5,
     backgroundColor: colors.accent,
   },
-  sectionTitle: { ...type.heading, fontSize: 14 },
-  rowWrap: { flexDirection: "row", marginBottom: 10 },
+  sectionTitle: {
+    ...type.heading,
+    fontSize: 14,
+    textAlign: isRTL ? "right" : "left",
+  },
+  rowWrap: {
+    flexDirection: isRTL ? "row-reverse" : "row",
+    marginBottom: 10,
+  },
   rail: { width: 18, alignItems: "center" },
   railLine: {
     width: 2,
@@ -180,7 +207,7 @@ const createStyles = (colors, type, spacing, radii) =>
   },
   card: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     gap: 12,
     backgroundColor: colors.surface,
@@ -196,8 +223,16 @@ const createStyles = (colors, type, spacing, radii) =>
     backgroundColor: colors.border,
   },
   meta: { flex: 1 },
-  title: { ...type.heading, fontSize: 15 },
-  sub: { ...type.caption, marginTop: 2 },
+  title: {
+    ...type.heading,
+    fontSize: 15,
+    textAlign: isRTL ? "right" : "left",
+  },
+  sub: {
+    ...type.caption,
+    marginTop: 2,
+    textAlign: isRTL ? "right" : "left",
+  },
   empty: {
     flex: 1,
     backgroundColor: colors.bg,

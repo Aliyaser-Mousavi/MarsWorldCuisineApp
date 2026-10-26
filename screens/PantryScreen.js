@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -20,18 +20,29 @@ import {
 } from "../store/redux/pantry";
 import { PANTRY_STAPLES, rankMealsByPantry } from "../utils/pantry";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
+import { useAppLanguage, localizeIngredient } from "../utils/catalogue";
+import { MEALS_FA } from "../data/dummy-data.fa";
+import { syncPantryExpirationAlerts } from "../services/notificationService";
 
 const PantryScreen = ({ navigation }) => {
   const { colors, type, spacing, radii } = useTheme();
+  const { t, isRTL } = useLocale();
+  const language = useAppLanguage();
   const styles = useMemo(
     () => createStyles(colors, type, spacing, radii),
     [colors, type, spacing, radii],
   );
   const dispatch = useDispatch();
   const pantry = useSelector((state) => state.pantry.items);
+  const useBy = useSelector((state) => state.pantry.useBy || {});
   const [custom, setCustom] = useState("");
 
   const matches = useMemo(() => rankMealsByPantry(MEALS, pantry, 12), [pantry]);
+
+  useEffect(() => {
+    syncPantryExpirationAlerts({ pantry, useBy }).catch(() => {});
+  }, [pantry, useBy]);
 
   const addCustom = () => {
     const value = custom.trim();
@@ -48,32 +59,50 @@ const PantryScreen = ({ navigation }) => {
       keyboardShouldPersistTaps="handled"
     >
       <View style={styles.intro}>
-        <Text style={styles.kicker}>Your kitchen</Text>
-        <Text style={styles.headline}>What’s in the pantry?</Text>
-        <Text style={styles.body}>
-          Tap staples you already have. We’ll rank recipes you can cook with
-          less shopping. Saved on this phone.
-        </Text>
+        <Text style={styles.kicker}>{t("pantry.kicker")}</Text>
+        <Text style={styles.headline}>{t("pantry.headline")}</Text>
+        <Text style={styles.body}>{t("pantry.body")}</Text>
       </View>
 
       <Pressable
-        style={styles.useSoonBanner}
+        style={[
+          styles.useSoonBanner,
+          { flexDirection: isRTL ? "row-reverse" : "row" },
+        ]}
         onPress={() => navigation.navigate("UseSoon")}
       >
         <Ionicons name="hourglass-outline" size={20} color={colors.warning} />
-        <View style={{ flex: 1 }}>
-          <Text style={styles.useSoonTitle}>Use soon</Text>
-          <Text style={styles.useSoonSub}>
-            Tag use-by dates — cook what won’t wait
-          </Text>
+        <View
+          style={{
+            flex: 1,
+            alignItems: isRTL ? "flex-end" : "flex-start",
+          }}
+        >
+          <Text style={styles.useSoonTitle}>{t("pantry.useSoon")}</Text>
+          <Text style={styles.useSoonSub}>{t("pantry.useSoonSub")}</Text>
         </View>
-        <Ionicons name="chevron-forward" size={16} color={colors.inkSoft} />
+        <Ionicons
+          name={isRTL ? "chevron-back" : "chevron-forward"}
+          size={16}
+          color={colors.inkSoft}
+        />
       </Pressable>
 
-      <View style={styles.addRow}>
+      <View
+        style={[
+          styles.addRow,
+          { flexDirection: isRTL ? "row-reverse" : "row" },
+        ]}
+      >
         <TextInput
-          style={styles.input}
-          placeholder="Add an ingredient"
+          style={[
+            styles.input,
+            {
+              textAlign: isRTL ? "right" : "left",
+              writingDirection: isRTL ? "rtl" : "ltr",
+            },
+          ]}
+          placeholder={t("pantry.addIngredient")}
           placeholderTextColor={colors.inkSoft}
           value={custom}
           onChangeText={setCustom}
@@ -85,16 +114,26 @@ const PantryScreen = ({ navigation }) => {
         </Pressable>
       </View>
 
-      <View style={styles.sectionHead}>
-        <Text style={styles.sectionTitle}>Staples</Text>
+      <View
+        style={[
+          styles.sectionHead,
+          { flexDirection: isRTL ? "row-reverse" : "row" },
+        ]}
+      >
+        <Text style={styles.sectionTitle}>{t("pantry.staples")}</Text>
         {pantry.length > 0 && (
           <Pressable onPress={() => dispatch(clearPantry())} hitSlop={8}>
-            <Text style={styles.clear}>Clear all</Text>
+            <Text style={styles.clear}>{t("pantry.clearAll")}</Text>
           </Pressable>
         )}
       </View>
 
-      <View style={styles.chipWrap}>
+      <View
+        style={[
+          styles.chipWrap,
+          { flexDirection: isRTL ? "row-reverse" : "row" },
+        ]}
+      >
         {PANTRY_STAPLES.map((item) => {
           const active = pantry.some(
             (p) => p.toLowerCase() === item.toLowerCase(),
@@ -109,7 +148,7 @@ const PantryScreen = ({ navigation }) => {
               }}
             >
               <Text style={[styles.chipText, active && styles.chipTextActive]}>
-                {item}
+                {localizeIngredient(item, language)}
               </Text>
             </Pressable>
           );
@@ -120,8 +159,20 @@ const PantryScreen = ({ navigation }) => {
         (p) => !PANTRY_STAPLES.some((s) => s.toLowerCase() === p.toLowerCase()),
       ).length > 0 && (
         <View style={styles.customBlock}>
-          <Text style={styles.sectionTitle}>Your items</Text>
-          <View style={styles.chipWrap}>
+          <Text
+            style={[
+              styles.sectionTitle,
+              { textAlign: isRTL ? "right" : "left" },
+            ]}
+          >
+            {t("pantry.yourItems")}
+          </Text>
+          <View
+            style={[
+              styles.chipWrap,
+              { flexDirection: isRTL ? "row-reverse" : "row" },
+            ]}
+          >
             {pantry
               .filter(
                 (p) =>
@@ -136,7 +187,7 @@ const PantryScreen = ({ navigation }) => {
                   onPress={() => dispatch(removePantryItem(item))}
                 >
                   <Text style={[styles.chipText, styles.chipTextActive]}>
-                    {item}
+                    {localizeIngredient(item, language)}
                   </Text>
                   <Ionicons name="close" size={14} color={colors.accent} />
                 </Pressable>
@@ -145,19 +196,27 @@ const PantryScreen = ({ navigation }) => {
         </View>
       )}
 
-      <View style={styles.matchesHead}>
-        <Text style={styles.sectionTitle}>Cook with what you have</Text>
+      <View
+        style={[
+          styles.matchesHead,
+          { flexDirection: isRTL ? "row-reverse" : "row" },
+        ]}
+      >
+        <Text style={styles.sectionTitle}>{t("pantry.readyToCook")}</Text>
         <Text style={styles.matchCount}>
           {pantry.length === 0
-            ? "Select staples to begin"
-            : `${matches.length} close matches`}
+            ? t("pantry.needMoreStaples")
+            : `${matches.length} matches`}
         </Text>
       </View>
 
       {matches.map(({ meal, matched, total, ratio }) => (
         <Pressable
           key={meal.id}
-          style={styles.matchCard}
+          style={[
+            styles.matchCard,
+            { flexDirection: isRTL ? "row-reverse" : "row" },
+          ]}
           onPress={() => navigation.navigate("MealDetail", { mealId: meal.id })}
         >
           <Image
@@ -165,12 +224,34 @@ const PantryScreen = ({ navigation }) => {
             style={styles.matchImage}
             contentFit="cover"
           />
-          <View style={styles.matchMeta}>
-            <Text style={styles.matchTitle} numberOfLines={2}>
-              {meal.title}
+          <View
+            style={[
+              styles.matchMeta,
+              {
+                alignItems: isRTL ? "flex-end" : "flex-start",
+                marginLeft: isRTL ? 0 : 12,
+                marginRight: isRTL ? 12 : 0,
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.matchTitle,
+                { textAlign: isRTL ? "right" : "left" },
+              ]}
+              numberOfLines={2}
+            >
+              {(language === "fa" && MEALS_FA[meal.id]?.title)
+                ? MEALS_FA[meal.id].title
+                : meal.title}
             </Text>
             <Text style={styles.matchSub}>
-              {matched}/{total} ingredients · {Math.round(ratio * 100)}% match
+              {t("pantry.matchSummary", {
+                matched,
+                total,
+                percent: Math.round(ratio * 100),
+                defaultValue: `${matched}/${total} ingredients · ${Math.round(ratio * 100)}% match`,
+              })}
             </Text>
             <View style={styles.barTrack}>
               <View
@@ -181,7 +262,11 @@ const PantryScreen = ({ navigation }) => {
               />
             </View>
           </View>
-          <Ionicons name="chevron-forward" size={16} color={colors.inkSoft} />
+          <Ionicons
+            name={isRTL ? "chevron-back" : "chevron-forward"}
+            size={16}
+            color={colors.inkSoft}
+          />
         </Pressable>
       ))}
     </ScrollView>

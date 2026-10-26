@@ -13,6 +13,7 @@ import { Image } from "expo-image";
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
+import { useTranslation } from "react-i18next";
 import { MEALS } from "../data/dummy-data";
 import {
   createMenu,
@@ -20,12 +21,15 @@ import {
   COURSE_KEYS,
 } from "../store/redux/dinnerMenus";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
 
 const DinnerMenusScreen = ({ navigation }) => {
   const { colors, radii, spacing, type } = useTheme();
+  const { t } = useTranslation();
+  const { isRTL } = useLocale();
   const styles = useMemo(
-    () => createStyles(colors, type, spacing, radii),
-    [colors, type, spacing, radii],
+    () => createStyles(colors, type, spacing, radii, isRTL),
+    [colors, type, spacing, radii, isRTL],
   );
   const menus = useSelector((state) => state.dinnerMenus.menus);
   const dispatch = useDispatch();
@@ -36,7 +40,7 @@ const DinnerMenusScreen = ({ navigation }) => {
   const create = () => {
     dispatch(
       createMenu({
-        title: title.trim() || "Dinner party",
+        title: title.trim() || t("dinnerMenus.headline"),
         guests: Number(guests) || 4,
       }),
     );
@@ -49,17 +53,14 @@ const DinnerMenusScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.intro}>
-        <Text style={styles.kicker}>Host with ease</Text>
-        <Text style={styles.headline}>Dinner parties</Text>
-        <Text style={styles.body}>
-          Build a multi-course menu, set guest count, then shop everything in
-          one tap. Saved on this phone.
-        </Text>
+        <Text style={styles.kicker}>{t("dinnerMenus.kicker")}</Text>
+        <Text style={styles.headline}>{t("dinnerMenus.headline")}</Text>
+        <Text style={styles.body}>{t("dinnerMenus.body")}</Text>
       </View>
 
       <Pressable style={styles.createBtn} onPress={() => setOpen(true)}>
         <Ionicons name="add" size={18} color={colors.onBrand} />
-        <Text style={styles.createText}>Plan a dinner</Text>
+        <Text style={styles.createText}>{t("dinnerMenus.planADinner")}</Text>
       </Pressable>
 
       <FlatList
@@ -73,9 +74,9 @@ const DinnerMenusScreen = ({ navigation }) => {
               size={36}
               color={colors.inkSoft}
             />
-            <Text style={styles.emptyTitle}>No dinners planned</Text>
+            <Text style={styles.emptyTitle}>{t("dinnerMenus.noDinnersPlanned")}</Text>
             <Text style={styles.emptyBody}>
-              Create a menu with starter, main, side, and dessert.
+              {t("dinnerMenus.noDinnersBody")}
             </Text>
           </View>
         }
@@ -116,7 +117,7 @@ const DinnerMenusScreen = ({ navigation }) => {
                       source={{ uri: meal.imageUrl }}
                       style={[
                         styles.cover,
-                        index > 0 && { marginLeft: -16 },
+                        index > 0 && { [isRTL ? "marginRight" : "marginLeft"]: -16 },
                         { zIndex: covers.length - index },
                       ]}
                       contentFit="cover"
@@ -137,11 +138,18 @@ const DinnerMenusScreen = ({ navigation }) => {
                   {item.title}
                 </Text>
                 <Text style={styles.cardSub} numberOfLines={1}>
-                  {item.guests} guests · {filled}/4 courses
+                  {t("dinnerMenus.guestsAndCourses", {
+                    guests: isRTL
+                      ? String(item.guests).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d])
+                      : item.guests,
+                    filled: isRTL
+                      ? String(filled).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d])
+                      : filled,
+                  })}
                 </Text>
               </View>
               <Ionicons
-                name="chevron-forward"
+                name={isRTL ? "chevron-back" : "chevron-forward"}
                 size={16}
                 color={colors.inkSoft}
               />
@@ -158,19 +166,19 @@ const DinnerMenusScreen = ({ navigation }) => {
       >
         <View style={styles.overlay}>
           <View style={styles.sheet}>
-            <Text style={styles.modalTitle}>New dinner</Text>
+            <Text style={styles.modalTitle}>{t("dinnerMenus.modalTitle")}</Text>
             <TextInput
               style={styles.input}
-              placeholder="Menu name"
+              placeholder={t("dinnerMenus.titlePlaceholder")}
               placeholderTextColor={colors.inkSoft}
               value={title}
               onChangeText={setTitle}
               autoFocus
             />
-            <Text style={styles.fieldLabel}>Guests</Text>
+            <Text style={styles.fieldLabel}>{t("dinnerMenus.guestsLabel")}</Text>
             <TextInput
               style={styles.input}
-              placeholder="4"
+              placeholder={isRTL ? "۴" : "4"}
               placeholderTextColor={colors.inkSoft}
               value={guests}
               onChangeText={setGuests}
@@ -181,10 +189,10 @@ const DinnerMenusScreen = ({ navigation }) => {
                 style={styles.cancel}
                 onPress={() => setOpen(false)}
               >
-                <Text style={styles.cancelText}>Cancel</Text>
+                <Text style={styles.cancelText}>{t("common.cancel")}</Text>
               </Pressable>
               <Pressable style={styles.save} onPress={create}>
-                <Text style={styles.saveText}>Create</Text>
+                <Text style={styles.saveText}>{t("common.add")}</Text>
               </Pressable>
             </View>
           </View>
@@ -196,18 +204,31 @@ const DinnerMenusScreen = ({ navigation }) => {
 
 export default DinnerMenusScreen;
 
-const createStyles = (colors, type, spacing, radii) =>
+const createStyles = (colors, type, spacing, radii, isRTL) =>
   StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   intro: {
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.md,
   },
-  kicker: { ...type.label, color: colors.accent, marginBottom: 4 },
-  headline: { ...type.title, fontSize: 24, marginBottom: 6 },
-  body: { ...type.body },
+  kicker: {
+    ...type.label,
+    color: colors.accent,
+    marginBottom: 4,
+    textAlign: isRTL ? "right" : "left",
+  },
+  headline: {
+    ...type.title,
+    fontSize: 24,
+    marginBottom: 6,
+    textAlign: isRTL ? "right" : "left",
+  },
+  body: {
+    ...type.body,
+    textAlign: isRTL ? "right" : "left",
+  },
   createBtn: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
@@ -220,7 +241,7 @@ const createStyles = (colors, type, spacing, radii) =>
   createText: { ...type.heading, fontSize: 15, color: colors.onBrand },
   list: { padding: spacing.md, paddingBottom: spacing.xl },
   card: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     gap: 14,
     backgroundColor: colors.surface,
@@ -231,7 +252,7 @@ const createStyles = (colors, type, spacing, radii) =>
     marginBottom: 10,
   },
   coverRow: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     height: 52,
     alignItems: "center",
     overflow: "hidden",
@@ -246,8 +267,16 @@ const createStyles = (colors, type, spacing, radii) =>
   },
   coverEmpty: { alignItems: "center", justifyContent: "center" },
   meta: { flex: 1, minWidth: 0 },
-  cardTitle: { ...type.heading, fontSize: 16 },
-  cardSub: { ...type.caption, marginTop: 2 },
+  cardTitle: {
+    ...type.heading,
+    fontSize: 16,
+    textAlign: isRTL ? "right" : "left",
+  },
+  cardSub: {
+    ...type.caption,
+    marginTop: 2,
+    textAlign: isRTL ? "right" : "left",
+  },
   empty: {
     alignItems: "center",
     paddingVertical: spacing.xl,
@@ -266,8 +295,17 @@ const createStyles = (colors, type, spacing, radii) =>
     borderRadius: radii.lg,
     padding: spacing.lg,
   },
-  modalTitle: { ...type.title, fontSize: 20, marginBottom: spacing.md },
-  fieldLabel: { ...type.label, marginBottom: 6 },
+  modalTitle: {
+    ...type.title,
+    fontSize: 20,
+    marginBottom: spacing.md,
+    textAlign: isRTL ? "right" : "left",
+  },
+  fieldLabel: {
+    ...type.label,
+    marginBottom: 6,
+    textAlign: isRTL ? "right" : "left",
+  },
   input: {
     borderWidth: 1,
     borderColor: colors.border,
@@ -277,8 +315,10 @@ const createStyles = (colors, type, spacing, radii) =>
     ...type.body,
     color: colors.ink,
     marginBottom: spacing.md,
+    textAlign: isRTL ? "right" : "left",
+    writingDirection: isRTL ? "rtl" : "ltr",
   },
-  actions: { flexDirection: "row", gap: 10 },
+  actions: { flexDirection: isRTL ? "row-reverse" : "row", gap: 10 },
   cancel: {
     flex: 1,
     alignItems: "center",

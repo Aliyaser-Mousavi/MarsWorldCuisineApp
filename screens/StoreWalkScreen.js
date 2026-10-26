@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useLayoutEffect } from "react";
 import {
   View,
   Text,
@@ -14,9 +14,18 @@ import * as Haptics from "expo-haptics";
 import { toggleItem } from "../store/redux/shoppingList";
 import { groupItemsByAisle } from "../utils/aisles";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
+import {
+  useAppLanguage,
+  getLocalizedShoppingItemName,
+  getLocalizedShoppingItemMealTitle,
+} from "../utils/catalogue";
+import { toPersianDigits } from "../utils/formatters";
 
 const StoreWalkScreen = ({ navigation }) => {
   const { colors, radii, spacing, type } = useTheme();
+  const { t, isRTL } = useLocale();
+  const language = useAppLanguage();
   const styles = useMemo(
     () => createStyles(colors, type, spacing, radii),
     [colors, type, spacing, radii],
@@ -28,10 +37,11 @@ const StoreWalkScreen = ({ navigation }) => {
   const aisles = useMemo(() => {
     return groupItemsByAisle(items).map((group) => ({
       ...group,
+      label: t(`shoppingList.aisles.${group.id}`, { defaultValue: group.label }),
       remaining: group.items.filter((i) => !i.checked),
       done: group.items.filter((i) => i.checked),
     }));
-  }, [items]);
+  }, [items, t]);
 
   const activeAisles = useMemo(
     () => aisles.filter((a) => a.remaining.length > 0),
@@ -48,16 +58,67 @@ const StoreWalkScreen = ({ navigation }) => {
   const total = items.length;
   const progress = total ? ((total - totalLeft) / total) * 100 : 100;
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: t("storeWalk.title"),
+      headerStyle: { backgroundColor: colors.brand },
+      headerTintColor: colors.onBrand,
+      headerTitleStyle: {
+        ...(isRTL ? {} : { fontFamily: "Fraunces_600SemiBold" }),
+        fontSize: 18,
+        color: colors.onBrand,
+      },
+      headerLeft: isRTL
+        ? () => (
+            <Text style={[styles.topCount, { textAlign: "left" }]}>
+              {t("storeWalk.itemsLeft", {
+                count: totalLeft,
+              })}
+            </Text>
+          )
+        : () => (
+            <Pressable
+              onPress={() => navigation.goBack()}
+              hitSlop={12}
+              style={{ padding: 4 }}
+              accessibilityRole="button"
+              accessibilityLabel={t("common.close")}
+            >
+              <Ionicons name="close" size={26} color={colors.onBrand} />
+            </Pressable>
+          ),
+      headerRight: isRTL
+        ? () => (
+            <Pressable
+              onPress={() => navigation.goBack()}
+              hitSlop={12}
+              style={{ padding: 4 }}
+              accessibilityRole="button"
+              accessibilityLabel={t("common.close")}
+            >
+              <Ionicons name="close" size={26} color={colors.onBrand} />
+            </Pressable>
+          )
+        : () => (
+            <Text style={styles.topCount}>
+              {t("storeWalk.itemsLeft", {
+                count: totalLeft,
+              })}
+            </Text>
+          ),
+    });
+  }, [navigation, colors, isRTL, t, totalLeft, styles.topCount]);
+
   if (items.length === 0) {
     return (
-      <View style={styles.emptyRoot}>
+      <View style={[styles.root, styles.emptyCenter]}>
         <StatusBar barStyle="light-content" />
-        <Text style={styles.emptyTitle}>Nothing to shop</Text>
+        <Text style={styles.emptyTitle}>{t("storeWalk.nothingToShop")}</Text>
         <Text style={styles.emptyBody}>
-          Add ingredients from a recipe first, then walk the store aisle by aisle.
+          {t("storeWalk.nothingToShopBody")}
         </Text>
         <Pressable style={styles.closeBtn} onPress={() => navigation.goBack()}>
-          <Text style={styles.closeBtnText}>Close</Text>
+          <Text style={styles.closeBtnText}>{t("storeWalk.close")}</Text>
         </Pressable>
       </View>
     );
@@ -65,15 +126,15 @@ const StoreWalkScreen = ({ navigation }) => {
 
   if (totalLeft === 0) {
     return (
-      <View style={styles.emptyRoot}>
+      <View style={[styles.root, styles.emptyCenter]}>
         <StatusBar barStyle="light-content" />
         <Ionicons name="checkmark-circle" size={56} color={colors.accentSoft} />
-        <Text style={styles.emptyTitle}>Trip complete</Text>
+        <Text style={styles.emptyTitle}>{t("storeWalk.tripComplete")}</Text>
         <Text style={styles.emptyBody}>
-          Every item is checked. Nice haul — time to cook.
+          {t("storeWalk.tripCompleteBody")}
         </Text>
         <Pressable style={styles.closeBtn} onPress={() => navigation.goBack()}>
-          <Text style={styles.closeBtnText}>Done</Text>
+          <Text style={styles.closeBtnText}>{t("storeWalk.done")}</Text>
         </Pressable>
       </View>
     );
@@ -104,16 +165,6 @@ const StoreWalkScreen = ({ navigation }) => {
   return (
     <View style={styles.root}>
       <StatusBar barStyle="light-content" />
-      <View style={styles.topBar}>
-        <Pressable onPress={() => navigation.goBack()} hitSlop={12}>
-          <Ionicons name="close" size={26} color={colors.onBrand} />
-        </Pressable>
-        <Text style={styles.topTitle}>Store walk</Text>
-        <Text style={styles.topCount}>
-          {totalLeft} left
-        </Text>
-      </View>
-
       <View style={styles.progressTrack}>
         <View style={[styles.progressFill, { width: `${progress}%` }]} />
       </View>
@@ -122,8 +173,11 @@ const StoreWalkScreen = ({ navigation }) => {
         <Ionicons name={aisle.icon} size={28} color={colors.accentSoft} />
         <Text style={styles.aisleTitle}>{aisle.label}</Text>
         <Text style={styles.aisleSub}>
-          Aisle {aisleIndex + 1} of {activeAisles.length} · {aisle.remaining.length}{" "}
-          item{aisle.remaining.length === 1 ? "" : "s"}
+          {t("storeWalk.aisleProgress", {
+            current: isRTL ? toPersianDigits(aisleIndex + 1) : aisleIndex + 1,
+            total: isRTL ? toPersianDigits(activeAisles.length) : activeAisles.length,
+            count: aisle.remaining.length,
+          })}
         </Text>
       </View>
 
@@ -135,41 +189,83 @@ const StoreWalkScreen = ({ navigation }) => {
         {aisle.remaining.map((item) => (
           <Pressable
             key={item.id}
-            style={styles.itemCard}
+            style={[
+              styles.itemCard,
+              { flexDirection: isRTL ? "row-reverse" : "row" },
+            ]}
             onPress={() => checkItem(item.id)}
           >
             <View style={styles.checkCircle}>
               <Ionicons name="ellipse-outline" size={28} color={colors.inkSoft} />
             </View>
-            <View style={styles.itemText}>
-              <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.itemFrom}>{item.mealTitle}</Text>
+            <View
+              style={[
+                styles.itemText,
+                { alignItems: isRTL ? "flex-end" : "flex-start" },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.itemName,
+                  { textAlign: isRTL ? "right" : "left" },
+                ]}
+              >
+                {getLocalizedShoppingItemName(item, language)}
+              </Text>
+              <Text
+                style={[
+                  styles.itemFrom,
+                  { textAlign: isRTL ? "right" : "left" },
+                ]}
+              >
+                {getLocalizedShoppingItemMealTitle(item, language)}
+              </Text>
             </View>
-            <Text style={styles.tapHint}>Tap</Text>
+            <Text style={styles.tapHint}>
+              {t("storeWalk.tap", { defaultValue: isRTL ? "لمس" : "Tap" })}
+            </Text>
           </Pressable>
         ))}
       </ScrollView>
 
-      <View style={styles.navRow}>
+      <View
+        style={[
+          styles.navRow,
+          { flexDirection: isRTL ? "row-reverse" : "row" },
+        ]}
+      >
         <Pressable
-          style={[styles.navBtn, aisleIndex === 0 && styles.navDisabled]}
+          style={[
+            styles.navBtn,
+            { flexDirection: isRTL ? "row-reverse" : "row" },
+            aisleIndex === 0 && styles.navDisabled,
+          ]}
           onPress={goPrevAisle}
           disabled={aisleIndex === 0}
         >
-          <Ionicons name="chevron-back" size={20} color={colors.ink} />
-          <Text style={styles.navBtnText}>Prev aisle</Text>
+          <Ionicons
+            name={isRTL ? "chevron-forward" : "chevron-back"}
+            size={20}
+            color={colors.ink}
+          />
+          <Text style={styles.navBtnText}>{t("storeWalk.prevAisle")}</Text>
         </Pressable>
         <Pressable
           style={[
             styles.navBtn,
             styles.navPrimary,
+            { flexDirection: isRTL ? "row-reverse" : "row" },
             aisleIndex >= activeAisles.length - 1 && styles.navDisabled,
           ]}
           onPress={goNextAisle}
           disabled={aisleIndex >= activeAisles.length - 1}
         >
-          <Text style={styles.navPrimaryText}>Next aisle</Text>
-          <Ionicons name="chevron-forward" size={20} color={colors.onBrand} />
+          <Text style={styles.navPrimaryText}>{t("storeWalk.nextAisle")}</Text>
+          <Ionicons
+            name={isRTL ? "chevron-back" : "chevron-forward"}
+            size={20}
+            color={colors.onBrand}
+          />
         </Pressable>
       </View>
     </View>
@@ -185,22 +281,12 @@ const createStyles = (colors, type, spacing, radii) =>
     backgroundColor: colors.brand,
     paddingHorizontal: spacing.lg,
     paddingBottom: Platform.OS === "ios" ? 36 : 20,
-  },
-  topBar: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingTop: Platform.OS === "ios" ? 56 : 24,
-    marginBottom: spacing.md,
-  },
-  topTitle: {
-    fontFamily: "Fraunces_600SemiBold",
-    fontSize: 18,
-    color: colors.onBrand,
+    paddingTop: spacing.md,
   },
   topCount: {
     ...type.label,
-    color: "rgba(255,255,255,0.7)",
+    color: "rgba(255,255,255,0.85)",
+    fontSize: 14,
     minWidth: 56,
     textAlign: "right",
   },
@@ -287,12 +373,12 @@ const createStyles = (colors, type, spacing, radii) =>
     fontSize: 15,
     color: colors.onBrand,
   },
-  emptyRoot: {
+  emptyCenter: {
     flex: 1,
-    backgroundColor: colors.brand,
     alignItems: "center",
     justifyContent: "center",
     padding: spacing.xl,
+    marginTop: -40,
   },
   emptyTitle: {
     fontFamily: "Fraunces_600SemiBold",

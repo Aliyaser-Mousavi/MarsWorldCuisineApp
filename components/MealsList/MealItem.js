@@ -4,6 +4,9 @@ import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import MealDetails from "../MealDetails";
 import { useTheme } from "../../constants/theme";
+import { useLocale } from "../../constants/locale";
+import { useAppLanguage } from "../../utils/catalogue";
+import { MEALS_FA } from "../../data/dummy-data.fa";
 
 const MealItem = ({
   id,
@@ -15,6 +18,10 @@ const MealItem = ({
 }) => {
   const navigation = useNavigation();
   const { colors, type } = useTheme();
+  const { t, isRTL } = useLocale();
+  const language = useAppLanguage();
+
+  const displayTitle = (language === "fa" && MEALS_FA[id]?.title) ? MEALS_FA[id].title : title;
 
   function selectMealItemHandler() {
     navigation.navigate("MealDetail", { mealId: id });
@@ -38,7 +45,12 @@ const MealItem = ({
         ]}
         onPress={selectMealItemHandler}
       >
-        <View style={styles.row}>
+        <View
+          style={[
+            styles.row,
+            { flexDirection: isRTL ? "row-reverse" : "row" },
+          ]}
+        >
           <Image
             source={imageUrl}
             style={[styles.image, { backgroundColor: colors.border }]}
@@ -48,10 +60,17 @@ const MealItem = ({
           />
           <View style={styles.meta}>
             <Text
-              style={[styles.title, { color: colors.ink }]}
+              style={[
+                styles.title,
+                {
+                  color: colors.ink,
+                  textAlign: isRTL ? "right" : "left",
+                  writingDirection: isRTL ? "rtl" : "ltr",
+                },
+              ]}
               numberOfLines={2}
             >
-              {title}
+              {displayTitle}
             </Text>
             <MealDetails
               duration={duration}
@@ -59,12 +78,17 @@ const MealItem = ({
               affordability={affordability}
               compact
             />
-            <View style={styles.ctaRow}>
+            <View
+              style={[
+                styles.ctaRow,
+                { flexDirection: isRTL ? "row-reverse" : "row" },
+              ]}
+            >
               <Text style={[styles.cta, { color: colors.accent }]}>
-                View recipe
+                {t("mealItem.viewRecipe", { defaultValue: "View recipe" })}
               </Text>
               <Ionicons
-                name="chevron-forward"
+                name={isRTL ? "chevron-back" : "chevron-forward"}
                 size={14}
                 color={colors.accent}
               />

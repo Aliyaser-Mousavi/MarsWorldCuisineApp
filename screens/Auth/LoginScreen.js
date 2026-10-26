@@ -17,9 +17,11 @@ import CustomTextInput from "../../components/UI/CustomTextInput";
 import CustomButton from "../../components/UI/CustomButton";
 import FeedbackBanner from "../../components/UI/FeedbackBanner";
 import { useTheme } from "../../constants/theme";
+import { useLocale } from "../../constants/locale";
 
 const LoginScreen = ({ navigation }) => {
-  const { colors, type, spacing, radii, shadows } = useTheme();
+  const { colors, type, spacing, radii } = useTheme();
+  const { t, isRTL } = useLocale();
   const styles = useMemo(
     () => createStyles(colors, type, spacing, radii),
     [colors, type, spacing, radii],
@@ -33,28 +35,43 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = async () => {
     const trimmedEmail = email.trim();
     if (!trimmedEmail || !password) {
-      setLocalError("Please enter your email and password.");
+      setLocalError(t("auth.pleaseEnterEmailAndPassword"));
       return;
     }
 
     setLocalError("");
     setSubmitting(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email: trimmedEmail,
-      password,
-    });
-
-    setSubmitting(false);
-
-    if (error) {
-      const message = error.message || "Could not sign in.";
-      setLocalError(message);
-      dispatch(setError(message));
+    if (!supabase) {
+      setSubmitting(false);
+      setLocalError("Authentication service is not available. Please check your network connection.");
       return;
     }
 
-    dispatch(setError(null));
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: trimmedEmail,
+        password,
+      });
+
+      if (error) {
+        const message = error.message || t("auth.couldNotSignIn");
+        setLocalError(message);
+        dispatch(setError(message));
+        return;
+      }
+
+      dispatch(setError(null));
+    } catch (err) {
+      const message =
+        err?.message ||
+        t("auth.couldNotSignIn") ||
+        "Could not sign in. Please try again.";
+      setLocalError(message);
+      dispatch(setError(message));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -73,27 +90,54 @@ const LoginScreen = ({ navigation }) => {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <View style={styles.brandMark}>
+          <View
+            style={[
+              styles.brandMark,
+              { flexDirection: isRTL ? "row-reverse" : "row" },
+            ]}
+          >
             <View style={styles.brandIcon}>
-              <Ionicons name="restaurant-outline" size={22} color={colors.onBrand} />
+              <Ionicons
+                name="restaurant-outline"
+                size={22}
+                color={colors.onBrand}
+              />
             </View>
-            <Text style={styles.kicker}>Mars World Cuisine</Text>
+            <Text style={styles.kicker}>{t("common.appName")}</Text>
           </View>
 
-          <Text style={styles.title}>Welcome back</Text>
-          <Text style={styles.subtitle}>
-            Sign in to sync your kitchen across devices.
+          <Text
+            style={[
+              styles.title,
+              {
+                textAlign: isRTL ? "right" : "left",
+                writingDirection: isRTL ? "rtl" : "ltr",
+              },
+            ]}
+          >
+            {t("auth.welcomeBack")}
+          </Text>
+          <Text
+            style={[
+              styles.subtitle,
+              {
+                textAlign: isRTL ? "right" : "left",
+                writingDirection: isRTL ? "rtl" : "ltr",
+              },
+            ]}
+          >
+            {t("auth.signInSubtitle")}
           </Text>
 
-          <View style={[styles.card, shadows.soft]}>
+          <View style={styles.card}>
             <CustomTextInput
-              label="Email"
+              label={t("auth.email")}
               value={email}
               onChangeText={(v) => {
                 setEmail(v);
                 if (localError) setLocalError("");
               }}
-              placeholder="you@example.com"
+              placeholder={t("auth.emailPlaceholder")}
               leftIcon="mail-outline"
               autoCapitalize="none"
               autoCorrect={false}
@@ -104,13 +148,13 @@ const LoginScreen = ({ navigation }) => {
             />
 
             <CustomTextInput
-              label="Password"
+              label={t("auth.password")}
               value={password}
               onChangeText={(v) => {
                 setPassword(v);
                 if (localError) setLocalError("");
               }}
-              placeholder="Your password"
+              placeholder={t("auth.passwordPlaceholder")}
               leftIcon="lock-closed-outline"
               secureTextEntry
               textContentType="password"
@@ -121,11 +165,14 @@ const LoginScreen = ({ navigation }) => {
             <Pressable
               style={({ pressed }) => [
                 styles.forgotRow,
+                { alignSelf: isRTL ? "flex-start" : "flex-end" },
                 pressed && styles.linkPressed,
               ]}
               onPress={() => navigation.navigate("ForgotPassword")}
             >
-              <Text style={styles.forgotText}>Forgot password?</Text>
+              <Text style={styles.forgotText}>
+                {t("auth.forgotPasswordQuestion")}
+              </Text>
             </Pressable>
 
             <FeedbackBanner
@@ -135,24 +182,27 @@ const LoginScreen = ({ navigation }) => {
             />
 
             <CustomButton
-              label="Sign in"
+              label={t("auth.signIn")}
               onPress={handleLogin}
               loading={submitting}
               style={styles.submit}
-              icon="arrow-forward"
-              iconPosition="right"
+              icon={isRTL ? "arrow-back" : "arrow-forward"}
+              iconPosition={isRTL ? "left" : "right"}
             />
           </View>
 
           <Pressable
             style={({ pressed }) => [
               styles.linkRow,
+              { flexDirection: isRTL ? "row-reverse" : "row" },
               pressed && styles.linkPressed,
             ]}
             onPress={() => navigation.navigate("Register")}
           >
-            <Text style={styles.linkText}>Don&apos;t have an account?</Text>
-            <Text style={styles.linkAccent}> Create one</Text>
+            <Text style={styles.linkText}>
+              {t("auth.dontHaveAccount")}
+            </Text>
+            <Text style={styles.linkAccent}> {t("auth.createOne")}</Text>
           </Pressable>
         </ScrollView>
       </KeyboardAvoidingView>

@@ -9,36 +9,38 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
+import { useTranslation } from "react-i18next";
 import { useTheme } from "../constants/theme";
-
-const PRESETS = [
-  { label: "Eggs", seconds: 7 * 60 },
-  { label: "Pasta", seconds: 10 * 60 },
-  { label: "Rice", seconds: 18 * 60 },
-  { label: "Rest dough", seconds: 30 * 60 },
-  { label: "Tea", seconds: 3 * 60 },
-];
-
-function formatTime(total) {
-  const m = Math.floor(total / 60)
-    .toString()
-    .padStart(2, "0");
-  const s = Math.floor(total % 60)
-    .toString()
-    .padStart(2, "0");
-  return `${m}:${s}`;
-}
+import { useLocale } from "../constants/locale";
+import { formatTime, toPersianDigits } from "../utils/formatters";
+import {
+  scheduleTimerAlert,
+  cancelTimerAlert,
+} from "../services/notificationService";
 
 let timerSeq = 1;
 
 const TimersScreen = () => {
   const { colors, radii, spacing, type } = useTheme();
+  const { t } = useTranslation();
+  const { isRTL } = useLocale();
   const styles = useMemo(
-    () => createStyles(colors, type, spacing, radii),
-    [colors, type, spacing, radii],
+    () => createStyles(colors, type, spacing, radii, isRTL),
+    [colors, type, spacing, radii, isRTL],
   );
   const [timers, setTimers] = useState([]);
   const intervalRef = useRef(null);
+
+  const presets = useMemo(
+    () => [
+      { label: t("timers.presets.eggs"), seconds: 7 * 60 },
+      { label: t("timers.presets.pasta"), seconds: 10 * 60 },
+      { label: t("timers.presets.rice"), seconds: 18 * 60 },
+      { label: t("timers.presets.restDough"), seconds: 30 * 60 },
+      { label: t("timers.presets.tea"), seconds: 3 * 60 },
+    ],
+    [t],
+  );
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
@@ -62,10 +64,20 @@ const TimersScreen = () => {
 
   const addTimer = (seconds, label) => {
     Haptics.selectionAsync();
+    const id = `t-${timerSeq++}`;
+    const timerLabel = label || (isRTL ? "تایمر" : "Timer");
+
+    scheduleTimerAlert({
+      timerId: id,
+      label: timerLabel,
+      seconds,
+      language: isRTL ? "fa" : "en",
+    }).catch(() => {});
+
     setTimers((prev) => [
       {
-        id: `t-${timerSeq++}`,
-        label: label || "Timer",
+        id,
+        label: timerLabel,
         duration: seconds,
         remaining: seconds,
         running: true,
@@ -77,13 +89,28 @@ const TimersScreen = () => {
 
   const toggle = (id) => {
     setTimers((prev) =>
-      prev.map((t) =>
-        t.id === id && !t.done ? { ...t, running: !t.running } : t,
-      ),
+      prev.map((t) => {
+        if (t.id === id && !t.done) {
+          const willRun = !t.running;
+          if (willRun) {
+            scheduleTimerAlert({
+              timerId: id,
+              label: t.label,
+              seconds: t.remaining,
+              language: isRTL ? "fa" : "en",
+            }).catch(() => {});
+          } else {
+            cancelTimerAlert(id).catch(() => {});
+          }
+          return { ...t, running: willRun };
+        }
+        return t;
+      }),
     );
   };
 
   const reset = (id) => {
+    cancelTimerAlert(id).catch(() => {});
     setTimers((prev) =>
       prev.map((t) =>
         t.id === id
@@ -94,22 +121,21 @@ const TimersScreen = () => {
   };
 
   const remove = (id) => {
+    cancelTimerAlert(id).catch(() => {});
     setTimers((prev) => prev.filter((t) => t.id !== id));
   };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.intro}>
-        <Text style={styles.kicker}>Kitchen timers</Text>
-        <Text style={styles.headline}>Keep several pots on track</Text>
-        <Text style={styles.body}>
-          Run multiple countdowns while you cook — pasta, eggs, dough, and more.
-        </Text>
+        <Text style={styles.kicker}>{t("timers.kicker")}</Text>
+        <Text style={styles.headline}>{t("timers.headline")}</Text>
+        <Text style={styles.body}>{t("timers.body")}</Text>
       </View>
 
-      <Text style={styles.sectionTitle}>Quick start</Text>
+      <Text style={styles.sectionTitle}>{t("timers.quickStart")}</Text>
       <View style={styles.presetRow}>
-        {PRESETS.map((preset) => (
+        {presets.map((preset) => (
           <Pressable
             key={preset.label}
             style={styles.preset}
@@ -117,7 +143,7 @@ const TimersScreen = () => {
           >
             <Text style={styles.presetLabel}>{preset.label}</Text>
             <Text style={styles.presetTime}>
-              {formatTime(preset.seconds)}
+              {formatTime(preset.seconds, isRTL)}
             </Text>
           </Pressable>
         ))}
@@ -128,9 +154,16 @@ const TimersScreen = () => {
           <Pressable
             key={min}
             style={styles.customBtn}
-            onPress={() => addTimer(min * 60, `${min} min`)}
+            onPress={() =>
+              addTimer(
+                min * 60,
+                isRTL ? `${toPersianDigits(min)} دقیقه` : `${min} min`,
+              )
+            }
           >
-            <Text style={styles.customBtnText}>+{min}m</Text>
+            <Text style={styles.customBtnText}>
+              {isRTL ? `+${toPersianDigits(min)}د` : `+${min}m`}
+            </Text>
           </Pressable>
         ))}
       </View>
@@ -138,7 +171,7 @@ const TimersScreen = () => {
       {timers.length === 0 ? (
         <View style={styles.empty}>
           <Ionicons name="timer-outline" size={32} color={colors.inkSoft} />
-          <Text style={styles.emptyText}>No active timers</Text>
+          <Text style={styles.emptyText}>{t("timers.noActiveTimers")}</Text>
         </View>
       ) : (
         timers.map((timer) => {
@@ -156,7 +189,7 @@ const TimersScreen = () => {
                 </Pressable>
               </View>
               <Text style={[styles.time, timer.done && styles.timeDone]}>
-                {timer.done ? "Done" : formatTime(timer.remaining)}
+                {timer.done ? t("common.done") : formatTime(timer.remaining, isRTL)}
               </Text>
               <View style={styles.track}>
                 <View
@@ -175,7 +208,7 @@ const TimersScreen = () => {
                       color={colors.ink}
                     />
                     <Text style={styles.actionText}>
-                      {timer.running ? "Pause" : "Resume"}
+                      {timer.running ? t("cookingMode.pauseTimer") : t("cookingMode.startTimer")}
                     </Text>
                   </Pressable>
                 )}
@@ -184,7 +217,7 @@ const TimersScreen = () => {
                   onPress={() => reset(timer.id)}
                 >
                   <Ionicons name="refresh" size={16} color={colors.ink} />
-                  <Text style={styles.actionText}>Reset</Text>
+                  <Text style={styles.actionText}>{t("cookingMode.resetTimer")}</Text>
                 </Pressable>
               </View>
             </View>
@@ -197,7 +230,7 @@ const TimersScreen = () => {
 
 export default TimersScreen;
 
-const createStyles = (colors, type, spacing, radii) =>
+const createStyles = (colors, type, spacing, radii, isRTL) =>
   StyleSheet.create({
   container: {
     flex: 1,
@@ -214,14 +247,17 @@ const createStyles = (colors, type, spacing, radii) =>
     ...type.label,
     color: colors.accent,
     marginBottom: 4,
+    textAlign: isRTL ? "right" : "left",
   },
   headline: {
     ...type.title,
     fontSize: 24,
     marginBottom: 6,
+    textAlign: isRTL ? "right" : "left",
   },
   body: {
     ...type.body,
+    textAlign: isRTL ? "right" : "left",
   },
   sectionTitle: {
     ...type.heading,
@@ -229,9 +265,10 @@ const createStyles = (colors, type, spacing, radii) =>
     marginTop: spacing.lg,
     marginHorizontal: spacing.lg,
     marginBottom: spacing.sm,
+    textAlign: isRTL ? "right" : "left",
   },
   presetRow: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     flexWrap: "wrap",
     gap: 8,
     paddingHorizontal: spacing.lg,
@@ -249,13 +286,15 @@ const createStyles = (colors, type, spacing, radii) =>
   presetLabel: {
     ...type.heading,
     fontSize: 14,
+    textAlign: isRTL ? "right" : "left",
   },
   presetTime: {
     ...type.caption,
     marginTop: 4,
+    textAlign: isRTL ? "right" : "left",
   },
   customRow: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     gap: 8,
     marginTop: spacing.md,
     marginHorizontal: spacing.lg,
@@ -293,23 +332,26 @@ const createStyles = (colors, type, spacing, radii) =>
     borderColor: colors.accentSoft,
   },
   cardTop: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
   cardLabel: {
     ...type.heading,
     fontSize: 15,
+    textAlign: isRTL ? "right" : "left",
   },
   time: {
     fontFamily: "Fraunces_600SemiBold",
     fontSize: 40,
     color: colors.ink,
     marginVertical: 8,
+    textAlign: isRTL ? "right" : "left",
   },
   timeDone: {
     color: colors.accent,
     fontSize: 32,
+    textAlign: isRTL ? "right" : "left",
   },
   track: {
     height: 4,
@@ -323,11 +365,11 @@ const createStyles = (colors, type, spacing, radii) =>
     backgroundColor: colors.accent,
   },
   actions: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     gap: 8,
   },
   actionBtn: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     gap: 6,
     paddingVertical: 10,

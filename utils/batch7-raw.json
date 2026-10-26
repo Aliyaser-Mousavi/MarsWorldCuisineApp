@@ -1,0 +1,570 @@
+[
+  {
+    "id": "m125",
+    "categoryIds": [
+      "c19"
+    ],
+    "title": "Canadian Poutine",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://i.pinimg.com/1200x/9a/98/f1/9a98f18bb80bb7b6a6eb9ce652818d56.jpg",
+    "duration": 25,
+    "ingredients": [
+      "Russet Potatoes (Fried)",
+      "Fresh Cheese Curds",
+      "Brown Gravy (Beef or Chicken based)",
+      "Black Pepper"
+    ],
+    "steps": [
+      "Fry hand-cut potatoes twice for maximum crispiness.",
+      "Place the hot fries in a bowl and top with a generous amount of fresh cheese curds.",
+      "Pour piping hot gravy over the fries so the cheese begins to soften but not fully melt.",
+      "Season with black pepper and serve immediately."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m126",
+    "categoryIds": [
+      "c20"
+    ],
+    "title": "Lentil Shepherd’s Pie",
+    "affordability": "affordable",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=500&auto=format&fit=crop",
+    "duration": 50,
+    "ingredients": [
+      "2 Cups Cooked Lentils",
+      "3 Large Potatoes (Mashed)",
+      "Carrots & Peas",
+      "Vegetable Broth",
+      "Tomato Paste",
+      "Thyme & Rosemary"
+    ],
+    "steps": [
+      "Sauté onions and carrots, then add lentils, herbs, and broth; simmer until thickened.",
+      "Stir in the peas and pour the mixture into a baking dish.",
+      "Spread a thick layer of creamy mashed potatoes on top.",
+      "Use a fork to create ridges on the surface (for extra crunch).",
+      "Bake at 200°C for 20 minutes until the potato peaks are golden brown."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m127",
+    "categoryIds": [
+      "c19"
+    ],
+    "title": "Corndogs",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1623653387945-2fd25214f8fc?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "8 Hotdogs (Beef or Poultry)",
+      "1 Cup Cornmeal",
+      "1 Cup Flour",
+      "1 Egg",
+      "1 Cup Milk",
+      "Honey",
+      "Wooden Skewers"
+    ],
+    "steps": [
+      "Insert skewers into the hotdogs and pat them dry.",
+      "Mix cornmeal, flour, egg, milk, and honey to make a thick, smooth batter.",
+      "Pour the batter into a tall glass and dip each hotdog until fully coated.",
+      "Deep fry in hot oil, rotating constantly, until the batter is golden brown.",
+      "Serve with mustard and ketchup."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m128",
+    "categoryIds": [
+      "c20"
+    ],
+    "title": "Cauliflower Buffalo Wings",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1623653387945-2fd25214f8fc?q=80&w=500&auto=format&fit=crop",
+    "duration": 35,
+    "ingredients": [
+      "1 Head of Cauliflower",
+      "1/2 Cup Flour",
+      "Buffalo Sauce",
+      "Garlic Powder",
+      "Butter (Melted)",
+      "Ranch Dressing (Side)"
+    ],
+    "steps": [
+      "Cut cauliflower into florets and coat them in a simple flour and water batter.",
+      "Bake the florets at 220°C for 20 minutes until they start to crisp.",
+      "Toss the baked cauliflower in a mixture of buffalo sauce and melted butter.",
+      "Bake for another 10 minutes to set the sauce.",
+      "Serve hot with celery sticks and ranch dressing."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m129",
+    "categoryIds": [
+      "c19"
+    ],
+    "title": "German Currywurst",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://i.pinimg.com/1200x/1b/9c/4c/1b9c4c12a24d09f9f9972ea0f66ba264.jpg",
+    "duration": 20,
+    "ingredients": [
+      "2 Bratwurst Sausages",
+      "Ketchup",
+      "Curry Powder",
+      "Onion Powder",
+      "French Fries (Side)"
+    ],
+    "steps": [
+      "Grill or pan-fry the bratwurst until fully cooked and browned.",
+      "Slice the sausage into bite-sized pieces.",
+      "Prepare the sauce by mixing ketchup with a dash of curry powder and spices.",
+      "Pour the sauce generously over the sausage slices.",
+      "Dust with more curry powder and serve with a side of hot fries."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m130",
+    "categoryIds": [
+      "c20"
+    ],
+    "title": "Greek Spanakopita",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://i.pinimg.com/1200x/c9/61/e0/c961e0df0f142fba092294e684b5f5fa.jpg",
+    "duration": 60,
+    "ingredients": [
+      "Phyllo Pastry Sheets",
+      "500g Spinach",
+      "300g Feta Cheese",
+      "Fresh Dill",
+      "Onions",
+      "Melted Butter"
+    ],
+    "steps": [
+      "Sauté onions and spinach, let cool, and mix with crumbled feta and chopped dill.",
+      "Layer several sheets of phyllo dough in a pan, brushing each with melted butter.",
+      "Spread the spinach-feta mixture over the dough.",
+      "Top with more buttered phyllo sheets.",
+      "Score the top layer into squares and bake at 180°C until the pastry is flaky and golden brown."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m131",
+    "categoryIds": [
+      "c1"
+    ],
+    "title": "Penne Arrabbiata",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "300g Penne Pasta",
+      "2 cloves Garlic",
+      "Dried Red Chili Flakes",
+      "400g Canned Tomatoes",
+      "Fresh Parsley"
+    ],
+    "steps": [
+      "Sauté garlic and chili flakes in olive oil until fragrant.",
+      "Add tomatoes and simmer for 10 minutes to thicken the sauce.",
+      "Boil pasta until al dente, then toss directly into the spicy sauce.",
+      "Garnish with fresh parsley and serve hot."
+    ],
+    "isGlutenFree": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m117",
+    "categoryIds": [
+      "c1"
+    ],
+    "title": "Cacio e Pepe",
+    "affordability": "affordable",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1663153465971-7fbb838043ca?q=80&w=500&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "duration": 15,
+    "ingredients": [
+      "Spaghetti",
+      "Pecorino Romano Cheese",
+      "Black Peppercorns",
+      "Salt"
+    ],
+    "steps": [
+      "Toast crushed black peppercorns in a pan until fragrant.",
+      "Boil spaghetti in a small amount of water (to keep it starchy).",
+      "Mix finely grated Pecorino with a little pasta water to create a paste.",
+      "Toss the pasta in the pepper pan, remove from heat, and quickly stir in the cheese paste until creamy.",
+      "Serve immediately on warm plates."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m132",
+    "categoryIds": [
+      "c2"
+    ],
+    "title": "Avocado Toast with Poached Egg",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=500&auto=format&fit=crop",
+    "duration": 15,
+    "ingredients": [
+      "2 Slices of Sourdough",
+      "1 Ripe Avocado",
+      "2 Eggs",
+      "Lemon Juice",
+      "Chili Flakes"
+    ],
+    "steps": [
+      "Toast the bread until golden and crunchy.",
+      "Mash avocado with lemon juice, salt, and pepper; spread on toast.",
+      "Poach eggs in simmering water for 3 minutes until whites are set but yolks are runny.",
+      "Place eggs on top and sprinkle with chili flakes."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m134",
+    "categoryIds": [
+      "c4"
+    ],
+    "title": "Schnitzel Wiener Art",
+    "affordability": "pricey",
+    "complexity": "challenging",
+    "imageUrl": "https://i.pinimg.com/400x/50/e9/1f/50e91fa3b496086f32ca06ee5065a66e.jpg",
+    "duration": 35,
+    "ingredients": [
+      "Veal or Pork Cutlets",
+      "Flour",
+      "2 Eggs",
+      "Breadcrumbs",
+      "Lemon Wedges"
+    ],
+    "steps": [
+      "Pound the cutlets until very thin.",
+      "Dredge in flour, dip in beaten eggs, and coat with breadcrumbs.",
+      "Fry in a generous amount of butter or oil until golden and wavy.",
+      "Serve with lemon wedges and a side of potato salad."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m136",
+    "categoryIds": [
+      "c6"
+    ],
+    "title": "Thai Green Curry",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://i.pinimg.com/1200x/9f/36/2c/9f362c73113c37c088849e23234b87aa.jpg",
+    "duration": 45,
+    "ingredients": [
+      "Chicken or Tofu",
+      "Green Curry Paste",
+      "Coconut Milk",
+      "Bamboo Shoots",
+      "Thai Basil"
+    ],
+    "steps": [
+      "Fry curry paste in coconut cream until fragrant.",
+      "Add protein and cook through.",
+      "Pour in remaining coconut milk and add bamboo shoots.",
+      "Simmer for 10 minutes and stir in fresh Thai basil at the end."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m139",
+    "categoryIds": [
+      "c9"
+    ],
+    "title": "Coq au Vin",
+    "affordability": "luxurious",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=500&auto=format&fit=crop",
+    "duration": 120,
+    "ingredients": [
+      "Chicken Thighs",
+      "Red Wine (Burgundy)",
+      "Pearl Onions",
+      "Mushrooms",
+      "Bacon"
+    ],
+    "steps": [
+      "Brown the chicken and bacon in a large pot.",
+      "Add mushrooms and onions, then pour in the wine.",
+      "Slow-cook for 1.5 hours until the chicken is tender and the sauce is dark and rich.",
+      "Serve with mashed potatoes or crusty bread."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m140",
+    "categoryIds": [
+      "c10"
+    ],
+    "title": "Baklava",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://i.pinimg.com/736x/62/4f/bb/624fbb4dc47ab008aa3f7d0342c9da28.jpg",
+    "duration": 90,
+    "ingredients": [
+      "Phyllo Dough",
+      "Crushed Walnuts/Pistachios",
+      "Butter",
+      "Honey Syrup",
+      "Cinnamon"
+    ],
+    "steps": [
+      "Layer sheets of phyllo dough, brushing each with melted butter.",
+      "Spread a thick layer of crushed nuts and cinnamon in the middle.",
+      "Continue layering dough, then cut into diamond shapes.",
+      "Bake until golden and pour cold honey syrup over the hot pastry."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m142",
+    "categoryIds": [
+      "c12"
+    ],
+    "title": "Quesadillas",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?q=80&w=500&auto=format&fit=crop",
+    "duration": 15,
+    "ingredients": [
+      "Flour Tortillas",
+      "Monterey Jack Cheese",
+      "Grilled Chicken",
+      "Salsa",
+      "Guacamole"
+    ],
+    "steps": [
+      "Place cheese and chicken on half of a tortilla.",
+      "Fold over and grill in a pan until cheese is melted and tortilla is crispy.",
+      "Cut into wedges and serve with salsa and guacamole."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m143",
+    "categoryIds": [
+      "c13"
+    ],
+    "title": "Dal Makhani",
+    "affordability": "affordable",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=500&auto=format&fit=crop",
+    "duration": 120,
+    "ingredients": [
+      "Black Lentils",
+      "Kidney Beans",
+      "Butter",
+      "Cream",
+      "Ginger-Garlic Paste"
+    ],
+    "steps": [
+      "Slow-cook lentils and beans overnight or for several hours.",
+      "Sauté spices and tomato puree, then add the cooked lentils.",
+      "Simmer for a long time, adding butter and cream at the end for a velvety texture.",
+      "Serve with garlic naan."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m144",
+    "categoryIds": [
+      "c14"
+    ],
+    "title": "Lobster Roll",
+    "affordability": "luxurious",
+    "complexity": "challenging",
+    "imageUrl": "https://i.pinimg.com/1200x/9f/e2/d1/9fe2d12c32dbaac266939fc5b231ead5.jpg",
+    "duration": 30,
+    "ingredients": [
+      "Fresh Lobster Meat",
+      "Butter",
+      "Brioche Hotdog Bun",
+      "Lemon Juice",
+      "Chives"
+    ],
+    "steps": [
+      "Poach lobster meat in melted butter until just tender.",
+      "Toast the brioche bun with butter.",
+      "Fill the bun with lobster and drizzle with lemon juice.",
+      "Top with fresh chives and serve with chips."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m145",
+    "categoryIds": [
+      "c15"
+    ],
+    "title": "Vegan Chickpea Curry",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=500&auto=format&fit=crop",
+    "duration": 25,
+    "ingredients": [
+      "2 cans Chickpeas",
+      "Coconut Milk",
+      "Spinach",
+      "Turmeric & Ginger",
+      "Rice"
+    ],
+    "steps": [
+      "Sauté ginger and onions, add spices and chickpeas.",
+      "Pour in coconut milk and simmer for 15 minutes.",
+      "Stir in fresh spinach at the last minute until wilted.",
+      "Serve over a bed of fluffy basmati rice."
+    ],
+    "isGlutenFree": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m148",
+    "categoryIds": [
+      "c18"
+    ],
+    "title": "Beef Stroganoff",
+    "affordability": "luxurious",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=500&auto=format&fit=crop",
+    "duration": 40,
+    "ingredients": [
+      "Beef Sirloin",
+      "Mushrooms",
+      "Sour Cream",
+      "Beef Broth",
+      "Egg Noodles"
+    ],
+    "steps": [
+      "Sear beef strips quickly and set aside.",
+      "Sauté mushrooms and onions, add broth and simmer.",
+      "Stir in sour cream to create a rich sauce and return the beef.",
+      "Serve over a bed of buttery egg noodles."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m149",
+    "categoryIds": [
+      "c19"
+    ],
+    "title": "Churros with Chocolate Sauce",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://i.pinimg.com/736x/6d/31/af/6d31af7cafd0ed1ac9769f54817175cd.jpg",
+    "duration": 30,
+    "ingredients": [
+      "Flour",
+      "Butter",
+      "Cinnamon Sugar",
+      "Dark Chocolate",
+      "Heavy Cream"
+    ],
+    "steps": [
+      "Make a choux pastry dough and pipe long strips into hot oil.",
+      "Fry until golden and immediately roll in cinnamon sugar.",
+      "Melt chocolate with cream to make a dipping sauce.",
+      "Serve warm and crispy."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m150",
+    "categoryIds": [
+      "c20"
+    ],
+    "title": "Butternut Squash Ravioli",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://i.pinimg.com/1200x/28/48/f0/2848f0d5a465d63ee8961060054d0cd9.jpg",
+    "duration": 60,
+    "ingredients": [
+      "Butternut Squash",
+      "Fresh Pasta Sheets",
+      "Sage",
+      "Brown Butter",
+      "Amaretti Cookies"
+    ],
+    "steps": [
+      "Roast squash, mash it, and mix with amaretti crumbs for sweetness.",
+      "Fill pasta sheets with the squash mixture and seal into ravioli.",
+      "Boil until they float.",
+      "Toss in a pan with foaming brown butter and fresh sage leaves until crispy."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  }
+]

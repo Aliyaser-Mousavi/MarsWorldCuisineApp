@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "../../constants/theme";
+import { useLocale } from "../../constants/locale";
 
 /**
  * Themed text field with focus ring, optional password toggle, and error state.
@@ -26,6 +27,7 @@ const CustomTextInput = ({
   ...rest
 }) => {
   const { colors } = useTheme();
+  const { isRTL } = useLocale();
   const [focused, setFocused] = useState(false);
   const [hidden, setHidden] = useState(secureTextEntry);
 
@@ -38,7 +40,18 @@ const CustomTextInput = ({
   return (
     <View style={[styles.wrap, style]}>
       {label ? (
-        <Text style={[styles.label, { color: colors.ink }]}>{label}</Text>
+        <Text
+          style={[
+            styles.label,
+            {
+              color: colors.ink,
+              textAlign: isRTL ? "right" : "left",
+              writingDirection: isRTL ? "rtl" : "ltr",
+            },
+          ]}
+        >
+          {label}
+        </Text>
       ) : null}
       <View
         style={[
@@ -46,6 +59,7 @@ const CustomTextInput = ({
           {
             backgroundColor: colors.bg,
             borderColor,
+            flexDirection: isRTL ? "row-reverse" : "row",
           },
           focused && !error && { backgroundColor: colors.surface },
           error && { backgroundColor: colors.dangerSoft },
@@ -56,11 +70,20 @@ const CustomTextInput = ({
             name={leftIcon}
             size={18}
             color={focused ? colors.accent : colors.inkSoft}
-            style={styles.leftIcon}
+            style={isRTL ? styles.leftIconRtl : styles.leftIcon}
           />
         ) : null}
         <TextInput
-          style={[styles.input, { color: colors.ink }, inputStyle]}
+          style={[
+            styles.input,
+            {
+              color: colors.ink,
+              textAlign: isRTL ? "right" : "left",
+              writingDirection: isRTL ? "rtl" : "ltr",
+              fontFamily: isRTL ? undefined : "DMSans_400Regular",
+            },
+            inputStyle,
+          ]}
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
@@ -75,7 +98,7 @@ const CustomTextInput = ({
           <Pressable
             onPress={() => setHidden((v) => !v)}
             hitSlop={10}
-            style={styles.eye}
+            style={isRTL ? styles.eyeRtl : styles.eye}
             accessibilityRole="button"
             accessibilityLabel={hidden ? "Show password" : "Hide password"}
           >
@@ -98,13 +121,11 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   label: {
-    fontFamily: "DMSans_500Medium",
     fontSize: 13,
     lineHeight: 18,
     marginBottom: 6,
   },
   field: {
-    flexDirection: "row",
     alignItems: "center",
     borderWidth: 1.5,
     borderRadius: 12,
@@ -114,8 +135,10 @@ const styles = StyleSheet.create({
   leftIcon: {
     marginRight: 8,
   },
+  leftIconRtl: {
+    marginLeft: 8,
+  },
   input: {
-    fontFamily: "DMSans_400Regular",
     fontSize: 15,
     lineHeight: 22,
     flex: 1,
@@ -123,6 +146,10 @@ const styles = StyleSheet.create({
   },
   eye: {
     marginLeft: 8,
+    padding: 4,
+  },
+  eyeRtl: {
+    marginRight: 8,
     padding: 4,
   },
 });

@@ -1,5 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
+import { toPersianDigits } from "../utils/formatters";
 
 const MealDetails = ({
   duration,
@@ -10,35 +12,73 @@ const MealDetails = ({
   compact = false,
 }) => {
   const { colors } = useTheme();
+  const { t, isRTL } = useLocale();
+
+  const complexityLabel = complexity
+    ? t(`mealDetails.complexity.${complexity.toLowerCase()}`, {
+        defaultValue: complexity,
+      })
+    : "";
+
+  const affordabilityLabel = affordability
+    ? t(`mealDetails.affordability.${affordability.toLowerCase()}`, {
+        defaultValue: affordability,
+      })
+    : "";
+
+  const durationFormatted = isRTL ? toPersianDigits(duration) : duration;
+  const durationLabel = duration
+    ? t("mealDetails.durationMin", {
+        duration: durationFormatted,
+        defaultValue: isRTL ? `${durationFormatted} دقیقه` : `${duration} min`,
+      })
+    : "";
+
   const items = [
-    `${duration} min`,
-    complexity,
-    affordability,
-  ];
+    durationLabel ? { key: "duration", label: durationLabel } : null,
+    complexityLabel ? { key: "complexity", label: complexityLabel } : null,
+    affordabilityLabel
+      ? { key: "affordability", label: affordabilityLabel }
+      : null,
+  ].filter(Boolean);
 
   return (
     <View
       style={[
         styles.details,
-        { backgroundColor: colors.accentSoft },
+        {
+          backgroundColor: colors.accentSoft,
+          flexDirection: isRTL ? "row-reverse" : "row",
+          justifyContent: isRTL ? "flex-start" : "flex-start",
+        },
         compact && styles.compact,
         style,
       ]}
     >
       {items.map((item, index) => (
-        <View key={item} style={styles.chipRow}>
+        <View
+          key={item.key}
+          style={[
+            styles.chipRow,
+            { flexDirection: isRTL ? "row-reverse" : "row" },
+          ]}
+        >
           {index > 0 && (
             <Text style={[styles.dot, { color: colors.inkSoft }]}>·</Text>
           )}
           <Text
             style={[
               styles.detailItem,
-              { color: colors.inkMuted },
+              {
+                color: colors.inkMuted,
+                textAlign: isRTL ? "right" : "left",
+                writingDirection: isRTL ? "rtl" : "ltr",
+              },
               compact && styles.detailCompact,
               textStyle,
             ]}
           >
-            {item}
+            {item.label}
           </Text>
         </View>
       ))}

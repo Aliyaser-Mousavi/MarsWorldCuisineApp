@@ -11,20 +11,32 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { MEALS } from "../data/dummy-data";
 import { markCooked } from "../store/redux/recipeMeta";
 import { extractStepTimer, formatCountdown } from "../utils/stepTimers";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
+import { useLocalizedMeal } from "../utils/catalogue";
+import { toPersianDigits } from "../utils/formatters";
+import {
+  scheduleTimerAlert,
+  cancelTimerAlert,
+} from "../services/notificationService";
 
 const CookingModeScreen = ({ route, navigation }) => {
   const { colors, radii, spacing, type } = useTheme();
+  const { t } = useTranslation();
+  const { isRTL } = useLocale();
   const styles = useMemo(
-    () => createStyles(colors, type, spacing, radii),
-    [colors, type, spacing, radii],
+    () => createStyles(colors, type, spacing, radii, isRTL),
+    [colors, type, spacing, radii, isRTL],
   );
   const mealId = route.params?.mealId;
-  const meal = MEALS.find((m) => m.id === mealId);
+  const canonicalMeal = MEALS.find((m) => m.id === mealId);
+  const meal = useLocalizedMeal(canonicalMeal);
   const steps = meal?.steps || [];
+  const canonicalSteps = canonicalMeal?.steps || [];
   const [stepIndex, setStepIndex] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [running, setRunning] = useState(false);
@@ -35,22 +47,35 @@ const CookingModeScreen = ({ route, navigation }) => {
   const stepIntervalRef = useRef(null);
 
   const detected = useMemo(
-    () => extractStepTimer(steps[stepIndex]),
-    [steps, stepIndex],
+    () =>
+      extractStepTimer(steps[stepIndex]) ||
+      extractStepTimer(canonicalSteps[stepIndex]),
+    [steps, canonicalSteps, stepIndex],
   );
+
+  const detectedLabel = useMemo(() => {
+    if (!detected?.label) return "";
+    if (!isRTL) return detected.label;
+    return toPersianDigits(
+      detected.label
+        .replace(/minutes?|mins?|min/g, "دقیقه")
+        .replace(/hours?|hrs?|hr/g, "ساعت")
+        .replace(/seconds?|secs?|sec/g, "ثانیه"),
+    );
+  }, [detected, isRTL]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: "Cooking mode",
+      title: t("cookingMode.title"),
       headerStyle: { backgroundColor: colors.brand },
       headerTintColor: colors.onBrand,
       headerTitleStyle: {
-        fontFamily: "Fraunces_600SemiBold",
+        ...(isRTL ? {} : { fontFamily: "Fraunces_600SemiBold" }),
         fontSize: 18,
         color: colors.onBrand,
       },
     });
-  }, [navigation, colors]);
+  }, [navigation, colors, isRTL, t]);
 
   useEffect(() => {
     activateKeepAwakeAsync("cooking-mode");
@@ -71,10 +96,13 @@ const CookingModeScreen = ({ route, navigation }) => {
   }, [running]);
 
   useEffect(() => {
-    // Reset step countdown when the step changes.
     setStepRunning(false);
     setStepCountdown(null);
-  }, [stepIndex]);
+    cancelTimerAlert(`cooking_${mealId}_step_${stepIndex}`).catch(() => {});
+    return () => {
+      cancelTimerAlert(`cooking_${mealId}_step_${stepIndex}`).catch(() => {});
+    };
+  }, [stepIndex, mealId]);
 
   useEffect(() => {
     if (!stepRunning) return undefined;
@@ -92,8 +120,9 @@ const CookingModeScreen = ({ route, navigation }) => {
   useEffect(() => {
     if (stepCountdown !== 0 || !stepRunning) return;
     setStepRunning(false);
+    cancelTimerAlert(`cooking_${mealId}_step_${stepIndex}`).catch(() => {});
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-  }, [stepCountdown, stepRunning]);
+  }, [stepCountdown, stepRunning, mealId, stepIndex]);
 
   if (!meal) {
     return (
@@ -105,13 +134,13 @@ const CookingModeScreen = ({ route, navigation }) => {
             textAlign: "center",
           }}
         >
-          Recipe not found
+          {t("cookingMode.recipeNotFound")}
         </Text>
         <Pressable
           style={[styles.navBtn, styles.navPrimary, { marginTop: 16 }]}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.navPrimaryText}>Go back</Text>
+          <Text style={styles.navPrimaryText}>{t("cookingMode.goBack")}</Text>
         </Pressable>
       </View>
     );
@@ -122,7 +151,8 @@ const CookingModeScreen = ({ route, navigation }) => {
       .toString()
       .padStart(2, "0");
     const s = (total % 60).toString().padStart(2, "0");
-    return `${m}:${s}`;
+    const formatted = `${m}:${s}`;
+    return isRTL ? toPersianDigits(formatted) : formatted;
   };
 
   const goNext = () => {
@@ -145,6 +175,14 @@ const CookingModeScreen = ({ route, navigation }) => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setStepCountdown(detected.seconds);
     setStepRunning(true);
+    scheduleTimerAlert({
+      timerId: `cooking_${mealId}_step_${stepIndex}`,
+      label: detectedLabel || (isRTL ? "مرحله پخت" : "Cooking step"),
+      seconds: detected.seconds,
+      mealId,
+      stepIndex,
+      language: isRTL ? "fa" : "en",
+    }).catch(() => {});
   };
 
   const progress = steps.length ? ((stepIndex + 1) / steps.length) * 100 : 0;
@@ -159,7 +197,10 @@ const CookingModeScreen = ({ route, navigation }) => {
           {meal.title}
         </Text>
         <Text style={styles.stepCount}>
-          Step {stepIndex + 1} of {steps.length}
+          {t("cookingMode.stepOf", {
+            current: stepIndex + 1,
+            total: steps.length,
+          })}
         </Text>
       </View>
 
@@ -174,9 +215,13 @@ const CookingModeScreen = ({ route, navigation }) => {
           <View style={styles.stepTimerBox}>
             {stepCountdown == null ? (
               <Pressable style={styles.stepTimerStart} onPress={startStepTimer}>
-                <Ionicons name="timer-outline" size={18} color={colors.accent} />
+                <Ionicons
+                  name="timer-outline"
+                  size={18}
+                  color={colors.accent}
+                />
                 <Text style={styles.stepTimerStartText}>
-                  Start {detected.label} timer
+                  {t("cookingMode.startTimer")} ({detectedLabel})
                 </Text>
               </Pressable>
             ) : (
@@ -187,7 +232,9 @@ const CookingModeScreen = ({ route, navigation }) => {
                     stepDone && styles.stepCountdownDone,
                   ]}
                 >
-                  {stepDone ? "Done" : formatCountdown(stepCountdown)}
+                  {stepDone
+                    ? t("common.done")
+                    : formatCountdown(stepCountdown, isRTL)}
                 </Text>
                 {!stepDone && (
                   <Pressable
@@ -203,7 +250,9 @@ const CookingModeScreen = ({ route, navigation }) => {
                 )}
                 {stepDone && (
                   <Pressable onPress={startStepTimer} hitSlop={8}>
-                    <Text style={styles.restartText}>Restart</Text>
+                    <Text style={styles.restartText}>
+                      {t("cookingMode.resetTimer")}
+                    </Text>
                   </Pressable>
                 )}
               </View>
@@ -224,7 +273,9 @@ const CookingModeScreen = ({ route, navigation }) => {
             color={colors.onBrand}
           />
           <Text style={styles.timerBtnText}>
-            {running ? "Pause session" : "Start session"}
+            {running
+              ? t("cookingMode.pauseTimer")
+              : t("cookingMode.startTimer")}
           </Text>
         </Pressable>
       </View>
@@ -235,15 +286,23 @@ const CookingModeScreen = ({ route, navigation }) => {
           onPress={goPrev}
           disabled={stepIndex === 0}
         >
-          <Ionicons name="chevron-back" size={20} color={colors.ink} />
-          <Text style={styles.navBtnText}>Back</Text>
+          <Ionicons
+            name={isRTL ? "chevron-forward" : "chevron-back"}
+            size={20}
+            color={colors.ink}
+          />
+          <Text style={styles.navBtnText}>{t("cookingMode.previousStep")}</Text>
         </Pressable>
         <Pressable style={[styles.navBtn, styles.navPrimary]} onPress={goNext}>
           <Text style={styles.navPrimaryText}>
-            {isLast ? "Done cooking" : "Next step"}
+            {isLast
+              ? t("cookingMode.finishCooking")
+              : t("cookingMode.nextStep")}
           </Text>
           <Ionicons
-            name={isLast ? "checkmark" : "chevron-forward"}
+            name={
+              isLast ? "checkmark" : isRTL ? "chevron-back" : "chevron-forward"
+            }
             size={20}
             color={colors.onBrand}
           />
@@ -255,144 +314,148 @@ const CookingModeScreen = ({ route, navigation }) => {
 
 export default CookingModeScreen;
 
-const createStyles = (colors, type, spacing, radii) =>
+const createStyles = (colors, type, spacing, radii, isRTL) =>
   StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: colors.brand,
-    paddingHorizontal: spacing.lg,
-    paddingBottom: Platform.OS === "ios" ? 40 : 24,
-  },
-  topBar: {
-    paddingTop: spacing.md,
-    marginBottom: spacing.md,
-  },
-  mealTitle: {
-    fontFamily: "Fraunces_600SemiBold",
-    fontSize: 20,
-    color: colors.onBrand,
-    marginBottom: 4,
-  },
-  stepCount: {
-    ...type.label,
-    color: "rgba(255,255,255,0.65)",
-  },
-  progressTrack: {
-    height: 3,
-    backgroundColor: "rgba(255,255,255,0.2)",
-    borderRadius: 2,
-    marginBottom: spacing.lg,
-    overflow: "hidden",
-  },
-  progressFill: {
-    height: "100%",
-    backgroundColor: colors.accentSoft,
-  },
-  card: {
-    flex: 1,
-    backgroundColor: colors.surface,
-    borderRadius: radii.lg,
-    padding: spacing.lg,
-    justifyContent: "center",
-  },
-  stepText: {
-    fontFamily: "DMSans_400Regular",
-    fontSize: 22,
-    lineHeight: 32,
-    color: colors.ink,
-  },
-  stepTimerBox: {
-    marginTop: spacing.lg,
-    paddingTop: spacing.md,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.border,
-  },
-  stepTimerStart: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    alignSelf: "flex-start",
-    backgroundColor: colors.accentSoft,
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-    borderRadius: radii.pill,
-  },
-  stepTimerStartText: {
-    ...type.heading,
-    fontSize: 14,
-    color: colors.accent,
-  },
-  stepTimerActive: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  stepCountdown: {
-    fontFamily: "Fraunces_600SemiBold",
-    fontSize: 32,
-    color: colors.ink,
-    letterSpacing: 1,
-  },
-  stepCountdownDone: {
-    color: colors.accent,
-    fontSize: 28,
-  },
-  restartText: {
-    ...type.label,
-    color: colors.accent,
-  },
-  timerBlock: {
-    alignItems: "center",
-    marginVertical: spacing.lg,
-    gap: 10,
-  },
-  timer: {
-    fontFamily: "Fraunces_600SemiBold",
-    fontSize: 40,
-    color: colors.onBrand,
-    letterSpacing: 2,
-  },
-  timerBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    backgroundColor: "rgba(255,255,255,0.12)",
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: radii.pill,
-  },
-  timerBtnText: {
-    ...type.label,
-    color: colors.onBrand,
-  },
-  navRow: {
-    flexDirection: "row",
-    gap: 12,
-  },
-  navBtn: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 4,
-    backgroundColor: colors.surface,
-    paddingVertical: 14,
-    borderRadius: radii.md,
-  },
-  navBtnDisabled: {
-    opacity: 0.4,
-  },
-  navBtnText: {
-    ...type.heading,
-    fontSize: 15,
-  },
-  navPrimary: {
-    backgroundColor: colors.accent,
-    flex: 1.4,
-  },
-  navPrimaryText: {
-    ...type.heading,
-    fontSize: 15,
-    color: colors.onBrand,
-  },
-});
+    root: {
+      flex: 1,
+      backgroundColor: colors.brand,
+      paddingHorizontal: spacing.lg,
+      paddingBottom: Platform.OS === "ios" ? 40 : 24,
+    },
+    topBar: {
+      paddingTop: spacing.md,
+      marginBottom: spacing.md,
+    },
+    mealTitle: {
+      ...(isRTL ? {} : { fontFamily: "Fraunces_600SemiBold" }),
+      fontSize: 20,
+      color: colors.onBrand,
+      marginBottom: 4,
+      textAlign: isRTL ? "right" : "left",
+    },
+    stepCount: {
+      ...type.label,
+      color: "rgba(255,255,255,0.65)",
+      textAlign: isRTL ? "right" : "left",
+    },
+    progressTrack: {
+      height: 3,
+      backgroundColor: "rgba(255,255,255,0.2)",
+      borderRadius: 2,
+      marginBottom: spacing.lg,
+      overflow: "hidden",
+    },
+    progressFill: {
+      height: "100%",
+      backgroundColor: colors.accentSoft,
+    },
+    card: {
+      flex: 1,
+      backgroundColor: colors.surface,
+      borderRadius: radii.lg,
+      padding: spacing.lg,
+      justifyContent: "center",
+    },
+    stepText: {
+      fontFamily: "DMSans_400Regular",
+      fontSize: 22,
+      lineHeight: 32,
+      color: colors.ink,
+      textAlign: isRTL ? "right" : "left",
+      writingDirection: isRTL ? "rtl" : "ltr",
+    },
+    stepTimerBox: {
+      marginTop: spacing.lg,
+      paddingTop: spacing.md,
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderTopColor: colors.border,
+    },
+    stepTimerStart: {
+      flexDirection: isRTL ? "row-reverse" : "row",
+      alignItems: "center",
+      gap: 8,
+      alignSelf: isRTL ? "flex-end" : "flex-start",
+      backgroundColor: colors.accentSoft,
+      paddingVertical: 10,
+      paddingHorizontal: 14,
+      borderRadius: radii.pill,
+    },
+    stepTimerStartText: {
+      ...type.heading,
+      fontSize: 14,
+      color: colors.accent,
+    },
+    stepTimerActive: {
+      flexDirection: isRTL ? "row-reverse" : "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    stepCountdown: {
+      ...(isRTL ? {} : { fontFamily: "Fraunces_600SemiBold" }),
+      fontSize: 32,
+      color: colors.ink,
+      letterSpacing: 1,
+    },
+    stepCountdownDone: {
+      color: colors.accent,
+      fontSize: 28,
+    },
+    restartText: {
+      ...type.label,
+      color: colors.accent,
+    },
+    timerBlock: {
+      alignItems: "center",
+      marginVertical: spacing.lg,
+      gap: 10,
+    },
+    timer: {
+      fontFamily: "Fraunces_600SemiBold",
+      fontSize: 40,
+      color: colors.onBrand,
+      letterSpacing: 2,
+    },
+    timerBtn: {
+      flexDirection: isRTL ? "row-reverse" : "row",
+      alignItems: "center",
+      gap: 8,
+      backgroundColor: "rgba(255,255,255,0.12)",
+      paddingVertical: 10,
+      paddingHorizontal: 16,
+      borderRadius: radii.pill,
+    },
+    timerBtnText: {
+      ...type.label,
+      color: colors.onBrand,
+    },
+    navRow: {
+      flexDirection: isRTL ? "row-reverse" : "row",
+      gap: 12,
+    },
+    navBtn: {
+      flex: 1,
+      flexDirection: isRTL ? "row-reverse" : "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 4,
+      backgroundColor: colors.surface,
+      paddingVertical: 14,
+      borderRadius: radii.md,
+    },
+    navBtnDisabled: {
+      opacity: 0.4,
+    },
+    navBtnText: {
+      ...type.heading,
+      fontSize: 15,
+    },
+    navPrimary: {
+      backgroundColor: colors.accent,
+      flex: 1.4,
+    },
+    navPrimaryText: {
+      ...type.heading,
+      fontSize: 15,
+      color: colors.onBrand,
+    },
+  });

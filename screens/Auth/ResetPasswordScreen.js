@@ -17,9 +17,11 @@ import CustomButton from "../../components/UI/CustomButton";
 import FeedbackBanner from "../../components/UI/FeedbackBanner";
 import CustomModal from "../../components/CustomModal";
 import { useTheme } from "../../constants/theme";
+import { useLocale } from "../../constants/locale";
 
 const ResetPasswordScreen = ({ navigation }) => {
-  const { colors, type, spacing, radii, shadows } = useTheme();
+  const { colors, type, spacing, radii } = useTheme();
+  const { t, isRTL } = useLocale();
   const styles = useMemo(
     () => createStyles(colors, type, spacing, radii),
     [colors, type, spacing, radii],
@@ -33,43 +35,59 @@ const ResetPasswordScreen = ({ navigation }) => {
 
   const handleSubmit = async () => {
     if (!password || !confirmPassword) {
-      setLocalError("Please enter and confirm your new password.");
+      setLocalError(t("auth.enterAndConfirmPassword"));
       return;
     }
 
     if (password.length < 6) {
-      setLocalError("Password must be at least 6 characters.");
+      setLocalError(t("auth.passwordLengthError"));
       return;
     }
 
     if (password !== confirmPassword) {
-      setLocalError("Passwords do not match.");
+      setLocalError(t("auth.passwordsDoNotMatch"));
       return;
     }
 
     setLocalError("");
     setSubmitting(true);
 
-    const { error } = await supabase.auth.updateUser({ password });
-
-    setSubmitting(false);
-
-    if (error) {
-      const message = error.message || "Could not update password.";
-      setLocalError(message);
-      dispatch(setError(message));
+    if (!supabase) {
+      setSubmitting(false);
+      setLocalError(
+        "Authentication service is not available. Please check your network connection.",
+      );
       return;
     }
 
-    dispatch(setError(null));
-    setSuccessDialog(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ password });
+
+      if (error) {
+        const message = error.message || t("auth.couldNotUpdatePassword");
+        setLocalError(message);
+        dispatch(setError(message));
+        return;
+      }
+
+      dispatch(setError(null));
+      setSuccessDialog(true);
+    } catch (err) {
+      const message =
+        err?.message ||
+        t("auth.couldNotUpdatePassword") ||
+        "Could not update password.";
+      setLocalError(message);
+      dispatch(setError(message));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const finishRecovery = () => {
     setSuccessDialog(false);
     dispatch(setPasswordRecovery(false));
-    // Session is already active — AppNavigation will show the main app.
-    // If somehow unauthenticated, fall back to Login.
+
     if (navigation?.canGoBack?.()) {
       navigation.navigate("Login");
     }
@@ -91,7 +109,12 @@ const ResetPasswordScreen = ({ navigation }) => {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <View style={styles.brandMark}>
+          <View
+            style={[
+              styles.brandMark,
+              { flexDirection: isRTL ? "row-reverse" : "row" },
+            ]}
+          >
             <View style={styles.brandIcon}>
               <Ionicons
                 name="shield-checkmark-outline"
@@ -99,23 +122,41 @@ const ResetPasswordScreen = ({ navigation }) => {
                 color={colors.onBrand}
               />
             </View>
-            <Text style={styles.kicker}>Mars World Cuisine</Text>
+            <Text style={styles.kicker}>{t("common.appName")}</Text>
           </View>
 
-          <Text style={styles.title}>Choose a new password</Text>
-          <Text style={styles.subtitle}>
-            Enter a new password for your account, then confirm it below.
+          <Text
+            style={[
+              styles.title,
+              {
+                textAlign: isRTL ? "right" : "left",
+                writingDirection: isRTL ? "rtl" : "ltr",
+              },
+            ]}
+          >
+            {t("auth.chooseNewPassword")}
+          </Text>
+          <Text
+            style={[
+              styles.subtitle,
+              {
+                textAlign: isRTL ? "right" : "left",
+                writingDirection: isRTL ? "rtl" : "ltr",
+              },
+            ]}
+          >
+            {t("auth.chooseNewPasswordSubtitle")}
           </Text>
 
-          <View style={[styles.card, shadows.soft]}>
+          <View style={styles.card}>
             <CustomTextInput
-              label="New password"
+              label={t("auth.newPassword")}
               value={password}
               onChangeText={(v) => {
                 setPassword(v);
                 if (localError) setLocalError("");
               }}
-              placeholder="At least 6 characters"
+              placeholder={t("auth.passwordMinChars")}
               leftIcon="lock-closed-outline"
               secureTextEntry
               textContentType="newPassword"
@@ -124,13 +165,13 @@ const ResetPasswordScreen = ({ navigation }) => {
             />
 
             <CustomTextInput
-              label="Confirm password"
+              label={t("auth.confirmPassword")}
               value={confirmPassword}
               onChangeText={(v) => {
                 setConfirmPassword(v);
                 if (localError) setLocalError("");
               }}
-              placeholder="Re-enter new password"
+              placeholder={t("auth.reenterPasswordPlaceholder")}
               leftIcon="lock-closed-outline"
               secureTextEntry
               textContentType="newPassword"
@@ -145,7 +186,7 @@ const ResetPasswordScreen = ({ navigation }) => {
             />
 
             <CustomButton
-              label="Update password"
+              label={t("auth.updatePassword")}
               onPress={handleSubmit}
               loading={submitting}
               style={styles.submit}
@@ -158,11 +199,11 @@ const ResetPasswordScreen = ({ navigation }) => {
       <CustomModal
         visible={successDialog}
         variant="success"
-        title="Password updated"
-        message="Your password has been changed. You can continue using the app."
+        title={t("auth.passwordUpdated")}
+        message={t("auth.passwordUpdatedMessage")}
         onClose={finishRecovery}
         primaryAction={{
-          label: "Continue",
+          label: t("common.done"),
           onPress: finishRecovery,
         }}
       />
@@ -174,51 +215,51 @@ export default ResetPasswordScreen;
 
 const createStyles = (colors, type, spacing, radii) =>
   StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
-  flex: { flex: 1 },
-  container: {
-    flexGrow: 1,
-    padding: spacing.lg,
-    paddingTop: spacing.xl + spacing.md,
-    justifyContent: "center",
-  },
-  brandMark: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: spacing.sm,
-    marginBottom: spacing.md,
-  },
-  brandIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: radii.sm,
-    backgroundColor: colors.brand,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  kicker: {
-    ...type.label,
-    color: colors.accent,
-  },
-  title: {
-    ...type.display,
-    marginBottom: spacing.sm,
-  },
-  subtitle: {
-    ...type.body,
-    marginBottom: spacing.lg,
-  },
-  card: {
-    backgroundColor: colors.surface,
-    borderRadius: radii.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing.md + 2,
-  },
-  submit: {
-    marginTop: spacing.lg,
-  },
-});
+    root: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
+    flex: { flex: 1 },
+    container: {
+      flexGrow: 1,
+      padding: spacing.lg,
+      paddingTop: spacing.xl + spacing.md,
+      justifyContent: "center",
+    },
+    brandMark: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: spacing.sm,
+      marginBottom: spacing.md,
+    },
+    brandIcon: {
+      width: 40,
+      height: 40,
+      borderRadius: radii.sm,
+      backgroundColor: colors.brand,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    kicker: {
+      ...type.label,
+      color: colors.accent,
+    },
+    title: {
+      ...type.display,
+      marginBottom: spacing.sm,
+    },
+    subtitle: {
+      ...type.body,
+      marginBottom: spacing.lg,
+    },
+    card: {
+      backgroundColor: colors.surface,
+      borderRadius: radii.lg,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: spacing.md + 2,
+    },
+    submit: {
+      marginTop: spacing.lg,
+    },
+  });

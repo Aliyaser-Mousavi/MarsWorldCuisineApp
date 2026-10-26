@@ -39,6 +39,7 @@ function logSyncWarning(scope, error) {
 
 /** Fetch favorites meal IDs for the signed-in user. */
 export async function fetchFavorites(userId) {
+  if (!supabase) return { ids: null, error: new Error("Supabase not configured"), offline: true };
   const { data, error } = await supabase
     .from("favorites")
     .select("meal_id")
@@ -58,6 +59,7 @@ export async function fetchFavorites(userId) {
 
 /** Fetch shopping list items for the signed-in user. */
 export async function fetchShoppingList(userId) {
+  if (!supabase) return { items: null, error: new Error("Supabase not configured"), offline: true };
   const { data, error } = await supabase
     .from("shopping_list_items")
     .select("item_id, name, meal_id, meal_title, checked")
@@ -112,6 +114,7 @@ export async function pullUserKitchenData(userId) {
 }
 
 export async function addFavoriteRemote(userId, mealId) {
+  if (!supabase) return { error: null, offline: true };
   const { error } = await supabase.from("favorites").upsert(
     { user_id: userId, meal_id: mealId },
     { onConflict: "user_id,meal_id" },
@@ -121,6 +124,7 @@ export async function addFavoriteRemote(userId, mealId) {
 }
 
 export async function removeFavoriteRemote(userId, mealId) {
+  if (!supabase) return { error: null, offline: true };
   const { error } = await supabase
     .from("favorites")
     .delete()
@@ -142,6 +146,7 @@ export async function upsertShoppingItemsRemote(userId, items) {
     checked: !!item.checked,
   }));
 
+  if (!supabase) return { error: null, offline: true };
   const { error } = await supabase
     .from("shopping_list_items")
     .upsert(rows, { onConflict: "user_id,item_id" });
@@ -150,6 +155,7 @@ export async function upsertShoppingItemsRemote(userId, items) {
 }
 
 export async function updateShoppingItemCheckedRemote(userId, itemId, checked) {
+  if (!supabase) return { error: null, offline: true };
   const { error } = await supabase
     .from("shopping_list_items")
     .update({ checked })
@@ -160,6 +166,7 @@ export async function updateShoppingItemCheckedRemote(userId, itemId, checked) {
 }
 
 export async function removeShoppingItemRemote(userId, itemId) {
+  if (!supabase) return { error: null, offline: true };
   const { error } = await supabase
     .from("shopping_list_items")
     .delete()
@@ -172,6 +179,7 @@ export async function removeShoppingItemRemote(userId, itemId) {
 export async function removeShoppingItemsRemote(userId, itemIds) {
   if (!itemIds?.length) return { error: null, offline: false };
 
+  if (!supabase) return { error: null, offline: true };
   const { error } = await supabase
     .from("shopping_list_items")
     .delete()
@@ -182,6 +190,7 @@ export async function removeShoppingItemsRemote(userId, itemIds) {
 }
 
 export async function clearShoppingListRemote(userId) {
+  if (!supabase) return { error: null, offline: true };
   const { error } = await supabase
     .from("shopping_list_items")
     .delete()

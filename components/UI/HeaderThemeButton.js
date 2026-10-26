@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Animated } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { useTheme } from "../../constants/theme";
+import { useLocale } from "../../constants/locale";
 
 /**
  * Animated icon button for navigation headers.
@@ -10,6 +11,7 @@ import { useTheme } from "../../constants/theme";
  */
 const HeaderThemeButton = ({ style }) => {
   const { isDark, toggleTheme, colors } = useTheme();
+  const { isRTL } = useLocale();
 
   const rotateAnim = useRef(new Animated.Value(isDark ? 1 : 0)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
@@ -57,6 +59,8 @@ const HeaderThemeButton = ({ style }) => {
         {
           backgroundColor: colors.surface,
           borderColor: colors.border,
+          marginRight: isRTL ? 0 : 16,
+          marginLeft: isRTL ? 16 : 0,
         },
         pressed && styles.buttonPressed,
         style,
@@ -92,7 +96,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    marginRight: 16,
   },
   buttonPressed: {
     opacity: 0.75,

@@ -1,0 +1,4409 @@
+[
+  {
+    "id": "m1",
+    "categoryIds": [
+      "c1"
+    ],
+    "title": "Margherita Pizza",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "duration": 45,
+    "ingredients": [
+      "500g Pizza Flour (Type 00)",
+      "325ml Warm Water",
+      "7g Dried Yeast",
+      "1 tsp Salt",
+      "1/2 tsp Sugar",
+      "200g Canned San Marzano Tomatoes",
+      "200g Fresh Mozzarella Di Bufala",
+      "Fresh Basil Leaves",
+      "Extra Virgin Olive Oil",
+      "Pinch of Sea Salt"
+    ],
+    "steps": [
+      "Mix flour, yeast, sugar, and salt; add water and knead for 10 minutes until smooth.",
+      "Let the dough rise in a warm place for 45-60 minutes until doubled in size.",
+      "Preheat your oven to its maximum temperature (250-300°C) with a pizza stone inside.",
+      "Crush the canned tomatoes by hand and season with a pinch of salt.",
+      "Roll out the dough thinly, spread the tomato sauce, and add torn mozzarella.",
+      "Bake for 7-10 minutes until the crust is charred and cheese is bubbly.",
+      "Top with fresh basil and a drizzle of olive oil immediately after baking."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m2",
+    "categoryIds": [
+      "c2"
+    ],
+    "title": "Grilled Cheese Sandwich",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1528736235302-52922df5c122?q=80&w=1554&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "duration": 15,
+    "ingredients": [
+      "2 Slices of Sourdough or White Bread",
+      "2 Slices of Sharp Cheddar Cheese",
+      "1 Slice of Gruyère or Swiss Cheese",
+      "2 tbsp Unsalted Butter (Softened)",
+      "Pinch of Garlic Powder"
+    ],
+    "steps": [
+      "Spread softened butter evenly on one side of each bread slice.",
+      "Place one slice butter-side down on a cold non-stick skillet.",
+      "Layer the Cheddar and Gruyère cheese on the bread.",
+      "Top with the second slice of bread, butter-side up.",
+      "Turn heat to medium-low and grill for 3-4 minutes until golden brown.",
+      "Flip carefully and grill the other side until the cheese is completely melted."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m3",
+    "categoryIds": [
+      "c3"
+    ],
+    "title": "Classic Cheeseburger",
+    "affordability": "pricey",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=500&auto=format&fit=crop",
+    "duration": 30,
+    "ingredients": [
+      "200g Ground Beef (80/20 fat ratio)",
+      "1 Brioche Burger Bun",
+      "1 Slice of American or Cheddar Cheese",
+      "1 Slice of Tomato",
+      "1 Leaf of Iceberg Lettuce",
+      "2 Slices of Red Onion",
+      "1 tbsp Butter",
+      "Salt and Black Pepper",
+      "1 tbsp Mayonnaise",
+      "1 tsp Ketchup"
+    ],
+    "steps": [
+      "Shape the ground beef into a patty slightly wider than the bun; season heavily with salt and pepper.",
+      "Heat a cast-iron skillet over high heat and sear the patty for 3-4 minutes per side.",
+      "Place the cheese on the patty in the last minute of cooking and cover with a lid to melt.",
+      "Butter the halved buns and toast them on a separate pan until golden brown.",
+      "Spread mayo and ketchup on the bottom bun, then layer lettuce, tomato, onion, and the patty."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m4",
+    "categoryIds": [
+      "c4"
+    ],
+    "title": "Bratwurst with Sauerkraut",
+    "affordability": "luxurious",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?q=80&w=500&auto=format&fit=crop",
+    "duration": 50,
+    "ingredients": [
+      "4 Authentic Bratwurst Sausages",
+      "500g Sauerkraut",
+      "1 White Onion (Sliced)",
+      "1 Apple (Grated)",
+      "250ml German Lager Beer",
+      "1 tbsp Caraway Seeds",
+      "2 tbsp Dijon Mustard",
+      "4 Crusty Bread Rolls",
+      "2 tbsp Butter"
+    ],
+    "steps": [
+      "In a large pan, sauté onions in butter until translucent.",
+      "Add sauerkraut, grated apple, caraway seeds, and beer to the pan. Simmer for 20 minutes.",
+      "In a separate skillet, brown the bratwursts on medium heat for 10-12 minutes.",
+      "Add the browned sausages to the sauerkraut mixture for the last 5 minutes to infuse flavors.",
+      "Serve the sausage inside sliced rolls topped with a large spoonful of sauerkraut and mustard."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m5",
+    "categoryIds": [
+      "c5"
+    ],
+    "title": "Greek Salad",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=500&auto=format&fit=crop",
+    "duration": 15,
+    "ingredients": [
+      "3 Large Tomatoes (Chunky cut)",
+      "1 English Cucumber (Sliced)",
+      "1/2 Red Onion (Thinly sliced)",
+      "100g Kalamata Olives",
+      "200g Block of Feta Cheese",
+      "1 tsp Dried Oregano",
+      "3 tbsp Extra Virgin Olive Oil",
+      "1 tbsp Red Wine Vinegar",
+      "Pinch of Salt"
+    ],
+    "steps": [
+      "Combine tomatoes, cucumber, and red onion in a large shallow bowl.",
+      "Whisk olive oil and red wine vinegar together and drizzle over the vegetables.",
+      "Place the whole block of Feta cheese on top and sprinkle with dried oregano.",
+      "Add the Kalamata olives and serve at room temperature with crusty bread."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m6",
+    "categoryIds": [
+      "c6"
+    ],
+    "title": "Sushi Platter",
+    "affordability": "luxurious",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?q=80&w=500&auto=format&fit=crop",
+    "duration": 60,
+    "ingredients": [
+      "300g Sushi Rice",
+      "50ml Rice Vinegar",
+      "1 tbsp Sugar",
+      "4 Nori Sheets",
+      "150g Fresh Sashimi-grade Salmon",
+      "1 Ripe Avocado",
+      "1/2 Cucumber",
+      "Soy Sauce",
+      "Pickled Ginger",
+      "Wasabi"
+    ],
+    "steps": [
+      "Cook sushi rice and fold in vinegar and sugar while hot. Let it cool completely.",
+      "Place a nori sheet on a bamboo mat and spread a thin layer of rice over it.",
+      "Place thin strips of salmon, avocado, and cucumber across the center.",
+      "Roll the mat tightly to form a cylinder, then cut into 6-8 even pieces.",
+      "Serve with soy sauce, wasabi, and ginger."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m7",
+    "categoryIds": [
+      "c7"
+    ],
+    "title": "Pancakes with Maple Syrup",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1663854478296-dd00b6257021?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "duration": 25,
+    "ingredients": [
+      "1.5 Cups All-purpose Flour",
+      "3.5 tsp Baking Powder",
+      "1 tsp Salt",
+      "1 tbsp White Sugar",
+      "1.25 Cups Buttermilk",
+      "1 Egg",
+      "3 tbsp Melted Butter",
+      "1 tsp Vanilla Extract",
+      "Maple Syrup & Berries"
+    ],
+    "steps": [
+      "Sift dry ingredients together in a large bowl.",
+      "Whisk in buttermilk, egg, vanilla, and melted butter until just combined (don't overmix).",
+      "Heat a lightly oiled pan over medium heat and pour 1/4 cup of batter for each pancake.",
+      "Cook until bubbles form on top, flip, and cook until golden brown on both sides."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m8",
+    "categoryIds": [
+      "c8"
+    ],
+    "title": "Pad Thai",
+    "affordability": "pricey",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1645500498403-970672caf43e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "duration": 40,
+    "ingredients": [
+      "200g Flat Rice Noodles",
+      "150g Fresh Shrimp",
+      "50g Firm Tofu",
+      "2 Eggs",
+      "2 tbsp Tamarind Paste",
+      "2 tbsp Fish Sauce",
+      "1 tbsp Brown Sugar",
+      "100g Bean Sprouts",
+      "2 cloves Garlic",
+      "2 tbsp Crushed Peanuts",
+      "Lime Wedges"
+    ],
+    "steps": [
+      "Soak rice noodles in warm water for 30 minutes until soft.",
+      "Whisk tamarind, fish sauce, and sugar to make the sauce.",
+      "Stir-fry shrimp and tofu in a wok until cooked; remove and set aside.",
+      "Scramble eggs in the wok, add noodles and sauce, then toss in bean sprouts and protein.",
+      "Serve topped with crushed peanuts and a squeeze of lime."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m9",
+    "categoryIds": [
+      "c9",
+      "c10"
+    ],
+    "title": "Crème Brûlée",
+    "affordability": "luxurious",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1676300184943-09b2a08319a3?q=80&w=500&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "duration": 60,
+    "ingredients": [
+      "2 Cups Heavy Cream",
+      "5 Large Egg Yolks",
+      "1/2 Cup Granulated Sugar",
+      "1 Vanilla Bean",
+      "Extra Sugar for Caramelizing",
+      "Pinch of Salt"
+    ],
+    "steps": [
+      "Preheat oven to 150°C and heat cream with vanilla until simmering.",
+      "Whisk egg yolks and sugar, then slowly temper with the hot cream.",
+      "Strain and pour into ramekins; bake in a water bath for 35-40 minutes.",
+      "Chill for 4 hours, then caramelize sugar on top with a torch before serving."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m10",
+    "categoryIds": [
+      "c11"
+    ],
+    "title": "Falafel with Hummus",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1663853051503-57130cb26bc6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8RmFsYWZlbCUyMHdpdGglMjBIdW1tdXN8ZW58MHx8MHx8fDA%3D",
+    "duration": 45,
+    "ingredients": [
+      "2 Cups Dried Chickpeas (Soaked)",
+      "1 Small Onion",
+      "3 Garlic Cloves",
+      "1 Cup Fresh Parsley",
+      "1 tsp Cumin",
+      "1/2 tsp Baking Soda",
+      "Vegetable Oil",
+      "200g Hummus",
+      "Warm Pita Bread"
+    ],
+    "steps": [
+      "Blend chickpeas, onion, garlic, and spices until grainy.",
+      "Mix in baking soda, form into balls, and deep fry until golden brown.",
+      "Serve hot with a side of creamy hummus and fresh pita bread."
+    ],
+    "isGlutenFree": false,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m11",
+    "categoryIds": [
+      "c12"
+    ],
+    "title": "Tacos al Pastor",
+    "affordability": "pricey",
+    "complexity": "challenging",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1681406994521-82c20814605d?w=300&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8VGFjb3MlMjBhbCUyMFBhc3RvcnxlbnwwfHwwfHx8MA%3D%3D",
+    "duration": 40,
+    "ingredients": [
+      "500g Pork Shoulder (Thinly sliced)",
+      "Achiote Paste",
+      "Dried Guajillo Chilies",
+      "Pineapple Juice",
+      "Apple Cider Vinegar",
+      "Small Corn Tortillas",
+      "1 Fresh Pineapple (Sliced)",
+      "1 White Onion (Finely chopped)",
+      "Fresh Cilantro",
+      "Lime Wedges",
+      "Salsa Verde"
+    ],
+    "steps": [
+      "Blend achiote, soaked chilies, pineapple juice, and vinegar to create a marinade.",
+      "Marinate pork slices for at least 4 hours (ideally overnight).",
+      "Grill the pork over high heat until slightly charred and cooked through; chop into small bits.",
+      "Grill pineapple slices until caramelized and chop them into small pieces.",
+      "Warm the corn tortillas on a dry skillet.",
+      "Place pork on tortillas, top with grilled pineapple, onions, and cilantro.",
+      "Serve with a side of salsa verde and fresh lime wedges."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m12",
+    "categoryIds": [
+      "c13"
+    ],
+    "title": "Butter Chicken (Murgh Makhani)",
+    "affordability": "luxurious",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1728910107534-e04e261768ae?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8QnV0dGVyJTIwQ2hpY2tlbnxlbnwwfHwwfHx8MA%3D%3D",
+    "duration": 50,
+    "ingredients": [
+      "800g Chicken Thighs (Bite-sized)",
+      "1 Cup Greek Yogurt",
+      "2 tbsp Lemon Juice",
+      "100g Unsalted Butter",
+      "1 tbsp Ginger-Garlic Paste",
+      "400g Tomato Puree",
+      "200ml Heavy Cream",
+      "1 tbsp Garam Masala",
+      "1 tsp Turmeric",
+      "1 tsp Chili Powder",
+      "Dried Fenugreek Leaves (Kasuri Methi)"
+    ],
+    "steps": [
+      "Marinate chicken in yogurt, lemon juice, and half the spices for at least 1 hour.",
+      "Pan-sear or grill the chicken until 80% cooked.",
+      "In a large pan, melt butter and sauté ginger-garlic paste until fragrant.",
+      "Add tomato puree and remaining spices; simmer for 15 minutes.",
+      "Stir in the heavy cream and grilled chicken; cook for another 5-10 minutes.",
+      "Crush dried fenugreek leaves over the sauce and stir.",
+      "Serve hot with Basmati rice or garlic naan."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m13",
+    "categoryIds": [
+      "c14"
+    ],
+    "title": "Grilled Salmon with Lemon",
+    "affordability": "pricey",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1485921325833-c519f76c4927?q=80&w=500&auto=format&fit=crop",
+    "duration": 30,
+    "ingredients": [
+      "2 Fresh Salmon Fillets",
+      "1 Large Lemon (Sliced)",
+      "2 tbsp Extra Virgin Olive Oil",
+      "2 cloves Garlic (Minced)",
+      "1 tsp Dried Dill or Fresh Parsley",
+      "Sea Salt",
+      "Cracked Black Pepper",
+      "Asparagus or Broccoli (for side)"
+    ],
+    "steps": [
+      "Pat the salmon fillets dry with paper towels.",
+      "Whisk olive oil, minced garlic, lemon juice, salt, and pepper in a small bowl.",
+      "Brush the marinade over both sides of the fillets.",
+      "Preheat the grill to medium-high heat and oil the grates lightly.",
+      "Grill salmon skin-side down for 4-5 minutes, then flip and grill for another 3-4 minutes.",
+      "Place lemon slices on the grill for the last minute for extra flavor.",
+      "Serve immediately garnished with fresh dill or parsley."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m14",
+    "categoryIds": [
+      "c15"
+    ],
+    "title": "Vegan Buddha Bowl",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "1 Cup Cooked Quinoa",
+      "400g Canned Chickpeas (Rinsed)",
+      "1 Ripe Avocado (Sliced)",
+      "2 Cups Fresh Baby Spinach",
+      "1 Large Carrot (Shredded)",
+      "1/2 Red Cabbage (Sliced)",
+      "2 tbsp Tahini",
+      "1 tbsp Lemon Juice",
+      "1 tsp Maple Syrup",
+      "Water to thin"
+    ],
+    "steps": [
+      "Cook quinoa according to package instructions and let it cool slightly.",
+      "In a small bowl, whisk tahini, lemon juice, and maple syrup; add water until it reaches a drizzling consistency.",
+      "Lightly sauté the spinach until just wilted, or leave raw if preferred.",
+      "Divide quinoa into two bowls.",
+      "Arrange chickpeas, avocado, spinach, carrots, and cabbage in sections over the quinoa.",
+      "Drizzle generously with the tahini dressing and top with sesame seeds if desired."
+    ],
+    "isGlutenFree": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m15",
+    "categoryIds": [
+      "c13"
+    ],
+    "title": "Chicken Tikka Masala",
+    "affordability": "pricey",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=500&auto=format&fit=crop",
+    "duration": 45,
+    "ingredients": [
+      "800g Chicken Breast (Cubed)",
+      "1 Cup Plain Yogurt",
+      "2 tbsp Lemon Juice",
+      "1 Large Onion (Finely chopped)",
+      "3 cloves Garlic (Minced)",
+      "1 tbsp Ginger (Grated)",
+      "400g Tomato Sauce/Puree",
+      "1 tbsp Garam Masala",
+      "1 tsp Paprika",
+      "1 tsp Turmeric",
+      "150ml Heavy Cream",
+      "Fresh Cilantro"
+    ],
+    "steps": [
+      "Mix yogurt, lemon juice, and half the spices; marinate chicken for at least 30 minutes.",
+      "Grill or pan-fry chicken pieces until charred and cooked through.",
+      "Sauté onions, garlic, and ginger in a large pot until golden brown.",
+      "Add tomato sauce and the remaining spices; simmer for 10-15 minutes.",
+      "Stir in the heavy cream and add the cooked chicken pieces.",
+      "Simmer for an additional 5 minutes to let the flavors meld.",
+      "Garnish with chopped cilantro and serve with warm naan."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m16",
+    "categoryIds": [
+      "c10"
+    ],
+    "title": "Chocolate Lava Cake",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1624353365286-3f8d62daad51?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "100g High-quality Dark Chocolate",
+      "50g Unsalted Butter",
+      "2 Large Eggs",
+      "2 tbsp Sugar",
+      "2 tbsp All-purpose Flour",
+      "Pinch of Salt",
+      "1/2 tsp Vanilla Extract"
+    ],
+    "steps": [
+      "Preheat oven to 200°C. Grease two ramekins with butter and dust with cocoa powder.",
+      "Melt chocolate and butter together in a microwave or double boiler until smooth.",
+      "In a separate bowl, whisk eggs and sugar until thick and pale.",
+      "Gently fold the melted chocolate into the egg mixture.",
+      "Sift in the flour and salt; fold gently until just combined.",
+      "Divide the batter between the ramekins.",
+      "Bake for 10-12 minutes. The sides should be firm, but the center should still be soft.",
+      "Let sit for 1 minute, then carefully invert onto plates."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m17",
+    "categoryIds": [
+      "c12"
+    ],
+    "title": "Chicken Quesadilla",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?q=80&w=500&auto=format&fit=crop",
+    "duration": 15,
+    "ingredients": [
+      "2 Large Flour Tortillas",
+      "200g Cooked Chicken Breast (Shredded)",
+      "1 Cup Shredded Cheddar or Monterey Jack",
+      "1/2 Bell Pepper (Diced)",
+      "1/4 Red Onion (Diced)",
+      "1 tsp Taco Seasoning",
+      "Sour Cream and Salsa for serving"
+    ],
+    "steps": [
+      "Toss the shredded chicken with taco seasoning.",
+      "Place one tortilla in a large dry skillet over medium heat.",
+      "Sprinkle half the cheese over the tortilla, then add chicken, peppers, and onions.",
+      "Top with the remaining cheese and the second tortilla.",
+      "Cook for 3-4 minutes per side until the tortilla is crispy and the cheese is fully melted.",
+      "Remove from heat and let it rest for a minute before slicing into wedges.",
+      "Serve with salsa, sour cream, and guacamole."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m18",
+    "categoryIds": [
+      "c14"
+    ],
+    "title": "Classic Shrimp Scampi",
+    "affordability": "pricey",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1625943553852-781c6dd46faa?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8U2hyaW1wJTIwU2NhbXBpfGVufDB8fDB8fHww",
+    "duration": 25,
+    "ingredients": [
+      "250g Spaghetti or Linguine",
+      "400g Large Shrimp (Peeled and deveined)",
+      "4 cloves Garlic (Minced)",
+      "50g Unsalted Butter",
+      "2 tbsp Olive Oil",
+      "1/2 Cup Dry White Wine",
+      "1 tbsp Lemon Juice",
+      "1/4 tsp Red Pepper Flakes",
+      "Fresh Parsley (Chopped)"
+    ],
+    "steps": [
+      "Cook the pasta in boiling salted water until al dente.",
+      "While pasta cooks, heat olive oil and butter in a large skillet over medium heat.",
+      "Add garlic and red pepper flakes; sauté for 1 minute until fragrant.",
+      "Add shrimp in a single layer and cook for 2 minutes per side until pink.",
+      "Remove shrimp from the pan; pour in white wine and lemon juice.",
+      "Simmer the sauce for 3 minutes to reduce slightly.",
+      "Toss the pasta and shrimp back into the pan with the sauce and parsley. Mix well."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m19",
+    "categoryIds": [
+      "c1"
+    ],
+    "title": "Spaghetti Carbonara",
+    "affordability": "pricey",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1612874742237-6526221588e3?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "200g Spaghetti",
+      "100g Guanciale or Pancetta (Cubed)",
+      "2 Large Eggs + 1 Yolk",
+      "50g Pecorino Romano (Grated)",
+      "50g Parmigiano Reggiano (Grated)",
+      "1 tsp Coarse Black Pepper",
+      "Salt for pasta water"
+    ],
+    "steps": [
+      "Boil a large pot of salted water and cook spaghetti.",
+      "In a small bowl, whisk the eggs, egg yolk, and both cheeses together until a thick paste forms.",
+      "In a cold skillet, add guanciale and turn heat to medium; fry until crispy and fat has rendered.",
+      "Reserve 1/2 cup of pasta water, then drain the spaghetti.",
+      "Add the pasta to the skillet with guanciale and toss to coat in the fat.",
+      "Remove the skillet from heat (Crucial step!).",
+      "Quickly stir in the egg and cheese mixture, adding a little pasta water to create a creamy sauce without scrambling the eggs.",
+      "Season heavily with black pepper and serve immediately."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m20",
+    "categoryIds": [
+      "c18"
+    ],
+    "title": "Lamb Rogan Josh",
+    "affordability": "luxurious",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?q=80&w=500&auto=format&fit=crop",
+    "duration": 60,
+    "ingredients": [
+      "800g Lamb Shoulder (Cubed)",
+      "1 Cup Plain Yogurt",
+      "3 tbsp Ghee or Oil",
+      "2 Large Onions (Pureed)",
+      "1 tbsp Ginger Paste",
+      "2 tsp Kashmiri Red Chili Powder",
+      "1 tsp Fennel Seeds (Ground)",
+      "1 tsp Ground Ginger",
+      "4 Green Cardamom Pods",
+      "1 Cinnamon Stick",
+      "Salt to taste"
+    ],
+    "steps": [
+      "Heat ghee in a heavy pot and sear the lamb cubes until browned; remove and set aside.",
+      "In the same pot, fry cardamom, cinnamon, and onion puree until the oil separates.",
+      "Stir in ginger paste and the dry spices (chili, fennel, ginger).",
+      "Return the lamb to the pot and stir to coat in spices.",
+      "Whisk the yogurt until smooth and add it to the pot one spoonful at a time, stirring constantly.",
+      "Add a splash of water, cover, and simmer on low heat for 45-60 minutes until the lamb is melt-in-the-mouth tender.",
+      "Serve with steamed Basmati rice or fresh Naan."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m21",
+    "categoryIds": [
+      "c3"
+    ],
+    "title": "BBQ Bacon Burger",
+    "affordability": "pricey",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1553979459-d2229ba7433b?q=80&w=500&auto=format&fit=crop",
+    "duration": 35,
+    "ingredients": [
+      "200g Ground Beef",
+      "2 Slices of Smoked Bacon",
+      "1 Brioche Bun",
+      "2 Slices of Cheddar Cheese",
+      "3-4 Crispy Onion Rings",
+      "2 tbsp BBQ Sauce",
+      "1 tsp Smoked Paprika",
+      "Butter for Toasting"
+    ],
+    "steps": [
+      "Season the beef patty with salt and smoked paprika; grill for 4 minutes per side.",
+      "Fry the bacon strips until they reach your preferred level of crispiness.",
+      "In the last minute of grilling, place cheese slices on the patty to melt.",
+      "Toast the buttered buns on a hot pan until golden brown.",
+      "Spread a generous layer of BBQ sauce on both halves of the bun.",
+      "Stack the patty, bacon, and crispy onion rings inside the bun.",
+      "Serve hot with extra BBQ sauce on the side."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m22",
+    "categoryIds": [
+      "c7",
+      "c18"
+    ],
+    "title": "Eggs Benedict",
+    "affordability": "luxurious",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?q=80&w=500&auto=format&fit=crop",
+    "duration": 30,
+    "ingredients": [
+      "2 Large Eggs",
+      "1 English Muffin",
+      "2 Slices of Canadian Bacon (or Ham)",
+      "3 Egg Yolks (for sauce)",
+      "100g Unsalted Butter (Melted)",
+      "1 tbsp Lemon Juice",
+      "Pinch of Cayenne Pepper",
+      "1 tsp White Vinegar"
+    ],
+    "steps": [
+      "Make the Hollandaise: Whisk egg yolks and lemon juice in a bowl over simmering water. Slowly drizzle in melted butter while whisking constantly until thick.",
+      "Season the sauce with a pinch of salt and cayenne pepper; keep warm.",
+      "Poach the eggs: Simmer water with vinegar, create a gentle whirlpool, and drop eggs in for 3 minutes.",
+      "Toast the halved English muffins and lightly sear the Canadian bacon in a pan.",
+      "Assemble: Place bacon on the muffins, top with a poached egg, and pour Hollandaise sauce over it.",
+      "Garnish with fresh chives or paprika."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m23",
+    "categoryIds": [
+      "c15",
+      "c5"
+    ],
+    "title": "Quinoa Tabbouleh",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=500&auto=format&fit=crop",
+    "duration": 15,
+    "ingredients": [
+      "1 Cup Cooked Quinoa",
+      "2 Bunches of Fresh Parsley (Finely chopped)",
+      "1/2 Bunch of Fresh Mint",
+      "2 Firm Tomatoes (Diced)",
+      "1 English Cucumber (Diced)",
+      "3 tbsp Extra Virgin Olive Oil",
+      "2 tbsp Fresh Lemon Juice",
+      "1 clove Garlic (Minced)",
+      "Pinch of Salt"
+    ],
+    "steps": [
+      "Ensure the cooked quinoa is completely cooled to room temperature.",
+      "Wash and dry the parsley and mint thoroughly before chopping them very finely.",
+      "In a large bowl, combine the chopped herbs, tomatoes, cucumber, and quinoa.",
+      "Whisk together olive oil, lemon juice, minced garlic, and salt.",
+      "Pour the dressing over the salad and toss gently to combine.",
+      "Let it sit for 10 minutes before serving to allow the flavors to meld."
+    ],
+    "isGlutenFree": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m24",
+    "categoryIds": [
+      "c9",
+      "c18"
+    ],
+    "title": "Classic French Ratatouille",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1713635953194-ab8a625b2477?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8UmF0YXRvdWlsbGV8ZW58MHx8MHx8fDA%3D",
+    "duration": 45,
+    "ingredients": [
+      "1 Eggplant",
+      "1 Zucchini",
+      "1 Yellow Squash",
+      "4 Large Tomatoes",
+      "2 Bell Peppers (Red & Yellow)",
+      "3 cloves Garlic",
+      "1 Onion",
+      "Fresh Thyme & Rosemary",
+      "Olive Oil",
+      "Herbes de Provence"
+    ],
+    "steps": [
+      "Prepare the sauce: Sauté onions, garlic, and diced bell peppers until soft. Spread at the bottom of a baking dish.",
+      "Slice eggplant, zucchini, squash, and tomatoes into very thin, even rounds.",
+      "Arrange the vegetable slices in an alternating pattern over the sauce, standing them vertically.",
+      "Drizzle generously with olive oil and season with salt, pepper, and Herbes de Provence.",
+      "Cover with parchment paper and bake at 190°C for 40 minutes.",
+      "Uncover and bake for another 15-20 minutes until the vegetables are tender and slightly browned."
+    ],
+    "isGlutenFree": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m25",
+    "categoryIds": [
+      "c16"
+    ],
+    "title": "Kabuli Pulao",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?q=80&w=500&auto=format&fit=crop",
+    "duration": 90,
+    "ingredients": [
+      "500g Long-grain Basmati Rice",
+      "700g Lamb Shanks",
+      "3 Large Carrots (Julienned)",
+      "1/2 Cup Black Raisins",
+      "1/2 Cup Slivered Almonds",
+      "2 Large Onions",
+      "1 tbsp Cumin Powder",
+      "1 tsp Cardamom Powder",
+      "1 tsp Cloves",
+      "Vegetable Oil",
+      "Sugar"
+    ],
+    "steps": [
+      "Brown the onions in oil, add lamb and spices, cover with water and slow-cook for 1 hour until the meat is tender.",
+      "In a separate pan, sauté carrots with a bit of sugar until soft; add raisins and almonds at the end.",
+      "Parboil the soaked rice in salted water until half-cooked, then drain.",
+      "Layer the rice over the meat and broth, then top with the carrot and raisin mixture.",
+      "Cover the pot with a tight lid (Dum) and steam on very low heat for 30-40 minutes.",
+      "Gently mix the rice and meat when serving, ensuring the carrots stay on top as a garnish."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m26",
+    "categoryIds": [
+      "c17"
+    ],
+    "title": "Ghormeh Sabzi",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://media.istockphoto.com/id/2223494636/photo/ghormeh-sabzi.webp?a=1&b=1&s=612x612&w=0&k=20&c=6LbIF9enTmlVUASewR5lhjWnqry8vuK9WC4WOXdtse8=",
+    "duration": 120,
+    "ingredients": [
+      "500g Lamb or Beef (Cubed)",
+      "4 Cups Mixed Herbs (Parsley, Cilantro, Chives, Fenugreek)",
+      "1/2 Cup Red Kidney Beans (Soaked)",
+      "4 Dried Limes (Limo Amani)",
+      "1 Large Onion",
+      "1 tsp Turmeric",
+      "Black Pepper",
+      "Oil for frying"
+    ],
+    "steps": [
+      "The Secret: Sauté the finely chopped herbs in oil for 15-20 minutes until very dark green (but not burnt).",
+      "In a separate pot, sauté onions with turmeric, then add meat and brown it.",
+      "Add kidney beans, fried herbs, and 3 cups of water to the meat.",
+      "Pierce the dried limes with a fork and add them to the stew.",
+      "Cover and simmer on low heat for 2-3 hours until the meat is tender and the oil floats on top.",
+      "Serve with buttery Persian saffron rice."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m27",
+    "categoryIds": [
+      "c8"
+    ],
+    "title": "Authentic Beef Pho",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?q=80&w=500&auto=format&fit=crop",
+    "duration": 180,
+    "ingredients": [
+      "1kg Beef Bones (Marrow & Knuckle)",
+      "200g Thinly Sliced Raw Beef Eye Round",
+      "1 Pack Rice Sticks (Pho Noodles)",
+      "1 Large Onion & Ginger (Charred)",
+      "Whole Spices (Star Anise, Cinnamon, Cloves, Coriander Seeds)",
+      "Fish Sauce",
+      "Fresh Basil, Bean Sprouts, Lime, and Chili"
+    ],
+    "steps": [
+      "Boil bones for 10 minutes, then rinse them to ensure a clear broth.",
+      "Simmer the cleaned bones with charred onion, ginger, and toasted spices for 3-6 hours.",
+      "Strain the broth and season with fish sauce and a pinch of salt.",
+      "Prepare rice noodles according to package instructions.",
+      "Place noodles in a bowl, top with raw beef slices and onions.",
+      "Pour the boiling hot broth over the beef to cook it instantly.",
+      "Serve with a plate of fresh herbs, sprouts, and lime on the side."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m28",
+    "categoryIds": [
+      "c16"
+    ],
+    "title": "Mantu (Afghan Dumplings)",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYN66YQjm1DWF3amqkpSXYpPQ1Opw7yIb8hg&s",
+    "duration": 60,
+    "ingredients": [
+      "500g Ground Beef",
+      "4 Large Onions (Finely chopped)",
+      "Wonton Wrappers or Pasta Dough",
+      "2 Cups Plain Yogurt",
+      "2 cloves Garlic (Minced)",
+      "1/2 Cup Tomato Paste",
+      "1/4 Cup Yellow Split Peas (Cooked)",
+      "Dried Mint",
+      "Ground Coriander"
+    ],
+    "steps": [
+      "Filling: Mix raw ground beef with the finely chopped onions and coriander seeds.",
+      "Place a spoonful of filling in the center of each dough square and fold the corners to seal.",
+      "Steam the dumplings in a multi-tier steamer for 30 minutes.",
+      "Tomato Sauce: Sauté tomato paste with cooked split peas and spices until thick.",
+      "Yogurt Sauce: Mix yogurt with minced garlic and a pinch of salt.",
+      "To serve: Spread yogurt sauce on a plate, add dumplings, top with tomato gravy and dried mint."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m29",
+    "categoryIds": [
+      "c12"
+    ],
+    "title": "Beef Enchiladas",
+    "affordability": "pricey",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1730878423239-0fd430bbac37?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8QmVlZiUyMEVuY2hpbGFkYXN8ZW58MHx8MHx8fDA%3D",
+    "duration": 40,
+    "ingredients": [
+      "8 Corn Tortillas",
+      "500g Ground Beef",
+      "2 Cups Red Enchilada Sauce",
+      "2 Cups Shredded Mexican Cheese Blend",
+      "1/2 Cup Black Beans",
+      "1/2 Onion (Diced)",
+      "1 tsp Cumin",
+      "Sour Cream for garnish"
+    ],
+    "steps": [
+      "Cook ground beef with onions, beans, and cumin until browned. Drain excess fat.",
+      "Warm the tortillas slightly to make them pliable.",
+      "Dip each tortilla in enchilada sauce, fill with the beef mixture and a little cheese, then roll tightly.",
+      "Place rolls seam-side down in a baking dish.",
+      "Pour the remaining sauce over the top and sprinkle with the rest of the cheese.",
+      "Bake at 190°C for 20 minutes until the cheese is bubbly and golden."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m30",
+    "categoryIds": [
+      "c8"
+    ],
+    "title": "Kung Pao Chicken",
+    "affordability": "affordable",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1525755662778-989d0524087e?q=80&w=500&auto=format&fit=crop",
+    "duration": 25,
+    "ingredients": [
+      "400g Chicken Breast (Cubed)",
+      "1/2 Cup Roasted Peanuts",
+      "10-12 Dried Red Chilies",
+      "2 cloves Garlic & 1 tsp Ginger (Minced)",
+      "2 tbsp Soy Sauce",
+      "1 tbsp Rice Vinegar",
+      "1 tsp Sichuan Peppercorns",
+      "1 tsp Cornstarch",
+      "Green Onions"
+    ],
+    "steps": [
+      "Marinate chicken cubes in 1 tbsp soy sauce and cornstarch for 15 minutes.",
+      "Whisk together the remaining soy sauce, vinegar, and a teaspoon of sugar to make the sauce.",
+      "Heat oil in a wok and stir-fry the chicken until golden; remove and set aside.",
+      "In the same wok, fry dried chilies and Sichuan peppercorns until fragrant.",
+      "Add garlic, ginger, and green onions; sauté for 30 seconds.",
+      "Return chicken to the wok, add the peanuts and the sauce.",
+      "Toss everything together over high heat until the sauce thickens and coats the chicken."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m31",
+    "categoryIds": [
+      "c17"
+    ],
+    "title": "Joojeh Kabab",
+    "affordability": "pricey",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1644364935906-792b2245a2c0?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Sm9vamVoJTIwS2FiYWJ8ZW58MHx8MHx8fDA%3D",
+    "duration": 40,
+    "ingredients": [
+      "800g Chicken Thighs or Breast",
+      "1/2 tsp Saffron (Grind and brewed)",
+      "1/2 Cup Greek Yogurt",
+      "2 Large Onions (Slivered)",
+      "4 tbsp Lemon Juice",
+      "50g Butter (Melted)",
+      "1 tsp Turmeric",
+      "Salt & Black Pepper"
+    ],
+    "steps": [
+      "In a large bowl, combine yogurt, saffron, lemon juice, salt, pepper, and onions.",
+      "Add chicken pieces to the marinade, ensuring every piece is coated. Cover and refrigerate for 24 hours.",
+      "Thread the marinated chicken onto skewers, avoiding the onion pieces.",
+      "Grill over hot charcoal for 10-15 minutes, turning frequently.",
+      "In the last few minutes, baste the chicken with a mixture of melted butter and saffron.",
+      "Serve hot with grilled tomatoes and Persian saffron rice (Chelow)."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m32",
+    "categoryIds": [
+      "c13"
+    ],
+    "title": "Hyderabadi Chicken Biryani",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1694141251673-1758913ade48?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Q2hpY2tlbiUyMEJpcnlhbml8ZW58MHx8MHx8fDA%3D",
+    "duration": 60,
+    "ingredients": [
+      "500g Basmati Rice",
+      "700g Chicken",
+      "1 Cup Fried Onions (Birista)",
+      "1/2 Cup Plain Yogurt",
+      "2 tbsp Ginger-Garlic Paste",
+      "1 bunch Fresh Mint & Cilantro",
+      "Whole Spices (Cardamom, Cinnamon, Star Anise)",
+      "1 tsp Biryani Masala",
+      "Saffron Milk"
+    ],
+    "steps": [
+      "Marinate chicken with yogurt, ginger-garlic paste, biryani masala, and half the fried onions for 2 hours.",
+      "Parboil the soaked basmati rice with whole spices until it is 70% cooked; drain the water.",
+      "In a heavy-bottomed pot, place the marinated chicken at the bottom.",
+      "Layer the parboiled rice over the chicken, then top with remaining fried onions, chopped mint, cilantro, and saffron milk.",
+      "Seal the pot with dough or a tight lid (Dum) and cook on very low heat for 40-45 minutes.",
+      "Fluff the rice gently from the sides and serve with Raita."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m33",
+    "categoryIds": [
+      "c16"
+    ],
+    "title": "Afghan Bolani",
+    "affordability": "affordable",
+    "complexity": "challenging",
+    "imageUrl": "https://media.istockphoto.com/id/2196374149/photo/gutab.webp?a=1&b=1&s=612x612&w=0&k=20&c=eTN1p2s-QvMr9H7IOxkR7hdD01WfsOfz8KezDTPuzag=",
+    "duration": 45,
+    "ingredients": [
+      "3 Cups All-purpose Flour",
+      "2 Cups Finely Chopped Leeks (or Scallions)",
+      "2 Large Potatoes (Boiled and mashed)",
+      "2 Green Chilies (Minced)",
+      "1 tsp Cilantro Powder",
+      "Vegetable Oil for frying",
+      "Warm Water for dough"
+    ],
+    "steps": [
+      "Prepare a smooth dough with flour, salt, and water; let it rest for 20 minutes.",
+      "Prepare the filling: Mix chopped leeks (or mashed potatoes) with chilies and spices.",
+      "Divide the dough into small balls and roll each into a very thin, large circle.",
+      "Spread the filling on one half of the dough and fold the other half over it to form a semi-circle.",
+      "Press the edges firmly to seal.",
+      "Heat a lightly oiled skillet and fry each bolani for 2-3 minutes per side until golden and crispy.",
+      "Serve warm with garlic yogurt dip."
+    ],
+    "isGlutenFree": false,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m34",
+    "categoryIds": [
+      "c17"
+    ],
+    "title": "Kashk-e Bademjan",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmda9o0kB-RuSt8r6w68lrP2hevxn4XV7jwg&s",
+    "duration": 35,
+    "ingredients": [
+      "4 Large Eggplants",
+      "1/2 Cup Kashk (Liquid Whey)",
+      "2 Large Onions (Sliced)",
+      "4 cloves Garlic (Minced)",
+      "2 tbsp Dried Mint",
+      "1/2 Cup Walnuts (Optional/Crushed)",
+      "Turmeric, Salt, and Oil"
+    ],
+    "steps": [
+      "Peel eggplants and fry them until golden (or roast for a healthier version).",
+      "Mash the cooked eggplants thoroughly with a fork.",
+      "In a pan, sauté onions until golden brown; add garlic and turmeric.",
+      "Heat oil in a small spoon and quickly fry the dried mint for 10 seconds (Mint Oil).",
+      "Mix the mashed eggplants with half the kashk, fried onions, and walnuts.",
+      "Garnish with a drizzle of kashk, the remaining fried onions, and the mint oil.",
+      "Serve with fresh Sangak or Lavash bread."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m35",
+    "categoryIds": [
+      "c1"
+    ],
+    "title": "Lasagna Bolognese",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=500&auto=format&fit=crop",
+    "duration": 60,
+    "ingredients": [
+      "12 Lasagna Sheets",
+      "500g Ground Beef",
+      "500ml Bechamel Sauce",
+      "400g Tomato Sauce (Marinara)",
+      "1 Cup Grated Parmesan Cheese",
+      "2 Cups Mozzarella",
+      "1 Onion & 2 cloves Garlic",
+      "Fresh Basil"
+    ],
+    "steps": [
+      "Bolognese: Sauté onion and garlic, add ground beef and brown it; stir in tomato sauce and simmer for 20 minutes.",
+      "Prepare a creamy Bechamel sauce using butter, flour, and milk.",
+      "In a baking dish, spread a layer of meat sauce, then a layer of lasagna sheets.",
+      "Top with Bechamel, mozzarella, and meat sauce; repeat for 3-4 layers.",
+      "Finish with a thick layer of Bechamel, mozzarella, and plenty of Parmesan.",
+      "Cover with foil and bake at 190°C for 25 minutes, then uncover and bake for 15 more minutes until bubbly and golden.",
+      "Let it rest for 10 minutes before slicing."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m36",
+    "categoryIds": [
+      "c2"
+    ],
+    "title": "Avocado Toast",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=500&auto=format&fit=crop",
+    "duration": 5,
+    "ingredients": [
+      "2 Slices of Multigrain or Sourdough Bread",
+      "1 Ripe Avocado",
+      "1 tsp Lemon Juice",
+      "1/2 tsp Red Pepper Flakes",
+      "Sea Salt",
+      "Extra Virgin Olive Oil",
+      "Optional: Poached Egg"
+    ],
+    "steps": [
+      "Toast the bread slices until golden and crunchy.",
+      "In a small bowl, mash the avocado flesh with lemon juice and a pinch of salt.",
+      "Spread the avocado generously over the warm toast.",
+      "Drizzle with a little olive oil and sprinkle with red pepper flakes.",
+      "Serve immediately, topped with a poached egg if desired."
+    ],
+    "isGlutenFree": false,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m37",
+    "categoryIds": [
+      "c3"
+    ],
+    "title": "Mushroom Swiss Burger",
+    "affordability": "pricey",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1579065413090-3ce766e7deca?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "duration": 25,
+    "ingredients": [
+      "200g Beef Patty",
+      "2 Slices of Swiss Cheese",
+      "1 Cup Sliced White Mushrooms",
+      "1 tbsp Butter",
+      "1 Brioche Bun",
+      "2 tbsp Garlic Aioli",
+      "1/2 tsp Thyme"
+    ],
+    "steps": [
+      "Sauté mushrooms in butter with thyme and salt until dark and tender.",
+      "Season the beef patty and grill or pan-sear for 4 minutes per side.",
+      "Place Swiss cheese slices on the patty in the last minute and cover to melt.",
+      "Toast the bun until golden.",
+      "Spread garlic aioli on the bottom bun, add the patty, and pile the mushrooms on top.",
+      "Close the burger and serve hot."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m38",
+    "categoryIds": [
+      "c4"
+    ],
+    "title": "Chicken Schnitzel",
+    "affordability": "pricey",
+    "complexity": "challenging",
+    "imageUrl": "https://i.pinimg.com/1200x/8d/60/16/8d6016b1596c7ac9bec69b0cec14fbef.jpg",
+    "duration": 35,
+    "ingredients": [
+      "2 Chicken Breasts",
+      "1/2 Cup All-purpose Flour",
+      "2 Eggs (Beaten)",
+      "1 Cup Panko Breadcrumbs",
+      "1 tsp Paprika",
+      "Vegetable Oil for frying",
+      "Lemon Wedges",
+      "Fresh Parsley"
+    ],
+    "steps": [
+      "Place chicken breasts between plastic wrap and pound with a mallet until 1cm thick.",
+      "Season flour with salt, pepper, and paprika.",
+      "Dredge chicken in flour, then dip into beaten eggs, and finally coat thoroughly in breadcrumbs.",
+      "Heat 2cm of oil in a large skillet. Fry chicken for 3-4 minutes per side until deep golden brown.",
+      "Drain on paper towels.",
+      "Serve immediately with a generous squeeze of lemon and chopped parsley."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m39",
+    "categoryIds": [
+      "c5"
+    ],
+    "title": "Classic Caesar Salad",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1546793665-c74683f339c1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Q2Flc2FyJTIwU2FsYWR8ZW58MHx8MHx8fDA%3D",
+    "duration": 15,
+    "ingredients": [
+      "1 Large Head of Romaine Lettuce",
+      "1 Cup Garlic Croutons",
+      "1/2 Cup Shaved Parmesan Cheese",
+      "2 tbsp Caesar Dressing",
+      "1 tsp Worchestershire Sauce",
+      "Lemon Juice"
+    ],
+    "steps": [
+      "Wash and thoroughly dry the Romaine leaves; tear them into bite-sized pieces.",
+      "In a large bowl, toss the lettuce with just enough dressing to coat the leaves.",
+      "Add the croutons and half of the Parmesan cheese; toss gently.",
+      "Plate the salad and top with the remaining shaved Parmesan.",
+      "Serve immediately to keep the croutons crunchy."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m40",
+    "categoryIds": [
+      "c6"
+    ],
+    "title": "Moroccan Lamb Tagine",
+    "affordability": "luxurious",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?q=80&w=500&auto=format&fit=crop",
+    "duration": 90,
+    "ingredients": [
+      "800g Lamb Shoulder (Cubed)",
+      "1 Cup Dried Apricots",
+      "1/2 Cup Toasted Almonds",
+      "2 Cups Couscous",
+      "1 Onion",
+      "Spices (Ginger, Cinnamon, Saffron, Turmeric)",
+      "1 tbsp Honey",
+      "Fresh Cilantro"
+    ],
+    "steps": [
+      "In a tagine or heavy pot, sear lamb cubes with spices and onions until browned.",
+      "Add enough water to partially cover the meat, bring to a boil, then reduce to a low simmer.",
+      "Cover and cook for 1 hour.",
+      "Add dried apricots and honey; simmer for another 30 minutes until the meat is falling apart and the sauce has thickened.",
+      "Prepare couscous according to package instructions (steaming is best).",
+      "Serve the lamb over the fluffy couscous, garnished with toasted almonds and fresh cilantro."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m41",
+    "categoryIds": [
+      "c7"
+    ],
+    "title": "Shakshuka",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://i.pinimg.com/736x/9c/0c/9c/9c0c9c104fa329394e1fb7273dfc0273.jpg",
+    "duration": 20,
+    "ingredients": [
+      "4 Large Eggs",
+      "400g Tomato Puree",
+      "1 Red Bell Pepper (Diced)",
+      "2 cloves Garlic (Minced)",
+      "1 tsp Cumin",
+      "1 tsp Smoked Paprika",
+      "50g Feta Cheese",
+      "Fresh Parsley",
+      "Olive Oil"
+    ],
+    "steps": [
+      "Sauté diced bell peppers in olive oil until soft, then add minced garlic.",
+      "Stir in tomato puree, cumin, and paprika; simmer for 10 minutes until thickened.",
+      "Use a spoon to make small wells in the sauce and crack an egg into each.",
+      "Cover the pan and cook on low heat for 5-7 minutes until the whites are set but yolks are runny.",
+      "Crumble feta cheese over the top and garnish with fresh parsley.",
+      "Serve warm with crusty bread for dipping."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m42",
+    "categoryIds": [
+      "c8"
+    ],
+    "title": "Chicken Teriyaki",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1695167739750-a1e7c856438b?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "duration": 25,
+    "ingredients": [
+      "500g Chicken Thighs (Bite-sized)",
+      "1/2 Cup Soy Sauce",
+      "1 tbsp Fresh Ginger (Grated)",
+      "2 tbsp Honey",
+      "1 tbsp Rice Vinegar",
+      "1 tbsp Cornstarch",
+      "Sesame Seeds",
+      "Green Onions",
+      "2 Cups Cooked Jasmine Rice"
+    ],
+    "steps": [
+      "Whisk soy sauce, ginger, honey, and vinegar in a bowl to make the sauce.",
+      "Sear chicken pieces in a hot skillet until golden brown and cooked through.",
+      "Pour the sauce over the chicken and simmer on medium heat.",
+      "Mix cornstarch with a little water and add to the pan to thicken the glaze.",
+      "Toss until the chicken is perfectly coated and the sauce is glossy.",
+      "Serve over a bed of steamed rice, topped with sesame seeds and sliced green onions."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m43",
+    "categoryIds": [
+      "c9"
+    ],
+    "title": "Quiche Lorraine",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://i.pinimg.com/736x/07/e9/53/07e9532c0bbbdf124e5c465ecba9a620.jpg",
+    "duration": 55,
+    "ingredients": [
+      "1 Shortcrust Pastry Sheet",
+      "200g Smoked Bacon (Diced)",
+      "3 Large Eggs",
+      "200ml Heavy Cream",
+      "150g Gruyère Cheese (Grated)",
+      "Pinch of Nutmeg",
+      "Salt and Black Pepper"
+    ],
+    "steps": [
+      "Preheat oven to 190°C. Line a tart tin with pastry and blind bake for 15 minutes.",
+      "Fry diced bacon until crispy, then drain on paper towels.",
+      "In a bowl, whisk eggs, heavy cream, nutmeg, salt, and pepper until smooth.",
+      "Spread the crispy bacon and half the grated Gruyère over the pre-baked crust.",
+      "Pour the egg mixture over the fillings and sprinkle with the remaining cheese.",
+      "Bake for 30-35 minutes until the filling is set and the top is golden brown.",
+      "Allow to cool slightly before slicing."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m44",
+    "categoryIds": [
+      "c10"
+    ],
+    "title": "Classic Tiramisu",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?q=80&w=500&auto=format&fit=crop",
+    "duration": 40,
+    "ingredients": [
+      "24 Ladyfingers (Savoiardi)",
+      "250g Mascarpone Cheese",
+      "300ml Strong Espresso (Cooled)",
+      "3 Large Eggs (Separated)",
+      "1/2 Cup Granulated Sugar",
+      "2 tbsp Cocoa Powder",
+      "1 tsp Vanilla Extract"
+    ],
+    "steps": [
+      "Whisk egg yolks with sugar until pale and creamy; fold in mascarpone and vanilla.",
+      "In a separate bowl, beat egg whites until stiff peaks form, then gently fold into the mascarpone mixture.",
+      "Quickly dip each ladyfinger into the cold espresso (don't soak them too long).",
+      "Arrange a layer of dipped ladyfingers in a dish, then spread half the cream over them.",
+      "Repeat with another layer of ladyfingers and the remaining cream.",
+      "Dust the top generously with cocoa powder.",
+      "Refrigerate for at least 6 hours (ideally overnight) to set the layers."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m45",
+    "categoryIds": [
+      "c11"
+    ],
+    "title": "Chicken Shawarma Wrap",
+    "affordability": "affordable",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1561651823-34feb02250e4?q=80&w=500&auto=format&fit=crop",
+    "duration": 30,
+    "ingredients": [
+      "500g Chicken Strips",
+      "2 tbsp Shawarma Spice Blend (Cumin, Coriander, Allspice)",
+      "4 Fresh Pita Breads",
+      "1/2 Cup Tahini Sauce",
+      "Pickled Cucumbers & Turnips",
+      "Creamy Garlic Sauce (Toum)",
+      "1 tbsp Lemon Juice"
+    ],
+    "steps": [
+      "Marinate chicken strips with shawarma spices, olive oil, and lemon juice for 1 hour.",
+      "Grill or pan-fry the chicken over high heat until charred and tender.",
+      "Warm the pita bread slightly on a flat grill.",
+      "Spread a generous amount of garlic sauce (Toum) on the bread.",
+      "Add the grilled chicken, pickles, and a drizzle of tahini sauce.",
+      "Roll the pita tightly and toast it on the grill for 1 minute for a crispy finish."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m46",
+    "categoryIds": [
+      "c12"
+    ],
+    "title": "Chicken Fajitas",
+    "affordability": "pricey",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1689773976415-293dd893f77e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Q2hpY2tlbiUyMEZhaml0YXN8ZW58MHx8MHx8fDA%3D",
+    "duration": 25,
+    "ingredients": [
+      "500g Chicken Breast (Slices)",
+      "3 Bell Peppers (Mixed colors, sliced)",
+      "1 Large Onion (Sliced)",
+      "8 Flour Tortillas",
+      "1 tbsp Chili Powder",
+      "1 tsp Garlic Powder",
+      "2 tbsp Lime Juice",
+      "Sour Cream & Guacamole"
+    ],
+    "steps": [
+      "Toss chicken slices with chili powder, garlic powder, salt, and lime juice.",
+      "Heat oil in a cast-iron skillet until smoking hot.",
+      "Sauté the chicken until browned; remove and set aside.",
+      "In the same skillet, cook onions and bell peppers until slightly charred but still crisp.",
+      "Mix the chicken back with the veggies and serve immediately on a sizzling platter.",
+      "Build your fajitas using warm tortillas, sour cream, and guacamole."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m47",
+    "categoryIds": [
+      "c13"
+    ],
+    "title": "Palak Paneer",
+    "affordability": "affordable",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1589647363585-f4a7d3877b10?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8UGFsYWslMjBQYW5lZXJ8ZW58MHx8MHx8fDA%3D",
+    "duration": 40,
+    "ingredients": [
+      "500g Fresh Spinach",
+      "250g Paneer Cheese (Cubed)",
+      "1 tsp Garam Masala",
+      "2 tbsp Heavy Cream",
+      "1 tbsp Ginger-Garlic Paste",
+      "1 Onion (Finely chopped)",
+      "2 Green Chilies",
+      "1 tsp Cumin Seeds"
+    ],
+    "steps": [
+      "Blanch the spinach in boiling water for 2 minutes, then shock in ice water and puree until smooth.",
+      "Lightly fry the paneer cubes in a pan until golden; set aside.",
+      "Sauté cumin seeds and onions until golden, then add ginger-garlic paste and chilies.",
+      "Pour in the spinach puree and add garam masala; simmer for 5-10 minutes.",
+      "Stir in the heavy cream and fried paneer cubes.",
+      "Cook for another 2 minutes and serve hot with Jeera rice or Paratha."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m48",
+    "categoryIds": [
+      "c14"
+    ],
+    "title": "Fish and Chips",
+    "affordability": "pricey",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1579208030886-b937da0925dc?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8RmlzaCUyMGFuZCUyMENoaXBzfGVufDB8fDB8fHww",
+    "duration": 35,
+    "ingredients": [
+      "4 Cod or Haddock Fillets",
+      "4 Large Russet Potatoes",
+      "1 Cup Flour",
+      "1 Cup Cold Beer",
+      "1 tsp Baking Powder",
+      "Vegetable Oil for deep frying",
+      "Tartar Sauce",
+      "Malt Vinegar"
+    ],
+    "steps": [
+      "Cut potatoes into thick chips, soak in cold water, dry, and double-fry until golden and crispy.",
+      "Prepare the batter: Whisk flour, baking powder, and cold beer until smooth but not overmixed.",
+      "Dredge fish fillets in dry flour, then dip into the beer batter.",
+      "Carefully lower the fish into 180°C oil and fry for 4-6 minutes until deep golden brown.",
+      "Drain on a wire rack to keep the batter crispy.",
+      "Serve hot with the chips, a side of tartar sauce, and a splash of malt vinegar."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m49",
+    "categoryIds": [
+      "c15"
+    ],
+    "title": "Vegan Red Lentil Soup",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=500&auto=format&fit=crop",
+    "duration": 45,
+    "ingredients": [
+      "1 Cup Red Lentils (Rinsed)",
+      "2 Carrots (Diced)",
+      "2 Stalks Celery (Sliced)",
+      "1 Onion (Diced)",
+      "1 tsp Turmeric",
+      "1 tsp Cumin",
+      "1.5 Liters Vegetable Broth",
+      "Lemon Wedges",
+      "Fresh Coriander"
+    ],
+    "steps": [
+      "In a large pot, sauté onion, carrots, and celery until soft.",
+      "Add turmeric and cumin, stirring for 1 minute to release the aroma.",
+      "Stir in the lentils and pour in the vegetable broth.",
+      "Bring to a boil, then reduce heat and simmer for 25-30 minutes until lentils are soft and soup has thickened.",
+      "For a smoother texture, partially blend the soup with an immersion blender.",
+      "Serve hot with a squeeze of fresh lemon and coriander leaves."
+    ],
+    "isGlutenFree": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m50",
+    "categoryIds": [
+      "c16"
+    ],
+    "title": "Ashak (Afghan Leek Dumplings)",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://i.ytimg.com/vi/jALnPwz0dA4/maxresdefault.jpg",
+    "duration": 60,
+    "ingredients": [
+      "1 Pack Wonton Wrappers (or Gyoza skins)",
+      "500g Fresh Leeks or Chives (Finely chopped)",
+      "300g Ground Beef (for sauce)",
+      "2 Cups Greek Yogurt",
+      "3 cloves Garlic (Minced)",
+      "2 tbsp Tomato Paste",
+      "1 tsp Dried Mint",
+      "1 tsp Red Chili Flakes"
+    ],
+    "steps": [
+      "Filling: Mix finely chopped leeks with chili flakes and salt.",
+      "Place a spoonful of leeks in each wrapper, moisten the edges with water, and fold into a semi-circle or triangle, sealing tightly.",
+      "Beef Sauce: Cook ground beef with tomato paste, onions, and spices until a thick gravy forms.",
+      "Yogurt Sauce: Combine yogurt with minced garlic and a pinch of salt.",
+      "Boil the dumplings in salted water for 3-4 minutes until they float.",
+      "To serve: Spread yogurt sauce on a platter, place the boiled ashak on top, add a generous layer of beef sauce, and sprinkle with dried mint."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m51",
+    "categoryIds": [
+      "c17"
+    ],
+    "title": "Fesenjan (Pomegranate Walnut Stew)",
+    "affordability": "luxurious",
+    "complexity": "hard",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCIRvwswu10qrpAfMUr6QAsqaCOJX6Kyi9iQ&s",
+    "duration": 120,
+    "ingredients": [
+      "500g Chicken Pieces",
+      "300g Walnuts (Finely ground)",
+      "1 Cup Pomegranate Paste",
+      "2 tbsp Sugar (Adjust to taste)",
+      "1 Large Onion (Grated)",
+      "1/2 tsp Turmeric",
+      "Saffron"
+    ],
+    "steps": [
+      "Toast the finely ground walnuts in a dry pot for 2-3 minutes until fragrant.",
+      "Add 3 cups of cold water to the walnuts and simmer on very low heat for 1 hour until the natural oils are released.",
+      "In a separate pan, sauté grated onions with turmeric and brown the chicken pieces.",
+      "Add the chicken and pomegranate paste to the walnut mixture.",
+      "Add sugar and a pinch of salt; cover and simmer on low heat for another 1.5 to 2 hours until the sauce is thick and dark.",
+      "Serve with aromatic Persian saffron rice."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m52",
+    "categoryIds": [
+      "c18"
+    ],
+    "title": "Beef Wellington",
+    "affordability": "luxurious",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1675718341348-65224936b742?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8QmVlZiUyMFdlbGxpbmd0b258ZW58MHx8MHx8fDA%3D",
+    "duration": 120,
+    "ingredients": [
+      "800g Beef Tenderloin (Center cut)",
+      "500g Puff Pastry",
+      "250g Mushrooms (Finely chopped)",
+      "6-8 Slices of Prosciutto",
+      "2 tbsp English Mustard",
+      "2 Egg Yolks",
+      "Fresh Thyme"
+    ],
+    "steps": [
+      "Sear the beef tenderloin on high heat for 2 minutes per side; let it cool and brush with mustard.",
+      "Make the Duxelles: Sauté chopped mushrooms with thyme until all moisture has evaporated.",
+      "Lay out plastic wrap, place prosciutto slices on it, spread the mushroom duxelles, and then place the beef in the center.",
+      "Roll the beef tightly in the prosciutto/mushroom layer using the plastic wrap; chill in the fridge for 30 minutes.",
+      "Unwrap the beef and roll it inside the puff pastry; seal the edges and brush with egg wash.",
+      "Score the pastry lightly and bake at 200°C for 25-30 minutes until the pastry is golden brown and beef is medium-rare.",
+      "Let it rest for 10 minutes before carving."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m53",
+    "categoryIds": [
+      "c1"
+    ],
+    "title": "Pesto Pasta",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1473093226795-af9932fe5856?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "400g Pasta (Spaghetti or Fusilli)",
+      "2 Cups Fresh Basil Leaves",
+      "1/3 Cup Pine Nuts",
+      "1/2 Cup Parmesan Cheese (Grated)",
+      "2 cloves Garlic",
+      "1/2 Cup Extra Virgin Olive Oil"
+    ],
+    "steps": [
+      "Toast pine nuts lightly in a pan until golden.",
+      "In a food processor, blend basil, toasted nuts, garlic, and parmesan.",
+      "Slowly drizzle in olive oil while blending until a smooth, thick sauce forms.",
+      "Cook pasta in salted boiling water until al dente; reserve half a cup of pasta water.",
+      "Toss the hot pasta with the fresh pesto, adding a little pasta water if needed to reach a creamy consistency.",
+      "Serve with extra parmesan and fresh basil on top."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m54",
+    "categoryIds": [
+      "c2"
+    ],
+    "title": "Chicken Quesadilla",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1628430044262-fb84cffbb744?q=80&w=1471&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "duration": 15,
+    "ingredients": [
+      "2 Large Flour Tortillas",
+      "1 Cup Grilled Chicken (Shredded)",
+      "1.5 Cups Cheddar & Monterey Jack Cheese",
+      "1/2 Bell Pepper (Sautéed)",
+      "Sour Cream & Salsa"
+    ],
+    "steps": [
+      "Place one tortilla in a dry skillet over medium heat.",
+      "Layer half the cheese, then the chicken and sautéed peppers, followed by the remaining cheese.",
+      "Place the second tortilla on top (or fold one in half).",
+      "Cook for 3 minutes per side until the tortilla is crispy and the cheese is completely melted.",
+      "Remove from heat and let it sit for 1 minute before slicing into triangles.",
+      "Serve with sour cream, salsa, and guacamole."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m55",
+    "categoryIds": [
+      "c3"
+    ],
+    "title": "Hawaiian Burger",
+    "affordability": "pricey",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=500&auto=format&fit=crop",
+    "duration": 25,
+    "ingredients": [
+      "200g Beef Patty",
+      "1 Fresh Pineapple Ring",
+      "2 tbsp Teriyaki Sauce",
+      "1 Slice Swiss Cheese",
+      "1 Brioche Bun",
+      "Red Onion & Lettuce"
+    ],
+    "steps": [
+      "Grill the beef patty to your preferred doneness.",
+      "Grill the pineapple slice for 2 minutes per side until caramelized char marks appear.",
+      "Place Swiss cheese on the patty to melt during the last minute of grilling.",
+      "Toast the bun and spread a little teriyaki sauce on the bottom.",
+      "Assemble: Bun, lettuce, onion, cheesy patty, grilled pineapple, and more teriyaki sauce.",
+      "Top with the bun and serve immediately."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m56",
+    "categoryIds": [
+      "c4"
+    ],
+    "title": "Apple Strudel",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://media.istockphoto.com/id/1125180633/photo/apple-strudel-pie-with-flakey-crust-and-firm-apples.jpg?s=1024x1024&w=is&k=20&c=BquPCoveo3k1xzz_MvQTGMz1cyJA7a-bNQQrAcl4f1o=",
+    "duration": 60,
+    "ingredients": [
+      "4 Large Apples (Granny Smith)",
+      "1 Pack Phyllo Pastry",
+      "1/2 Cup Raisins",
+      "1/2 Cup Breadcrumbs (Toasted)",
+      "1 tsp Cinnamon",
+      "100g Butter (Melted)",
+      "1/2 Cup Sugar"
+    ],
+    "steps": [
+      "Peel, core, and thinly slice apples; mix with sugar, cinnamon, and raisins.",
+      "Lay out a sheet of phyllo, brush with melted butter, and repeat for 5-6 layers.",
+      "Sprinkle toasted breadcrumbs over the top layer (to absorb apple juices).",
+      "Spread the apple mixture along one edge of the pastry.",
+      "Roll the pastry tightly, tucking in the ends like a burrito.",
+      "Brush the outside with more butter and bake at 190°C for 35-40 minutes until golden and flaky.",
+      "Dust with powdered sugar before serving warm."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m57",
+    "categoryIds": [
+      "c5"
+    ],
+    "title": "Caprese Salad",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?q=80&w=500&auto=format&fit=crop",
+    "duration": 10,
+    "ingredients": [
+      "2 Large Ripe Tomatoes",
+      "200g Fresh Buffalo Mozzarella",
+      "1 bunch Fresh Basil Leaves",
+      "2 tbsp Balsamic Glaze",
+      "3 tbsp Extra Virgin Olive Oil"
+    ],
+    "steps": [
+      "Slice the tomatoes and mozzarella into 1cm thick rounds.",
+      "On a serving platter, alternate slices of tomato, mozzarella, and a large basil leaf.",
+      "Drizzle generously with high-quality extra virgin olive oil.",
+      "Finish with a drizzle of thick balsamic glaze and a pinch of sea salt.",
+      "Serve at room temperature for the best flavor."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m58",
+    "categoryIds": [
+      "c6"
+    ],
+    "title": "Paella Valenciana",
+    "affordability": "luxurious",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1630175860333-5131bda75071?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "duration": 75,
+    "ingredients": [
+      "2 Cups Bomba Rice",
+      "1/2 tsp Saffron Threads",
+      "200g Shrimp",
+      "200g Mussels",
+      "300g Chicken Thighs (Cubed)",
+      "1/2 Cup Frozen Peas",
+      "1 Liter Seafood Broth"
+    ],
+    "steps": [
+      "In a wide paella pan, brown the chicken pieces in olive oil; remove and set aside.",
+      "Sauté onions, garlic, and diced peppers in the same pan.",
+      "Add the rice and stir for 2 minutes to toast the grains.",
+      "Pour in the warm seafood broth mixed with saffron; do not stir the rice again.",
+      "Arrange the chicken, shrimp, and mussels on top of the rice.",
+      "Simmer for 15-20 minutes until the liquid is absorbed and a 'socarrat' (crispy crust) forms on the bottom.",
+      "Garnish with peas and lemon wedges."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m59",
+    "categoryIds": [
+      "c7"
+    ],
+    "title": "Classic French Toast",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://i.pinimg.com/736x/20/58/0e/20580e215fa56d1be6c20a79c9ad4df2.jpg",
+    "duration": 15,
+    "ingredients": [
+      "4 Thick Slices of Brioche or Stale Bread",
+      "2 Large Eggs",
+      "1/2 Cup Whole Milk",
+      "1 tsp Cinnamon",
+      "1 tsp Vanilla Extract",
+      "Butter for frying",
+      "Honey or Maple Syrup"
+    ],
+    "steps": [
+      "In a shallow bowl, whisk together eggs, milk, cinnamon, and vanilla.",
+      "Dip each bread slice into the mixture, letting it soak for about 20 seconds per side.",
+      "Melt butter in a skillet over medium heat.",
+      "Fry the bread for 3-4 minutes per side until golden brown and slightly crisp on the edges.",
+      "Serve hot with a drizzle of honey, fresh berries, or a dollop of yogurt."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m60",
+    "categoryIds": [
+      "c8"
+    ],
+    "title": "Fried Spring Rolls",
+    "affordability": "affordable",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1695712641569-05eee7b37b6d?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "duration": 40,
+    "ingredients": [
+      "10-12 Spring Roll Wrappers (Rice Paper)",
+      "2 Cups Shredded Cabbage",
+      "1 Cup Julienned Carrots",
+      "50g Glass Noodles (Soaked)",
+      "2 cloves Garlic",
+      "1 tbsp Soy Sauce",
+      "Vegetable Oil for deep frying"
+    ],
+    "steps": [
+      "Sauté garlic, cabbage, and carrots in a wok until soft; stir in glass noodles and soy sauce.",
+      "Let the filling cool completely before wrapping.",
+      "Place 2 tablespoons of filling on a wrapper, fold the sides, and roll tightly, sealing with a bit of water.",
+      "Heat oil to 180°C in a deep pan.",
+      "Fry the rolls in batches for 3-5 minutes until golden and very crispy.",
+      "Drain on paper towels and serve hot with sweet chili sauce."
+    ],
+    "isGlutenFree": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m61",
+    "categoryIds": [
+      "c9"
+    ],
+    "title": "French Onion Soup",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://i.pinimg.com/1200x/09/2a/04/092a0406bef634a163507cbde053f268.jpg",
+    "duration": 50,
+    "ingredients": [
+      "5 Large Yellow Onions (Thinly sliced)",
+      "1 Liter Beef Broth",
+      "1 Baguette",
+      "200g Gruyère Cheese (Grated)",
+      "2 tbsp Butter",
+      "1 tbsp Flour",
+      "Fresh Thyme"
+    ],
+    "steps": [
+      "Melt butter and caramelize the onions on low heat for at least 40 minutes until deep brown and sweet.",
+      "Stir in flour and cook for 1 minute, then slowly add beef broth and thyme.",
+      "Simmer for 20 minutes to allow the flavors to meld.",
+      "Toast thick slices of baguette until crunchy.",
+      "Ladle the soup into oven-safe bowls, place bread on top, and cover with a thick layer of Gruyère.",
+      "Broil in the oven until the cheese is bubbly, melted, and slightly browned."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m62",
+    "categoryIds": [
+      "c10"
+    ],
+    "title": "Pistachio Baklava",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1519676867240-f03562e64548?q=80&w=500&auto=format&fit=crop",
+    "duration": 90,
+    "ingredients": [
+      "1 Pack Phyllo Dough",
+      "300g Raw Pistachios (Crushed)",
+      "200g Clarified Butter (Ghee)",
+      "1 Cup Sugar",
+      "1/2 Cup Honey",
+      "1 tbsp Rose Water",
+      "1 tbsp Lemon Juice"
+    ],
+    "steps": [
+      "Prepare the syrup by boiling sugar, water, honey, and lemon juice; let it cool completely.",
+      "Brush a baking dish with melted butter and layer 10-12 sheets of phyllo, brushing each with butter.",
+      "Spread a thick layer of crushed pistachios over the pastry.",
+      "Cover with another 10-12 layers of buttered phyllo sheets.",
+      "Carefully cut the pastry into diamond shapes before baking.",
+      "Bake at 175°C for 45-50 minutes until golden and crisp.",
+      "Pour the cold syrup over the hot baklava immediately after taking it out of the oven."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m63",
+    "categoryIds": [
+      "c11"
+    ],
+    "title": "Baba Ganoush",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1700089152197-6b2ac14e85ec?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8QmFiYSUyMEdhbm91c2h8ZW58MHx8MHx8fDA%3D",
+    "duration": 30,
+    "ingredients": [
+      "2 Large Eggplants",
+      "1/4 Cup Tahini",
+      "3 tbsp Lemon Juice",
+      "2 cloves Garlic (Minced)",
+      "1/2 tsp Cumin",
+      "Olive Oil",
+      "Pomegranate Seeds"
+    ],
+    "steps": [
+      "Char the eggplants over an open flame or under a broiler until the skin is burnt and flesh is soft.",
+      "Scoop out the smoky flesh and drain in a colander for 10 minutes to remove excess moisture.",
+      "Mash the eggplant with a fork or pulse in a blender (keep it slightly chunky).",
+      "Stir in tahini, lemon juice, minced garlic, and cumin.",
+      "Taste and adjust seasoning with salt.",
+      "Drizzle generously with olive oil and garnish with pomegranate seeds or parsley before serving."
+    ],
+    "isGlutenFree": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m64",
+    "categoryIds": [
+      "c12"
+    ],
+    "title": "Guacamole with Chips",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1681406689585-0b0c2e02ec44?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8R3VhY2Ftb2xlJTIwd2l0aCUyMENoaXBzfGVufDB8fDB8fHww",
+    "duration": 10,
+    "ingredients": [
+      "3 Ripe Avocados",
+      "1/2 Red Onion (Finely diced)",
+      "1 Roma Tomato (Seedless, diced)",
+      "1/4 Cup Fresh Cilantro",
+      "1 tbsp Lime Juice",
+      "1 Jalapeño (Optional)",
+      "Tortilla Chips"
+    ],
+    "steps": [
+      "Cut avocados, remove the pits, and scoop the flesh into a bowl.",
+      "Add lime juice immediately to prevent browning and mash to your desired consistency.",
+      "Fold in the diced onion, tomato, cilantro, and jalapeño.",
+      "Season with salt and a pinch of black pepper.",
+      "Serve immediately with a bowl of crispy, salted corn tortilla chips."
+    ],
+    "isGlutenFree": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m65",
+    "categoryIds": [
+      "c13"
+    ],
+    "title": "Lamb Coconut Curry",
+    "affordability": "luxurious",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1545247181-516773cae754?q=80&w=500&auto=format&fit=crop",
+    "duration": 80,
+    "ingredients": [
+      "800g Lamb Shoulder (Cubed)",
+      "400ml Coconut Milk",
+      "2 Large Potatoes (Diced)",
+      "2 tbsp Curry Powder",
+      "1 tbsp Ginger-Garlic Paste",
+      "1 Onion",
+      "Cinnamon, Cardamom, Cloves",
+      "Fresh Cilantro"
+    ],
+    "steps": [
+      "Sear the lamb cubes in hot oil until browned on all sides; remove and set aside.",
+      "Sauté onions with whole spices (cinnamon, cloves, cardamom) until fragrant.",
+      "Add ginger-garlic paste and curry powder, stirring for 1 minute.",
+      "Return lamb to the pot and pour in the coconut milk; simmer on low heat for 1 hour.",
+      "Add diced potatoes and continue cooking for another 20-30 minutes until lamb and potatoes are tender.",
+      "Garnish with fresh cilantro and serve with Basmati rice or Naan."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m66",
+    "categoryIds": [
+      "c14"
+    ],
+    "title": "Grilled Garlic Lobster",
+    "affordability": "luxurious",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1738231670072-ab51e6bf483e?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fEdyaWxsZWQlMjBMb2JzdGVyfGVufDB8fDB8fHww",
+    "duration": 45,
+    "ingredients": [
+      "2 Lobster Tails",
+      "4 tbsp Butter (Melted)",
+      "3 cloves Garlic (Minced)",
+      "1 tsp Paprika",
+      "1 tbsp Lemon Juice",
+      "Fresh Parsley"
+    ],
+    "steps": [
+      "Use kitchen shears to cut down the top of the lobster shell and gently lift the meat to sit on top (butterfly style).",
+      "Whisk together melted butter, minced garlic, lemon juice, and paprika.",
+      "Brush the lobster meat generously with the garlic butter mixture.",
+      "Preheat the grill to medium-high heat.",
+      "Grill the lobster tails for 8-10 minutes until the meat is opaque and the internal temperature reaches 60°C.",
+      "Garnish with chopped parsley and serve with extra lemon wedges."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m67",
+    "categoryIds": [
+      "c15"
+    ],
+    "title": "Mediterranean Chickpea Salad",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=500&auto=format&fit=crop",
+    "duration": 15,
+    "ingredients": [
+      "1 can (400g) Chickpeas (Drained)",
+      "1 English Cucumber (Diced)",
+      "2 Large Tomatoes (Diced)",
+      "1/2 Red Onion (Finely diced)",
+      "1/4 Cup Fresh Parsley",
+      "3 tbsp Extra Virgin Olive Oil",
+      "2 tbsp Lemon Juice"
+    ],
+    "steps": [
+      "Rinse the chickpeas thoroughly and place them in a large salad bowl.",
+      "Add the chopped cucumber, tomatoes, red onion, and parsley.",
+      "In a small jar, shake together olive oil, lemon juice, salt, and pepper.",
+      "Pour the dressing over the salad and toss well to combine.",
+      "Let the salad sit for 10 minutes before serving to allow the chickpeas to absorb the dressing."
+    ],
+    "isGlutenFree": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m68",
+    "categoryIds": [
+      "c16"
+    ],
+    "title": "Afghan Chicken Karahi",
+    "affordability": "pricey",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1606471191009-63994c53433b?q=80&w=500&auto=format&fit=crop",
+    "duration": 40,
+    "ingredients": [
+      "800g Chicken (Bone-in pieces)",
+      "4 Large Ripe Tomatoes (Halved)",
+      "4-5 Green Chilies",
+      "2 tbsp Ginger-Garlic Paste",
+      "1 tsp Black Pepper",
+      "1 tsp Coriander Powder",
+      "1/2 Cup Vegetable Oil"
+    ],
+    "steps": [
+      "Heat oil in a Karahi or deep wok and sauté chicken on high heat until the color changes.",
+      "Add ginger-garlic paste and sauté for another 2 minutes.",
+      "Place tomato halves (skin side up) over the chicken, cover, and cook for 10 minutes until tomatoes soften.",
+      "Remove the tomato skins with tongs and mash the pulp into the chicken.",
+      "Add sliced green chilies, black pepper, and coriander powder.",
+      "Cook uncovered on high heat, stirring constantly, until the water evaporates and oil separates from the thick tomato sauce.",
+      "Garnish with julienned ginger and serve with hot Naan."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m69",
+    "categoryIds": [
+      "c17"
+    ],
+    "title": "Tahchin (Persian Saffron Rice Cake)",
+    "affordability": "luxurious",
+    "complexity": "hard",
+    "imageUrl": "https://media.istockphoto.com/id/1296166176/photo/tahchin-or-tah-chin-is-an-iranian-rice-cake-primarily-consisting-of-rice-yogurt-saffron-and.webp?a=1&b=1&s=612x612&w=0&k=20&c=Vlvn1iA3svmM9Y0qAipieZXxM21WMbxxNVSW8YeE_Oc=",
+    "duration": 90,
+    "ingredients": [
+      "3 Cups Basmati Rice",
+      "2 Cups Thick Greek Yogurt",
+      "2 Egg Yolks",
+      "1 tsp Saffron (Brewed)",
+      "500g Chicken Breast (Cooked and shredded)",
+      "1/2 Cup Barberries (Zereshk)",
+      "Butter & Oil"
+    ],
+    "steps": [
+      "Parboil the rice in salted water until half-cooked; drain.",
+      "In a large bowl, whisk together yogurt, egg yolks, brewed saffron, and a little oil.",
+      "Mix the parboiled rice with the yogurt mixture until every grain is yellow.",
+      "In a non-stick pot or baking dish, spread half the rice and press down firmly.",
+      "Add a layer of shredded chicken and barberries in the middle (leave the edges clear).",
+      "Cover with the remaining rice and press down again; top with small cubes of butter.",
+      "Cover with foil and bake at 180°C for 60-90 minutes until a thick, golden, crispy crust (Tahdig) forms all around.",
+      "Flip onto a platter and serve like a cake."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m70",
+    "categoryIds": [
+      "c18"
+    ],
+    "title": "Classic Shepherd's Pie",
+    "affordability": "pricey",
+    "complexity": "challenging",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1723770033472-0b0452d98225?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8U2hlcGhlcmQncyUyMFBpZXxlbnwwfHwwfHx8MA%3D%3D",
+    "duration": 50,
+    "ingredients": [
+      "600g Ground Lamb",
+      "1kg Potatoes (Boiled and mashed)",
+      "1 Cup Peas & Carrots",
+      "1 Onion (Diced)",
+      "2 tbsp Tomato Paste",
+      "1 Cup Beef or Lamb Broth",
+      "50g Butter",
+      "1/2 Cup Milk"
+    ],
+    "steps": [
+      "Sauté onions and ground lamb until browned. Stir in tomato paste, peas, carrots, and broth. Simmer for 15 minutes.",
+      "Prepare a creamy mash by mixing boiled potatoes with butter, milk, and salt.",
+      "Transfer the meat mixture into a large baking dish.",
+      "Spread the mashed potatoes evenly over the meat, then score the top with a fork for extra crunch.",
+      "Bake at 200°C for 25-30 minutes until the potatoes are golden and the sauce is bubbling up around the edges.",
+      "Let it cool for 5 minutes before serving."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m71",
+    "categoryIds": [
+      "c1"
+    ],
+    "title": "Bruschetta with Tomato",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1572656631137-7935297eff55?q=80&w=500&auto=format&fit=crop",
+    "duration": 15,
+    "ingredients": [
+      "1 Italian Baguette (Sliced)",
+      "4 Medium Tomatoes (Diced)",
+      "2 cloves Garlic",
+      "1/2 Cup Fresh Basil",
+      "1/4 Cup Extra Virgin Olive Oil",
+      "Balsamic Glaze"
+    ],
+    "steps": [
+      "Toast the baguette slices in the oven or on a grill until golden and crispy.",
+      "Rub a halved garlic clove over the warm surface of each bread slice for flavor.",
+      "In a bowl, mix diced tomatoes with chopped basil, olive oil, salt, and pepper.",
+      "Spoon the tomato mixture generously onto each toasted slice.",
+      "Drizzle with a little balsamic glaze before serving immediately."
+    ],
+    "isGlutenFree": false,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m72",
+    "categoryIds": [
+      "c2"
+    ],
+    "title": "Egg Salad Sandwich",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=500&auto=format&fit=crop",
+    "duration": 15,
+    "ingredients": [
+      "4 Hard-boiled Eggs",
+      "3 tbsp Mayonnaise",
+      "1 tsp Yellow Mustard",
+      "2 Slices of White or Whole Wheat Bread",
+      "Fresh Chives",
+      "Lettuce Leaves"
+    ],
+    "steps": [
+      "Peel the hard-boiled eggs and chop them into small pieces.",
+      "In a bowl, combine eggs, mayonnaise, mustard, and chopped chives; mix until creamy.",
+      "Season with salt and a dash of paprika or black pepper.",
+      "Place a lettuce leaf on one slice of bread, spread the egg salad on top, and cover with the second slice.",
+      "Cut diagonally and serve chilled."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m73",
+    "categoryIds": [
+      "c3"
+    ],
+    "title": "Double Bacon Burger",
+    "affordability": "luxurious",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=500&auto=format&fit=crop",
+    "duration": 35,
+    "ingredients": [
+      "2 Beef Patties (150g each)",
+      "4 Strips of Smoked Bacon",
+      "2 Slices of Aged Cheddar",
+      "1 Brioche Bun",
+      "Caramelized Onions",
+      "Special Burger Sauce"
+    ],
+    "steps": [
+      "Fry the bacon strips until perfectly crispy; drain on paper towels.",
+      "Grill the beef patties on high heat (3-4 mins per side). Place cheese on each patty in the last minute to melt.",
+      "Toast the brioche bun with a bit of butter until golden brown.",
+      "Layer the bottom bun with sauce, then place the first cheesy patty.",
+      "Add two bacon strips, the second cheesy patty, and the remaining bacon.",
+      "Top with caramelized onions and the upper bun."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m74",
+    "categoryIds": [
+      "c4"
+    ],
+    "title": "German Potato Salad (Kartoffelsalat)",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=500&auto=format&fit=crop",
+    "duration": 30,
+    "ingredients": [
+      "1kg Waxy Potatoes",
+      "1/2 Cup White Vinegar",
+      "1 Large Red Onion (Diced)",
+      "1 tbsp Dijon Mustard",
+      "1/2 Cup Vegetable Broth",
+      "Fresh Parsley",
+      "Oil"
+    ],
+    "steps": [
+      "Boil potatoes in their skins until tender, then peel and slice while still warm.",
+      "Sauté onions in a little oil until translucent.",
+      "Whisk together vinegar, mustard, warm vegetable broth, salt, and pepper.",
+      "Pour the dressing over the warm potato slices (this helps absorption).",
+      "Fold in fresh parsley and let the salad rest for 30 minutes before serving.",
+      "Can be served warm or at room temperature."
+    ],
+    "isGlutenFree": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m75",
+    "categoryIds": [
+      "c5"
+    ],
+    "title": "Fresh Fruit Salad",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1490818387583-1baba5e638af?q=80&w=500&auto=format&fit=crop",
+    "duration": 10,
+    "ingredients": [
+      "1 Apple",
+      "1 Banana",
+      "1 Cup Strawberries",
+      "2 Oranges",
+      "1 tbsp Honey (or Maple Syrup)",
+      "Fresh Mint Leaves"
+    ],
+    "steps": [
+      "Wash and peel the fruits as needed.",
+      "Chop all fruits into uniform, bite-sized pieces.",
+      "Place them in a large bowl and toss gently to combine flavors.",
+      "Drizzle with honey and a squeeze of orange juice for extra sweetness.",
+      "Garnish with finely chopped mint and serve immediately."
+    ],
+    "isGlutenFree": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m76",
+    "categoryIds": [
+      "c6"
+    ],
+    "title": "Brazilian Moqueca (Fish Stew)",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=500&auto=format&fit=crop",
+    "duration": 50,
+    "ingredients": [
+      "600g White Fish Fillets (Cod or Snapper)",
+      "400ml Coconut Milk",
+      "2 Bell Peppers (Sliced)",
+      "1 tbsp Dende (Palm) Oil",
+      "2 Limes",
+      "Fresh Cilantro",
+      "2 Large Tomatoes (Sliced)"
+    ],
+    "steps": [
+      "Marinate fish fillets with lime juice, garlic, and salt for 20 minutes.",
+      "In a heavy clay pot (if available), layer sliced onions, peppers, and tomatoes.",
+      "Place the marinated fish pieces on top of the vegetables.",
+      "Pour in the coconut milk and bring to a very gentle simmer.",
+      "Cook for 15-20 minutes without stirring to keep the fish intact.",
+      "Stir in the palm oil and sprinkle with a generous amount of cilantro.",
+      "Serve hot with white rice."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m77",
+    "categoryIds": [
+      "c7"
+    ],
+    "title": "Oatmeal with Berries",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://media.istockphoto.com/id/979149642/photo/oatmeal-porridge-with-fresh-berries-and-nuts-top-view.webp?a=1&b=1&s=612x612&w=0&k=20&c=wtNo8XEzrQ8LH1mMzPUble3mU9Ime8IKV2dzFlwsaqw=",
+    "duration": 10,
+    "ingredients": [
+      "1 Cup Rolled Oats",
+      "2 Cups Milk (Dairy or Almond)",
+      "1/2 Cup Blueberries",
+      "1 tbsp Honey",
+      "1/4 tsp Cinnamon",
+      "Crushed Walnuts"
+    ],
+    "steps": [
+      "In a small saucepan, bring milk and cinnamon to a boil.",
+      "Add the oats and reduce heat to low, stirring occasionally.",
+      "Simmer for 5-7 minutes until the mixture is thick and creamy.",
+      "Pour into a bowl and top with fresh blueberries and walnuts.",
+      "Drizzle with honey and serve warm."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m78",
+    "categoryIds": [
+      "c8"
+    ],
+    "title": "Japanese Pork Ramen",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?q=80&w=500&auto=format&fit=crop",
+    "duration": 120,
+    "ingredients": [
+      "200g Ramen Noodles",
+      "300g Pork Belly (Chashu)",
+      "1 Liter Miso/Pork Broth",
+      "1 Soft-boiled Egg (Marinated)",
+      "Bamboo Shoots",
+      "Nori Seaweed",
+      "Green Onions"
+    ],
+    "steps": [
+      "Slow-roast or braise the pork belly for 2 hours until it is melt-in-the-mouth tender.",
+      "Prepare a rich broth by simmering miso paste with pork stock and aromatics.",
+      "Cook ramen noodles in boiling water until just firm; drain well.",
+      "Place noodles in a deep bowl and pour over the hot, flavorful broth.",
+      "Top with thin slices of chashu pork, a halved soft-boiled egg, nori, and bamboo shoots.",
+      "Garnish with finely sliced green onions and serve steaming hot."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m79",
+    "categoryIds": [
+      "c9"
+    ],
+    "title": "Beef Tartare",
+    "affordability": "luxurious",
+    "complexity": "hard",
+    "imageUrl": "https://i.pinimg.com/736x/f0/18/55/f01855aec3ef39559f5d0cb88b81fd59.jpg",
+    "duration": 25,
+    "ingredients": [
+      "250g Raw Beef Tenderloin (Prime grade)",
+      "1 Fresh Egg Yolk",
+      "1 tbsp Capers (Minced)",
+      "1 Shallot (Finely diced)",
+      "1 tsp Dijon Mustard",
+      "Worcestershire Sauce",
+      "Toast Points"
+    ],
+    "steps": [
+      "Chill the beef in the freezer for 15 minutes to make it easier to cut.",
+      "Using a sharp knife, hand-mince the beef into very small, uniform cubes (do not use a processor).",
+      "In a chilled bowl, mix the beef with capers, shallots, mustard, and a dash of Worcestershire sauce.",
+      "Shape the mixture into a neat circle on a plate.",
+      "Make a small indentation on top and carefully place the raw egg yolk in the center.",
+      "Serve immediately with crispy toast points or crackers."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m80",
+    "categoryIds": [
+      "c10"
+    ],
+    "title": "Classic Panna Cotta",
+    "affordability": "pricey",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "500ml Heavy Cream",
+      "50g Sugar",
+      "2 sheets Gelatin (or 1 tsp powder)",
+      "1 Vanilla Bean (Scraped)",
+      "1 Cup Mixed Berry Sauce"
+    ],
+    "steps": [
+      "Soak gelatin in cold water for 5 minutes until soft.",
+      "In a saucepan, heat cream, sugar, and vanilla seeds over medium heat (do not let it boil).",
+      "Remove from heat, squeeze excess water from the gelatin, and whisk it into the warm cream until dissolved.",
+      "Pour the mixture into ramekins or glass molds.",
+      "Refrigerate for at least 4-6 hours until completely set.",
+      "To serve, run a knife around the edge and flip onto a plate, or serve in the glass topped with berry sauce."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m81",
+    "categoryIds": [
+      "c11"
+    ],
+    "title": "Kofta Kebab",
+    "affordability": "pricey",
+    "complexity": "challenging",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1770815084799-72c976c30acc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fEtvZnRhJTIwS2ViYWJ8ZW58MHx8MHx8fDA%3D",
+    "duration": 35,
+    "ingredients": [
+      "500g Ground Beef or Lamb",
+      "1 Large Onion (Grated and drained)",
+      "1/2 Cup Fresh Parsley (Finely chopped)",
+      "1 tsp Allspice",
+      "1/2 tsp Cinnamon",
+      "1/2 tsp Cumin",
+      "Salt & Black Pepper"
+    ],
+    "steps": [
+      "Mix the ground meat with the grated onion, parsley, and all the spices in a large bowl.",
+      "Knead the mixture by hand for about 5 minutes until it becomes sticky and holds together.",
+      "Take a handful of meat and shape it around a metal skewer, forming a long, uniform kebab.",
+      "Grill over medium-high heat (ideally over charcoal) for 8-10 minutes, turning occasionally.",
+      "Serve hot with pita bread, grilled tomatoes, and a side of hummus."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m82",
+    "categoryIds": [
+      "c12"
+    ],
+    "title": "Chiles Rellenos",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://media.istockphoto.com/id/159305135/photo/chile-relleno-stuffed-with-mashed-potatoes.webp?a=1&b=1&s=612x612&w=0&k=20&c=euPmCewbx7GuNjwzblTJGTJOCfqqeSAbInnvMlK3Qus=",
+    "duration": 50,
+    "ingredients": [
+      "4 Large Poblano Peppers",
+      "200g Monterey Jack Cheese",
+      "3 Large Eggs (Separated)",
+      "1 Cup Tomato Sauce (Ranchera style)",
+      "1/2 Cup Flour",
+      "Vegetable Oil for frying"
+    ],
+    "steps": [
+      "Roast the poblano peppers over an open flame until charred, then let them steam in a bag and peel off the skin.",
+      "Make a small slit in each pepper and carefully remove the seeds; stuff with a slice of cheese.",
+      "Beat the egg whites until stiff peaks form, then gently fold in the yolks to make a light batter.",
+      "Dredge the stuffed peppers in flour, dip into the egg batter, and fry in hot oil until golden brown.",
+      "Drain on paper towels and serve immediately topped with warm tomato sauce."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m83",
+    "categoryIds": [
+      "c13"
+    ],
+    "title": "Samosas (Potato & Pea)",
+    "affordability": "affordable",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1601050690294-397f3c324515?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8U2Ftb3Nhc3xlbnwwfHwwfHx8MA%3D%3D",
+    "duration": 45,
+    "ingredients": [
+      "2 Cups All-Purpose Flour",
+      "3 Large Potatoes (Boiled and cubed)",
+      "1/2 Cup Green Peas",
+      "1 tsp Cumin Seeds",
+      "1 tbsp Grated Ginger",
+      "1 tsp Garam Masala",
+      "Vegetable Oil"
+    ],
+    "steps": [
+      "Prepare the dough by mixing flour, oil, and water; knead until smooth and let it rest.",
+      "For the filling: Sauté cumin seeds, ginger, and peas; add cubed potatoes and spices. Mash slightly.",
+      "Divide the dough into small balls, roll into circles, and cut each circle in half.",
+      "Fold each semi-circle into a cone, fill with the potato mixture, and seal the edges with water.",
+      "Deep fry the samosas on medium heat until they are crisp and golden brown.",
+      "Serve with mint or tamarind chutney."
+    ],
+    "isGlutenFree": false,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m84",
+    "categoryIds": [
+      "c14"
+    ],
+    "title": "Fresh Fish Ceviche",
+    "affordability": "pricey",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "500g Fresh White Fish Fillets (Sea Bass or Snapper)",
+      "1/2 Cup Fresh Lime Juice",
+      "1 Small Red Onion (Thinly sliced)",
+      "1/2 Cup Fresh Cilantro (Chopped)",
+      "1 Red Chili (Minced)",
+      "1 Sweet Potato (Boiled, for side)"
+    ],
+    "steps": [
+      "Cut the fresh fish into small, uniform cubes (about 1.5 cm).",
+      "In a glass bowl, cover the fish with lime juice and refrigerate for 15-20 minutes until the fish turns opaque.",
+      "Add the red onion, chili, and cilantro to the fish; toss gently.",
+      "Season with salt and a pinch of black pepper.",
+      "Serve immediately in chilled bowls, traditionally accompanied by slices of boiled sweet potato or corn."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m85",
+    "categoryIds": [
+      "c15"
+    ],
+    "title": "Vegan Tofu Stir-fry",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "400g Firm Tofu (Pressed and diced)",
+      "2 Cups Broccoli Florets",
+      "3 tbsp Soy Sauce",
+      "1 tbsp Fresh Ginger (Minced)",
+      "1 tbsp Sesame Oil",
+      "2 tbsp Cornstarch",
+      "Sesame Seeds"
+    ],
+    "steps": [
+      "Toss the diced tofu in cornstarch to coat lightly.",
+      "Heat sesame oil in a wok and fry the tofu until all sides are golden and crispy.",
+      "Add broccoli and ginger to the wok; stir-fry for 3-5 minutes until the broccoli is bright green but crisp.",
+      "Pour in the soy sauce and a splash of water, tossing until the sauce thickens and coats the ingredients.",
+      "Garnish with toasted sesame seeds and serve over rice or noodles."
+    ],
+    "isGlutenFree": false,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m86",
+    "categoryIds": [
+      "c16"
+    ],
+    "title": "Afghan Kofta Chalau",
+    "affordability": "pricey",
+    "complexity": "challenging",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpUMDudDpYG_e1TGLegQmMdg2MQOnOSOIsQw&s",
+    "duration": 50,
+    "ingredients": [
+      "500g Ground Beef",
+      "2 Cups Basmati Rice",
+      "2 Large Tomatoes (Pureed)",
+      "1 tbsp Tomato Paste",
+      "1 Onion (Grated)",
+      "2 cloves Garlic",
+      "Spices (Coriander, Cumin, Turmeric)"
+    ],
+    "steps": [
+      "Meatballs: Mix beef with grated onion, garlic, and spices. Shape into small round balls.",
+      "Sauce: Sauté onions and garlic, add tomato puree, tomato paste, and spices; simmer with 1 cup of water.",
+      "Place the meatballs into the simmering sauce, cover, and cook for 30 minutes on low heat.",
+      "Rice (Chalau): Parboil basmati rice, then drain and steam with oil and cumin until fluffy and white.",
+      "Serve the meatballs and gravy on a separate platter alongside the white rice."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m87",
+    "categoryIds": [
+      "c17"
+    ],
+    "title": "Kabab Koobideh",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrajRJ91xAq1fHNkfRT3hZMu0uRz7QFmw77w&s",
+    "duration": 45,
+    "ingredients": [
+      "800g Minced Lamb (20% fat)",
+      "2 Large Onions (Grated and squeezed dry)",
+      "1/2 tsp Saffron (Brewed)",
+      "1 tsp Sumac",
+      "Basmati Rice",
+      "Butter"
+    ],
+    "steps": [
+      "Mix the minced lamb with the dried onion pulp, salt, pepper, and brewed saffron.",
+      "Knead the meat for at least 10 minutes until it feels like a paste (crucial for sticking to the skewer).",
+      "Mould the meat onto wide, flat skewers, using wet hands to create the traditional indentations.",
+      "Grill over hot charcoal, turning frequently during the first minute to set the meat.",
+      "Serve over a bed of saffron rice with a cube of butter and a generous sprinkle of sumac."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m88",
+    "categoryIds": [
+      "c18"
+    ],
+    "title": "Steak Frites",
+    "affordability": "luxurious",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=500&auto=format&fit=crop",
+    "duration": 30,
+    "ingredients": [
+      "2 Sirloin Steaks (250g each)",
+      "3 Large Potatoes",
+      "50g Unsalted Butter",
+      "Fresh Rosemary & Thyme",
+      "2 cloves Garlic"
+    ],
+    "steps": [
+      "Peel potatoes and cut into thin matchsticks. Fry in oil at 160°C for 5 minutes, then at 190°C until golden and crisp.",
+      "Season steaks generously with salt and pepper.",
+      "Sear the steaks in a hot cast-iron skillet for 3-4 minutes per side.",
+      "Add butter, garlic, and herbs to the pan; baste the steak with the melted butter for 2 minutes.",
+      "Let the steak rest for 5 minutes before slicing.",
+      "Serve with the hot fries and a dollop of herb butter."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m89",
+    "categoryIds": [
+      "c1"
+    ],
+    "title": "Creamy Mushroom Risotto",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1476124369491-e7addf5db371?q=80&w=500&auto=format&fit=crop",
+    "duration": 45,
+    "ingredients": [
+      "1.5 Cups Arborio Rice",
+      "300g Mixed Mushrooms (Sliced)",
+      "1.2 Liters Vegetable Broth (Warm)",
+      "1/2 Cup Dry White Wine",
+      "1/2 Cup Parmesan Cheese",
+      "2 tbsp Butter",
+      "1 Shallot (Minced)"
+    ],
+    "steps": [
+      "Sauté mushrooms in a large pan with olive oil until browned; remove and set aside.",
+      "In the same pan, sauté shallots, then add rice and toast for 2 minutes.",
+      "Deglaze with white wine and stir until evaporated.",
+      "Add the warm broth one ladle at a time, stirring constantly and waiting for each ladle to be absorbed before adding the next.",
+      "Once the rice is tender but firm (about 20 mins), stir back in the mushrooms, butter, and parmesan.",
+      "Serve immediately while creamy."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m90",
+    "categoryIds": [
+      "c2"
+    ],
+    "title": "Caprese Pesto Wrap",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?q=80&w=500&auto=format&fit=crop",
+    "duration": 10,
+    "ingredients": [
+      "1 Large Tortilla",
+      "150g Fresh Mozzarella (Sliced)",
+      "1 Large Tomato (Sliced)",
+      "1 Cup Fresh Baby Spinach",
+      "2 tbsp Basil Pesto"
+    ],
+    "steps": [
+      "Spread a generous layer of basil pesto over the entire surface of the tortilla.",
+      "Layer the fresh spinach, followed by slices of tomato and mozzarella.",
+      "Drizzle with a little balsamic glaze if desired.",
+      "Fold the sides in and roll the tortilla tightly.",
+      "Optionally, grill the wrap for 1-2 minutes per side until the cheese begins to soften."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m91",
+    "categoryIds": [
+      "c16"
+    ],
+    "title": "Afghan Shorwa (Meat Stew)",
+    "affordability": "affordable",
+    "complexity": "challenging",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeeBpJRuJgUR_DArPC15Jqim80wxKItUJfgw&s",
+    "duration": 90,
+    "ingredients": [
+      "500g Lamb Shanks or Bones",
+      "3 Large Potatoes",
+      "1 Cup Yellow Peas (Soaked)",
+      "2 Large Onions",
+      "2 tbsp Tomato Paste",
+      "Dried Lime (Limo Amani)",
+      "Fresh Nan Bread"
+    ],
+    "steps": [
+      "Sauté onions until golden, then add lamb and brown it thoroughly.",
+      "Add tomato paste, yellow peas, and 6 cups of water. Bring to a boil.",
+      "Lower the heat and simmer for 1 hour; then add potatoes and dried lime.",
+      "Cook for another 30-40 minutes until the meat falls off the bone and potatoes are soft.",
+      "Traditionally, the broth is served first in a bowl with pieces of bread (Tari), followed by the meat and vegetables."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m92",
+    "categoryIds": [
+      "c17"
+    ],
+    "title": "Mirza Ghasemi",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyqiu0bbKw9VuaZHPgP_vDCgSMwy5MTlVcJw&s",
+    "duration": 40,
+    "ingredients": [
+      "3 Large Eggplants",
+      "4 cloves Garlic (Crushed)",
+      "3 Ripe Tomatoes (Peeled and chopped)",
+      "2 Large Eggs",
+      "1 tsp Turmeric",
+      "Olive Oil"
+    ],
+    "steps": [
+      "Grill the eggplants over an open flame until the skin is charred and the flesh is smoky and soft.",
+      "Peel the charred skin off and finely chop or mash the eggplant flesh.",
+      "Sauté garlic and turmeric in oil, then add the chopped tomatoes and cook until the water evaporates.",
+      "Mix in the mashed eggplant and cook for 10 minutes to meld flavors.",
+      "Make small wells in the mixture, crack the eggs into them, and stir until the eggs are just set."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m93",
+    "categoryIds": [
+      "c8"
+    ],
+    "title": "Dim Sum (Shrimp Dumplings)",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?q=80&w=500&auto=format&fit=crop",
+    "duration": 60,
+    "ingredients": [
+      "250g Shrimp (Minced)",
+      "Dumpling Wrappers (Wheat or Rice based)",
+      "1 tbsp Fresh Ginger",
+      "2 tbsp Soy Sauce",
+      "1 tsp Sesame Oil",
+      "Bamboo Shoots (Finely chopped)"
+    ],
+    "steps": [
+      "Mix minced shrimp with ginger, soy sauce, sesame oil, and bamboo shoots to create the filling.",
+      "Place a small spoonful of filling in the center of each wrapper.",
+      "Fold and pleat the edges carefully to seal the dumplings (Har Gow style).",
+      "Line a bamboo steamer with parchment paper or cabbage leaves.",
+      "Steam the dumplings over boiling water for 8-10 minutes until the filling is pink and the wrapper is translucent.",
+      "Serve hot with a dipping sauce of soy sauce and chili oil."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m94",
+    "categoryIds": [
+      "c13"
+    ],
+    "title": "Garlic Naan Bread",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1585238342024-78d387f4a707?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "2 Cups All-Purpose Flour",
+      "1/2 Cup Plain Yogurt",
+      "1 tsp Yeast",
+      "1/2 tsp Sugar",
+      "4 tbsp Butter",
+      "3 cloves Garlic (Minced)"
+    ],
+    "steps": [
+      "Mix flour, yeast, sugar, yogurt, and warm water. Knead into a soft dough and let it rise for 1 hour.",
+      "Divide the dough into small balls and roll them out into flat, oval shapes.",
+      "Heat a heavy skillet or cast-iron pan over high heat.",
+      "Place the dough on the pan; once bubbles form, flip and cook until charred spots appear.",
+      "Immediately brush the hot bread with a mixture of melted butter and minced garlic.",
+      "Garnish with fresh cilantro."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m95",
+    "categoryIds": [
+      "c10"
+    ],
+    "title": "New York Cheesecake",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=500&auto=format&fit=crop",
+    "duration": 70,
+    "ingredients": [
+      "900g Cream Cheese (Room temperature)",
+      "1.5 Cups Graham Cracker Crumbs",
+      "1 Cup Sugar",
+      "4 Large Eggs",
+      "1 Cup Sour Cream",
+      "1 tbsp Vanilla Extract",
+      "1/2 Cup Melted Butter"
+    ],
+    "steps": [
+      "Combine cracker crumbs and melted butter; press firmly into the bottom of a springform pan.",
+      "Beat the cream cheese and sugar until smooth; add eggs one at a time, followed by sour cream and vanilla.",
+      "Pour the filling over the crust.",
+      "Bake in a water bath (to prevent cracking) at 160°C for 60-70 minutes.",
+      "Turn off the oven and let the cheesecake cool inside with the door slightly open for 1 hour.",
+      "Chill in the refrigerator for at least 6 hours before serving."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m96",
+    "categoryIds": [
+      "c15"
+    ],
+    "title": "Zucchini Noodles (Zoodles)",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?q=80&w=500&auto=format&fit=crop",
+    "duration": 15,
+    "ingredients": [
+      "3 Large Zucchinis",
+      "2 cloves Garlic (Slivered)",
+      "1 Cup Cherry Tomatoes (Halved)",
+      "2 tbsp Olive Oil",
+      "Fresh Basil",
+      "Parmesan (Optional)"
+    ],
+    "steps": [
+      "Use a spiralizer to turn the zucchinis into long, noodle-like strands.",
+      "Heat olive oil in a large skillet and sauté garlic for 1 minute.",
+      "Add the cherry tomatoes and cook until they just start to burst.",
+      "Add the zucchini noodles and toss for only 2-3 minutes (do not overcook or they will become watery).",
+      "Season with salt and pepper, and garnish with fresh basil and a sprinkle of parmesan."
+    ],
+    "isGlutenFree": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m97",
+    "categoryIds": [
+      "c11"
+    ],
+    "title": "Classic Tabbouleh Salad",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "1/2 Cup Fine Bulgur",
+      "3 bunches Flat-leaf Parsley",
+      "1/2 Cup Fresh Mint",
+      "2 Large Tomatoes",
+      "1/4 Cup Lemon Juice",
+      "1/3 Cup Extra Virgin Olive Oil"
+    ],
+    "steps": [
+      "Soak the bulgur in boiling water for 15 minutes, then drain and squeeze out all excess liquid.",
+      "Very finely chop the parsley and mint (ensure they are dry before chopping).",
+      "Dice the tomatoes finely and drain the excess juice.",
+      "In a large bowl, combine the bulgur, herbs, and tomatoes.",
+      "Whisk together lemon juice and olive oil; pour over the salad and toss well.",
+      "Serve chilled."
+    ],
+    "isGlutenFree": false,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m98",
+    "categoryIds": [
+      "c3"
+    ],
+    "title": "Black Bean Veggie Burger",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1520072959219-c595dc870360?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "1 can Black Beans (Mashed)",
+      "1/2 Cup Breadcrumbs",
+      "1/4 Cup Diced Onions",
+      "1 tsp Cumin",
+      "1 Large Egg (as binder)",
+      "Whole Wheat Buns",
+      "Avocado Slices"
+    ],
+    "steps": [
+      "In a bowl, mix mashed black beans, breadcrumbs, onions, cumin, and egg until well combined.",
+      "Form the mixture into 4 patties.",
+      "Grill or pan-fry the patties for about 5 minutes on each side until firm and slightly browned.",
+      "Toast the buns and assemble with lettuce, tomato, avocado, and the veggie patty.",
+      "Serve with sweet potato fries."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m99",
+    "categoryIds": [
+      "c14"
+    ],
+    "title": "Creamy Clam Chowder",
+    "affordability": "pricey",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1560684352-8497838a2229?q=80&w=500&auto=format&fit=crop",
+    "duration": 40,
+    "ingredients": [
+      "500g Fresh or Canned Clams",
+      "3 Large Potatoes (Diced)",
+      "2 Cups Heavy Cream",
+      "4 Slices of Bacon (Diced)",
+      "1 Onion",
+      "2 tbsp Flour",
+      "1 tsp Thyme"
+    ],
+    "steps": [
+      "Fry the diced bacon in a large pot until crispy; remove bacon but keep the fat.",
+      "Sauté onions in the bacon fat, then stir in flour to create a roux.",
+      "Slowly add clam juice and diced potatoes; simmer until potatoes are tender.",
+      "Stir in the heavy cream, clams, and thyme; simmer for 5-10 minutes without boiling.",
+      "Season with plenty of black pepper and serve topped with the crispy bacon."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m100",
+    "categoryIds": [
+      "c18"
+    ],
+    "title": "Holiday Roast Turkey",
+    "affordability": "luxurious",
+    "complexity": "hard",
+    "imageUrl": "https://i.pinimg.com/736x/67/d0/98/67d09837629b18928d71d7b0811eb88a.jpg",
+    "duration": 180,
+    "ingredients": [
+      "5kg Whole Turkey",
+      "200g Butter (Softened)",
+      "4 Cups Traditional Stuffing",
+      "Fresh Sage and Rosemary",
+      "Cranberry Sauce",
+      "1 Lemon",
+      "1 Onion"
+    ],
+    "steps": [
+      "Clean the turkey and pat dry. Stuff the cavity with halved lemon, onion, and herbs.",
+      "Carefully loosen the skin over the breast and spread herb butter underneath.",
+      "Generously season the outside with salt and pepper.",
+      "Roast at 165°C, basting every 30 minutes with the pan juices.",
+      "Cook for approximately 3 hours or until the internal temperature reaches 74°C.",
+      "Let the turkey rest for at least 30 minutes before carving to keep it juicy.",
+      "Serve with stuffing, gravy, and cranberry sauce."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m101",
+    "categoryIds": [
+      "c14"
+    ],
+    "title": "Honey Garlic Salmon",
+    "affordability": "pricey",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "2 Salmon Fillets",
+      "3 tbsp Honey",
+      "2 tbsp Soy Sauce",
+      "1 tbsp Lemon Juice",
+      "3 cloves Garlic",
+      "Asparagus"
+    ],
+    "steps": [
+      "Whisk honey, soy sauce, lemon juice, and minced garlic to make the glaze.",
+      "Season salmon with salt and pepper, then sear in a pan for 3 minutes per side.",
+      "Pour the glaze into the pan and let it bubble and thicken over the salmon.",
+      "Serve with sautéed asparagus."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m102",
+    "categoryIds": [
+      "c15"
+    ],
+    "title": "Cauliflower Steak",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://i.pinimg.com/1200x/ec/a5/51/eca551848ba84611faa46c0048f14f63.jpg",
+    "duration": 25,
+    "ingredients": [
+      "1 Large Cauliflower",
+      "Olive Oil",
+      "Smoked Paprika",
+      "Garlic Powder",
+      "Chimichurri Sauce"
+    ],
+    "steps": [
+      "Cut the cauliflower into thick 1-inch 'steaks'.",
+      "Brush both sides with olive oil and spices.",
+      "Roast at 200°C for 25 minutes until golden and edges are crispy.",
+      "Top with fresh chimichurri sauce before serving."
+    ],
+    "isGlutenFree": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m103",
+    "categoryIds": [
+      "c12"
+    ],
+    "title": "Street Corn (Elote)",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://i.pinimg.com/1200x/be/fd/d2/befdd222e9e23ae6398775ac6e6c53f9.jpg",
+    "duration": 15,
+    "ingredients": [
+      "4 Ears of Corn",
+      "1/4 Cup Mayonnaise",
+      "1/2 Cup Cotija Cheese",
+      "Chili Powder",
+      "Lime Wedges",
+      "Cilantro"
+    ],
+    "steps": [
+      "Grill the corn until charred on all sides.",
+      "Brush each ear with a thin layer of mayonnaise.",
+      "Roll the corn in crumbled Cotija cheese until coated.",
+      "Sprinkle with chili powder and cilantro; serve with lime."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m104",
+    "categoryIds": [
+      "c8"
+    ],
+    "title": "Vietnamese Pho",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?q=80&w=500&auto=format&fit=crop",
+    "duration": 180,
+    "ingredients": [
+      "Beef Bones",
+      "Rice Noodles",
+      "Beef Sirloin (Thinly sliced)",
+      "Star Anise & Cinnamon",
+      "Ginger & Onion",
+      "Fresh Basil & Bean Sprouts"
+    ],
+    "steps": [
+      "Char the onion and ginger, then simmer with beef bones and spices for at least 3-4 hours to make the clear broth.",
+      "Cook rice noodles until tender.",
+      "Place raw beef slices over the noodles in a bowl.",
+      "Pour the boiling hot broth over the beef (the heat of the broth cooks the meat instantly).",
+      "Serve with a side of fresh herbs, lime, and bean sprouts."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m105",
+    "categoryIds": [
+      "c3"
+    ],
+    "title": "Lettuce Wrapped Keto Burger",
+    "affordability": "pricey",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "Beef Patty",
+      "Large Iceberg Lettuce Leaves",
+      "Bacon",
+      "Avocado",
+      "Sugar-free Mayo",
+      "Pickles"
+    ],
+    "steps": [
+      "Grill the beef patty and bacon until cooked.",
+      "Use two large, sturdy lettuce leaves as the 'bun'.",
+      "Layer the patty, bacon, avocado, and pickles inside.",
+      "Top with sugar-free mayo and wrap tightly."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m106",
+    "categoryIds": [
+      "c1"
+    ],
+    "title": "Chicken Marsala",
+    "affordability": "pricey",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=500&auto=format&fit=crop",
+    "duration": 40,
+    "ingredients": [
+      "Chicken Breast",
+      "Mushrooms",
+      "Marsala Wine",
+      "Heavy Cream",
+      "Shallots",
+      "Flour"
+    ],
+    "steps": [
+      "Pound chicken breasts until thin, dredge in flour, and pan-fry until golden.",
+      "In the same pan, sauté shallots and mushrooms.",
+      "Deglaze with Marsala wine and simmer until reduced by half.",
+      "Add a splash of cream to create a velvety sauce and return chicken to the pan."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m107",
+    "categoryIds": [
+      "c11"
+    ],
+    "title": "Stuffed Grape Leaves (Dolma)",
+    "affordability": "affordable",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1623341214825-9f4f963727da?q=80&w=500&auto=format&fit=crop",
+    "duration": 90,
+    "ingredients": [
+      "Grape Leaves",
+      "Rice",
+      "Ground Beef (Optional)",
+      "Fresh Dill & Parsley",
+      "Lemon Juice",
+      "Olive Oil"
+    ],
+    "steps": [
+      "Prepare the filling with rice, herbs, and spices (and meat if using).",
+      "Place a small amount of filling on each leaf and roll tightly like a cigar.",
+      "Layer the rolls in a pot, add water, lemon juice, and olive oil.",
+      "Place a heavy plate on top to keep them submerged and simmer for 45-60 minutes."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m109",
+    "categoryIds": [
+      "c6"
+    ],
+    "title": "Poke Bowl",
+    "affordability": "pricey",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "Raw Tuna or Salmon",
+      "Sushi Rice",
+      "Edamame",
+      "Radish",
+      "Seaweed Salad",
+      "Spicy Mayo"
+    ],
+    "steps": [
+      "Dice the raw fish and marinate in soy sauce and sesame oil.",
+      "Prepare a bowl with a base of warm sushi rice.",
+      "Arrange edamame, sliced radish, and seaweed salad on top.",
+      "Add the marinated fish and drizzle with spicy mayo."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m110",
+    "categoryIds": [
+      "c18"
+    ],
+    "title": "Peking Duck",
+    "affordability": "luxurious",
+    "complexity": "hard",
+    "imageUrl": "https://i.pinimg.com/736x/a2/ef/8a/a2ef8a122a459ce459d59c9d85da814a.jpg",
+    "duration": 240,
+    "ingredients": [
+      "Whole Duck",
+      "Maltose or Honey",
+      "Five Spice Powder",
+      "Spring Onions",
+      "Cucumber",
+      "Hoisin Sauce",
+      "Thin Pancakes"
+    ],
+    "steps": [
+      "Air-dry the duck skin for several hours, then brush with a maltose/honey glaze.",
+      "Roast the duck until the skin is dark red and extremely crispy.",
+      "Carve the crispy skin and meat into thin slices.",
+      "Serve with thin pancakes, hoisin sauce, and julienned cucumber and onions."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m111",
+    "categoryIds": [
+      "c19"
+    ],
+    "title": "Crispy Fried Chicken",
+    "affordability": "pricey",
+    "complexity": "challenging",
+    "imageUrl": "https://i.pinimg.com/1200x/05/b6/07/05b607b4e531b4fb917b772b513c453e.jpg",
+    "duration": 45,
+    "ingredients": [
+      "1kg Chicken Wings/Thighs",
+      "2 Cups Buttermilk",
+      "2 Cups Flour",
+      "1 tsp Paprika",
+      "1 tsp Garlic Powder",
+      "Vegetable Oil"
+    ],
+    "steps": [
+      "Marinate chicken in buttermilk for at least 4 hours.",
+      "Mix flour with paprika, garlic powder, salt, and pepper.",
+      "Dredge chicken in the flour mixture, pressing firmly to coat.",
+      "Deep fry at 175°C until golden brown and internal temperature reaches 75°C.",
+      "Let it rest on a wire rack to maintain crispiness."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m112",
+    "categoryIds": [
+      "c20"
+    ],
+    "title": "Eggplant Parmesan",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?q=80&w=500&auto=format&fit=crop",
+    "duration": 60,
+    "ingredients": [
+      "2 Large Eggplants",
+      "Marinara Sauce",
+      "Mozzarella Cheese",
+      "Parmesan",
+      "Breadcrumbs",
+      "Fresh Basil"
+    ],
+    "steps": [
+      "Slice eggplants, salt them to remove moisture, then bread and fry them until golden.",
+      "In a baking dish, layer marinara sauce, fried eggplant, and mozzarella.",
+      "Repeat layers and finish with a heavy sprinkle of parmesan.",
+      "Bake at 190°C for 25-30 minutes until bubbling and golden.",
+      "Garnish with fresh basil before serving."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m113",
+    "categoryIds": [
+      "c19"
+    ],
+    "title": "Beef Tacos al Pastor",
+    "affordability": "affordable",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1551782450-17144efb9c50?q=80&w=500&auto=format&fit=crop",
+    "duration": 40,
+    "ingredients": [
+      "500g Beef (Thinly sliced)",
+      "Pineapple Slices",
+      "Corn Tortillas",
+      "Achiote Paste",
+      "Dried Chilies",
+      "White Onion & Cilantro"
+    ],
+    "steps": [
+      "Marinate beef in a blend of achiote, chilies, and vinegar for 6 hours.",
+      "Grill the meat alongside pineapple slices until slightly charred.",
+      "Finely chop the meat and pineapple.",
+      "Warm the tortillas and fill with meat, pineapple, diced onion, and cilantro.",
+      "Serve with a squeeze of lime."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m114",
+    "categoryIds": [
+      "c20"
+    ],
+    "title": "Mushroom and Spinach Quiche",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1476124369491-e7addf5db371?q=80&w=500&auto=format&fit=crop",
+    "duration": 75,
+    "ingredients": [
+      "Pie Crust",
+      "4 Eggs",
+      "1 Cup Heavy Cream",
+      "2 Cups Mushrooms",
+      "2 Cups Spinach",
+      "Swiss Cheese"
+    ],
+    "steps": [
+      "Pre-bake the pie crust for 10 minutes.",
+      "Sauté mushrooms and spinach until all moisture is evaporated.",
+      "Whisk eggs and cream; stir in the vegetables and cheese.",
+      "Pour mixture into the crust and bake at 175°C for 35-40 minutes until set.",
+      "Let it cool slightly before slicing."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m115",
+    "categoryIds": [
+      "c19"
+    ],
+    "title": "Falafel Wrap",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://i.pinimg.com/1200x/49/24/f0/4924f0f319f581c07ad97b8375216743.jpg",
+    "duration": 30,
+    "ingredients": [
+      "2 Cups Dried Chickpeas (Soaked)",
+      "Fresh Parsley & Cilantro",
+      "Garlic",
+      "Cumin",
+      "Tahini Sauce",
+      "Pita Bread"
+    ],
+    "steps": [
+      "Pulse soaked chickpeas, herbs, garlic, and spices in a processor (do not puree).",
+      "Form into small balls and deep fry until dark brown and crispy.",
+      "Spread tahini on pita bread, add falafels, lettuce, and pickles.",
+      "Roll tightly and serve."
+    ],
+    "isGlutenFree": false,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m118",
+    "categoryIds": [
+      "c12"
+    ],
+    "title": "Enchiladas Rojas",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://i.pinimg.com/736x/84/7b/6a/847b6a28bd82602e3ae03eb50a5f88be.jpg",
+    "duration": 50,
+    "ingredients": [
+      "Corn Tortillas",
+      "Shredded Chicken",
+      "Dried Guajillo Chilies",
+      "Garlic",
+      "Queso Fresco",
+      "Sour Cream"
+    ],
+    "steps": [
+      "Blend soaked chilies and garlic to make the red sauce; simmer until thick.",
+      "Dip tortillas in the sauce, fill with chicken, and roll them up.",
+      "Place in a baking dish, cover with more sauce and cheese.",
+      "Bake for 15 minutes until hot.",
+      "Top with sour cream and onions."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m119",
+    "categoryIds": [
+      "c10"
+    ],
+    "title": "Tiramisu",
+    "affordability": "luxurious",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?q=80&w=500&auto=format&fit=crop",
+    "duration": 45,
+    "ingredients": [
+      "Ladyfingers",
+      "Mascarpone Cheese",
+      "Strong Espresso",
+      "Eggs",
+      "Sugar",
+      "Cocoa Powder"
+    ],
+    "steps": [
+      "Whisk egg yolks and sugar over a water bath, then fold in mascarpone.",
+      "Gently fold in whipped egg whites (or whipped cream) to make the cream.",
+      "Quickly dip ladyfingers in cold espresso and layer them in a dish.",
+      "Spread half the cream over the ladyfingers; repeat with another layer.",
+      "Dust generously with cocoa powder and refrigerate for at least 6 hours."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m121",
+    "categoryIds": [
+      "c19"
+    ],
+    "title": "Vietnamese Banh Mi",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://i.pinimg.com/1200x/42/66/0b/42660b9a3025ca97cdc1bc8f80431cb6.jpg",
+    "duration": 20,
+    "ingredients": [
+      "1 Baguette (Crispy)",
+      "Pork Paté or Grilled Pork",
+      "Pickled Daikon & Carrots",
+      "Fresh Cilantro",
+      "Cucumber Slices",
+      "Jalapeño",
+      "Mayonnaise"
+    ],
+    "steps": [
+      "Slice the baguette lengthwise and spread a thin layer of mayonnaise and paté.",
+      "Layer the grilled pork (or tofu for a veggie version) inside.",
+      "Add the pickled vegetables, cucumber slices, and jalapeños for heat.",
+      "Top with a generous amount of fresh cilantro and a dash of soy sauce.",
+      "Serve immediately while the bread is still crusty."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m122",
+    "categoryIds": [
+      "c20"
+    ],
+    "title": "Spinach & Ricotta Lasagna",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1619895092538-128341789043?q=80&w=500&auto=format&fit=crop",
+    "duration": 75,
+    "ingredients": [
+      "Lasagna Noodles",
+      "500g Fresh Spinach",
+      "500g Ricotta Cheese",
+      "Marinara Sauce",
+      "Mozzarella & Parmesan",
+      "Nutmeg"
+    ],
+    "steps": [
+      "Sauté spinach until wilted, squeeze out all excess water, and mix with ricotta and nutmeg.",
+      "Spread a thin layer of marinara sauce in a baking dish.",
+      "Layer noodles, the spinach-ricotta mixture, and mozzarella cheese.",
+      "Repeat the layers until the dish is full, ending with a thick layer of cheese.",
+      "Bake at 180°C for 45 minutes until golden and bubbling."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m123",
+    "categoryIds": [
+      "c19"
+    ],
+    "title": "Japanese Takoyaki",
+    "affordability": "affordable",
+    "complexity": "hard",
+    "imageUrl": "https://i.pinimg.com/736x/fe/58/0c/fe580c83a433505a674e19b1a835ab2b.jpg",
+    "duration": 40,
+    "ingredients": [
+      "Takoyaki Batter (Flour, Dashi, Eggs)",
+      "Octopus (Cooked & Diced)",
+      "Tempura Scraps (Tenkasu)",
+      "Pickled Ginger",
+      "Takoyaki Sauce",
+      "Katsuobushi (Bonito Flakes)"
+    ],
+    "steps": [
+      "Heat a takoyaki pan and grease the holes well.",
+      "Pour batter into the holes and add a piece of octopus, ginger, and tenkasu to each.",
+      "As the batter cooks, use a pick to flip the balls 90 degrees repeatedly until they form a perfect sphere.",
+      "Continue cooking until the outside is golden and crispy.",
+      "Top with takoyaki sauce, mayo, and dancing bonito flakes."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m124",
+    "categoryIds": [
+      "c20"
+    ],
+    "title": "Mushroom Risotto Cakes",
+    "affordability": "affordable",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1541529086526-db283c563270?q=80&w=500&auto=format&fit=crop",
+    "duration": 30,
+    "ingredients": [
+      "Leftover Mushroom Risotto",
+      "1 Egg",
+      "Breadcrumbs",
+      "Mozzarella Cubes",
+      "Parmesan",
+      "Parsley"
+    ],
+    "steps": [
+      "Mix cold risotto with an egg and extra parmesan to make it sticky.",
+      "Take a scoop of risotto, place a mozzarella cube in the center, and form into a patty.",
+      "Coat the patties in breadcrumbs.",
+      "Pan-fry in olive oil until both sides are crispy and the cheese inside has melted.",
+      "Serve hot with a side of garlic aioli."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m125",
+    "categoryIds": [
+      "c19"
+    ],
+    "title": "Canadian Poutine",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://i.pinimg.com/1200x/9a/98/f1/9a98f18bb80bb7b6a6eb9ce652818d56.jpg",
+    "duration": 25,
+    "ingredients": [
+      "Russet Potatoes (Fried)",
+      "Fresh Cheese Curds",
+      "Brown Gravy (Beef or Chicken based)",
+      "Black Pepper"
+    ],
+    "steps": [
+      "Fry hand-cut potatoes twice for maximum crispiness.",
+      "Place the hot fries in a bowl and top with a generous amount of fresh cheese curds.",
+      "Pour piping hot gravy over the fries so the cheese begins to soften but not fully melt.",
+      "Season with black pepper and serve immediately."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m126",
+    "categoryIds": [
+      "c20"
+    ],
+    "title": "Lentil Shepherd’s Pie",
+    "affordability": "affordable",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=500&auto=format&fit=crop",
+    "duration": 50,
+    "ingredients": [
+      "2 Cups Cooked Lentils",
+      "3 Large Potatoes (Mashed)",
+      "Carrots & Peas",
+      "Vegetable Broth",
+      "Tomato Paste",
+      "Thyme & Rosemary"
+    ],
+    "steps": [
+      "Sauté onions and carrots, then add lentils, herbs, and broth; simmer until thickened.",
+      "Stir in the peas and pour the mixture into a baking dish.",
+      "Spread a thick layer of creamy mashed potatoes on top.",
+      "Use a fork to create ridges on the surface (for extra crunch).",
+      "Bake at 200°C for 20 minutes until the potato peaks are golden brown."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m127",
+    "categoryIds": [
+      "c19"
+    ],
+    "title": "Corndogs",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1623653387945-2fd25214f8fc?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "8 Hotdogs (Beef or Poultry)",
+      "1 Cup Cornmeal",
+      "1 Cup Flour",
+      "1 Egg",
+      "1 Cup Milk",
+      "Honey",
+      "Wooden Skewers"
+    ],
+    "steps": [
+      "Insert skewers into the hotdogs and pat them dry.",
+      "Mix cornmeal, flour, egg, milk, and honey to make a thick, smooth batter.",
+      "Pour the batter into a tall glass and dip each hotdog until fully coated.",
+      "Deep fry in hot oil, rotating constantly, until the batter is golden brown.",
+      "Serve with mustard and ketchup."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m128",
+    "categoryIds": [
+      "c20"
+    ],
+    "title": "Cauliflower Buffalo Wings",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1623653387945-2fd25214f8fc?q=80&w=500&auto=format&fit=crop",
+    "duration": 35,
+    "ingredients": [
+      "1 Head of Cauliflower",
+      "1/2 Cup Flour",
+      "Buffalo Sauce",
+      "Garlic Powder",
+      "Butter (Melted)",
+      "Ranch Dressing (Side)"
+    ],
+    "steps": [
+      "Cut cauliflower into florets and coat them in a simple flour and water batter.",
+      "Bake the florets at 220°C for 20 minutes until they start to crisp.",
+      "Toss the baked cauliflower in a mixture of buffalo sauce and melted butter.",
+      "Bake for another 10 minutes to set the sauce.",
+      "Serve hot with celery sticks and ranch dressing."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m129",
+    "categoryIds": [
+      "c19"
+    ],
+    "title": "German Currywurst",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://i.pinimg.com/1200x/1b/9c/4c/1b9c4c12a24d09f9f9972ea0f66ba264.jpg",
+    "duration": 20,
+    "ingredients": [
+      "2 Bratwurst Sausages",
+      "Ketchup",
+      "Curry Powder",
+      "Onion Powder",
+      "French Fries (Side)"
+    ],
+    "steps": [
+      "Grill or pan-fry the bratwurst until fully cooked and browned.",
+      "Slice the sausage into bite-sized pieces.",
+      "Prepare the sauce by mixing ketchup with a dash of curry powder and spices.",
+      "Pour the sauce generously over the sausage slices.",
+      "Dust with more curry powder and serve with a side of hot fries."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m130",
+    "categoryIds": [
+      "c20"
+    ],
+    "title": "Greek Spanakopita",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://i.pinimg.com/1200x/c9/61/e0/c961e0df0f142fba092294e684b5f5fa.jpg",
+    "duration": 60,
+    "ingredients": [
+      "Phyllo Pastry Sheets",
+      "500g Spinach",
+      "300g Feta Cheese",
+      "Fresh Dill",
+      "Onions",
+      "Melted Butter"
+    ],
+    "steps": [
+      "Sauté onions and spinach, let cool, and mix with crumbled feta and chopped dill.",
+      "Layer several sheets of phyllo dough in a pan, brushing each with melted butter.",
+      "Spread the spinach-feta mixture over the dough.",
+      "Top with more buttered phyllo sheets.",
+      "Score the top layer into squares and bake at 180°C until the pastry is flaky and golden brown."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m131",
+    "categoryIds": [
+      "c1"
+    ],
+    "title": "Penne Arrabbiata",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=500&auto=format&fit=crop",
+    "duration": 20,
+    "ingredients": [
+      "300g Penne Pasta",
+      "2 cloves Garlic",
+      "Dried Red Chili Flakes",
+      "400g Canned Tomatoes",
+      "Fresh Parsley"
+    ],
+    "steps": [
+      "Sauté garlic and chili flakes in olive oil until fragrant.",
+      "Add tomatoes and simmer for 10 minutes to thicken the sauce.",
+      "Boil pasta until al dente, then toss directly into the spicy sauce.",
+      "Garnish with fresh parsley and serve hot."
+    ],
+    "isGlutenFree": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m117",
+    "categoryIds": [
+      "c1"
+    ],
+    "title": "Cacio e Pepe",
+    "affordability": "affordable",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1663153465971-7fbb838043ca?q=80&w=500&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "duration": 15,
+    "ingredients": [
+      "Spaghetti",
+      "Pecorino Romano Cheese",
+      "Black Peppercorns",
+      "Salt"
+    ],
+    "steps": [
+      "Toast crushed black peppercorns in a pan until fragrant.",
+      "Boil spaghetti in a small amount of water (to keep it starchy).",
+      "Mix finely grated Pecorino with a little pasta water to create a paste.",
+      "Toss the pasta in the pepper pan, remove from heat, and quickly stir in the cheese paste until creamy.",
+      "Serve immediately on warm plates."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m132",
+    "categoryIds": [
+      "c2"
+    ],
+    "title": "Avocado Toast with Poached Egg",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=500&auto=format&fit=crop",
+    "duration": 15,
+    "ingredients": [
+      "2 Slices of Sourdough",
+      "1 Ripe Avocado",
+      "2 Eggs",
+      "Lemon Juice",
+      "Chili Flakes"
+    ],
+    "steps": [
+      "Toast the bread until golden and crunchy.",
+      "Mash avocado with lemon juice, salt, and pepper; spread on toast.",
+      "Poach eggs in simmering water for 3 minutes until whites are set but yolks are runny.",
+      "Place eggs on top and sprinkle with chili flakes."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m134",
+    "categoryIds": [
+      "c4"
+    ],
+    "title": "Schnitzel Wiener Art",
+    "affordability": "pricey",
+    "complexity": "challenging",
+    "imageUrl": "https://i.pinimg.com/400x/50/e9/1f/50e91fa3b496086f32ca06ee5065a66e.jpg",
+    "duration": 35,
+    "ingredients": [
+      "Veal or Pork Cutlets",
+      "Flour",
+      "2 Eggs",
+      "Breadcrumbs",
+      "Lemon Wedges"
+    ],
+    "steps": [
+      "Pound the cutlets until very thin.",
+      "Dredge in flour, dip in beaten eggs, and coat with breadcrumbs.",
+      "Fry in a generous amount of butter or oil until golden and wavy.",
+      "Serve with lemon wedges and a side of potato salad."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m136",
+    "categoryIds": [
+      "c6"
+    ],
+    "title": "Thai Green Curry",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://i.pinimg.com/1200x/9f/36/2c/9f362c73113c37c088849e23234b87aa.jpg",
+    "duration": 45,
+    "ingredients": [
+      "Chicken or Tofu",
+      "Green Curry Paste",
+      "Coconut Milk",
+      "Bamboo Shoots",
+      "Thai Basil"
+    ],
+    "steps": [
+      "Fry curry paste in coconut cream until fragrant.",
+      "Add protein and cook through.",
+      "Pour in remaining coconut milk and add bamboo shoots.",
+      "Simmer for 10 minutes and stir in fresh Thai basil at the end."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m139",
+    "categoryIds": [
+      "c9"
+    ],
+    "title": "Coq au Vin",
+    "affordability": "luxurious",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=500&auto=format&fit=crop",
+    "duration": 120,
+    "ingredients": [
+      "Chicken Thighs",
+      "Red Wine (Burgundy)",
+      "Pearl Onions",
+      "Mushrooms",
+      "Bacon"
+    ],
+    "steps": [
+      "Brown the chicken and bacon in a large pot.",
+      "Add mushrooms and onions, then pour in the wine.",
+      "Slow-cook for 1.5 hours until the chicken is tender and the sauce is dark and rich.",
+      "Serve with mashed potatoes or crusty bread."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m140",
+    "categoryIds": [
+      "c10"
+    ],
+    "title": "Baklava",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://i.pinimg.com/736x/62/4f/bb/624fbb4dc47ab008aa3f7d0342c9da28.jpg",
+    "duration": 90,
+    "ingredients": [
+      "Phyllo Dough",
+      "Crushed Walnuts/Pistachios",
+      "Butter",
+      "Honey Syrup",
+      "Cinnamon"
+    ],
+    "steps": [
+      "Layer sheets of phyllo dough, brushing each with melted butter.",
+      "Spread a thick layer of crushed nuts and cinnamon in the middle.",
+      "Continue layering dough, then cut into diamond shapes.",
+      "Bake until golden and pour cold honey syrup over the hot pastry."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m142",
+    "categoryIds": [
+      "c12"
+    ],
+    "title": "Quesadillas",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?q=80&w=500&auto=format&fit=crop",
+    "duration": 15,
+    "ingredients": [
+      "Flour Tortillas",
+      "Monterey Jack Cheese",
+      "Grilled Chicken",
+      "Salsa",
+      "Guacamole"
+    ],
+    "steps": [
+      "Place cheese and chicken on half of a tortilla.",
+      "Fold over and grill in a pan until cheese is melted and tortilla is crispy.",
+      "Cut into wedges and serve with salsa and guacamole."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m143",
+    "categoryIds": [
+      "c13"
+    ],
+    "title": "Dal Makhani",
+    "affordability": "affordable",
+    "complexity": "hard",
+    "imageUrl": "https://images.unsplash.com/photo-1546833999-b9f581a1996d?q=80&w=500&auto=format&fit=crop",
+    "duration": 120,
+    "ingredients": [
+      "Black Lentils",
+      "Kidney Beans",
+      "Butter",
+      "Cream",
+      "Ginger-Garlic Paste"
+    ],
+    "steps": [
+      "Slow-cook lentils and beans overnight or for several hours.",
+      "Sauté spices and tomato puree, then add the cooked lentils.",
+      "Simmer for a long time, adding butter and cream at the end for a velvety texture.",
+      "Serve with garlic naan."
+    ],
+    "isGlutenFree": true,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m144",
+    "categoryIds": [
+      "c14"
+    ],
+    "title": "Lobster Roll",
+    "affordability": "luxurious",
+    "complexity": "challenging",
+    "imageUrl": "https://i.pinimg.com/1200x/9f/e2/d1/9fe2d12c32dbaac266939fc5b231ead5.jpg",
+    "duration": 30,
+    "ingredients": [
+      "Fresh Lobster Meat",
+      "Butter",
+      "Brioche Hotdog Bun",
+      "Lemon Juice",
+      "Chives"
+    ],
+    "steps": [
+      "Poach lobster meat in melted butter until just tender.",
+      "Toast the brioche bun with butter.",
+      "Fill the bun with lobster and drizzle with lemon juice.",
+      "Top with fresh chives and serve with chips."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m145",
+    "categoryIds": [
+      "c15"
+    ],
+    "title": "Vegan Chickpea Curry",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=500&auto=format&fit=crop",
+    "duration": 25,
+    "ingredients": [
+      "2 cans Chickpeas",
+      "Coconut Milk",
+      "Spinach",
+      "Turmeric & Ginger",
+      "Rice"
+    ],
+    "steps": [
+      "Sauté ginger and onions, add spices and chickpeas.",
+      "Pour in coconut milk and simmer for 15 minutes.",
+      "Stir in fresh spinach at the last minute until wilted.",
+      "Serve over a bed of fluffy basmati rice."
+    ],
+    "isGlutenFree": true,
+    "isVegan": true,
+    "isVegetarian": true,
+    "isLactoseFree": true
+  },
+  {
+    "id": "m148",
+    "categoryIds": [
+      "c18"
+    ],
+    "title": "Beef Stroganoff",
+    "affordability": "luxurious",
+    "complexity": "challenging",
+    "imageUrl": "https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=500&auto=format&fit=crop",
+    "duration": 40,
+    "ingredients": [
+      "Beef Sirloin",
+      "Mushrooms",
+      "Sour Cream",
+      "Beef Broth",
+      "Egg Noodles"
+    ],
+    "steps": [
+      "Sear beef strips quickly and set aside.",
+      "Sauté mushrooms and onions, add broth and simmer.",
+      "Stir in sour cream to create a rich sauce and return the beef.",
+      "Serve over a bed of buttery egg noodles."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": false,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m149",
+    "categoryIds": [
+      "c19"
+    ],
+    "title": "Churros with Chocolate Sauce",
+    "affordability": "affordable",
+    "complexity": "simple",
+    "imageUrl": "https://i.pinimg.com/736x/6d/31/af/6d31af7cafd0ed1ac9769f54817175cd.jpg",
+    "duration": 30,
+    "ingredients": [
+      "Flour",
+      "Butter",
+      "Cinnamon Sugar",
+      "Dark Chocolate",
+      "Heavy Cream"
+    ],
+    "steps": [
+      "Make a choux pastry dough and pipe long strips into hot oil.",
+      "Fry until golden and immediately roll in cinnamon sugar.",
+      "Melt chocolate with cream to make a dipping sauce.",
+      "Serve warm and crispy."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  },
+  {
+    "id": "m150",
+    "categoryIds": [
+      "c20"
+    ],
+    "title": "Butternut Squash Ravioli",
+    "affordability": "pricey",
+    "complexity": "hard",
+    "imageUrl": "https://i.pinimg.com/1200x/28/48/f0/2848f0d5a465d63ee8961060054d0cd9.jpg",
+    "duration": 60,
+    "ingredients": [
+      "Butternut Squash",
+      "Fresh Pasta Sheets",
+      "Sage",
+      "Brown Butter",
+      "Amaretti Cookies"
+    ],
+    "steps": [
+      "Roast squash, mash it, and mix with amaretti crumbs for sweetness.",
+      "Fill pasta sheets with the squash mixture and seal into ravioli.",
+      "Boil until they float.",
+      "Toss in a pan with foaming brown butter and fresh sage leaves until crispy."
+    ],
+    "isGlutenFree": false,
+    "isVegan": false,
+    "isVegetarian": true,
+    "isLactoseFree": false
+  }
+]

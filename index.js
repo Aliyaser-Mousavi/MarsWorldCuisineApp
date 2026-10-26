@@ -1,9 +1,20 @@
-import 'react-native-gesture-handler';
-import { registerRootComponent } from 'expo';
+import "react-native-gesture-handler";
+import { I18nManager } from "react-native";
+import "./services/i18n.js";
+import { registerRootComponent } from "expo";
 
-import App from './App';
+if (I18nManager.isRTL || I18nManager.doLeftAndRightSwapInRTL) {
+  try {
+    I18nManager.allowRTL(false);
+    I18nManager.forceRTL(false);
+    if (typeof I18nManager.swapLeftAndRightInRTL === "function") {
+      I18nManager.swapLeftAndRightInRTL(false);
+    }
+  } catch (err) {
+    console.warn("Could not configure I18nManager:", err);
+  }
+}
 
-// registerRootComponent calls AppRegistry.registerComponent('main', () => App);
-// It also ensures that whether you load the app in Expo Go or in a native build,
-// the environment is set up appropriately
+import App from "./App";
+
 registerRootComponent(App);

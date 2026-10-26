@@ -1,4 +1,5 @@
 import { COURSE_KEYS, COURSE_LABELS } from "../store/redux/dinnerMenus";
+import { formatClockTime } from "./formatters";
 
 /**
  * Build a reverse service timeline for a dinner party.
@@ -7,11 +8,13 @@ import { COURSE_KEYS, COURSE_LABELS } from "../store/redux/dinnerMenus";
  *
  * @param {{ courses: object, guests?: number }} menu
  * @param {Array} meals - MEALS catalog
- * @param {{ serveAt?: Date, bufferMin?: number }} options
+ * @param {{ serveAt?: Date, bufferMin?: number, isRTL?: boolean, t?: Function }} options
  */
 export function buildServiceTimeline(menu, meals, options = {}) {
   const bufferMin = options.bufferMin ?? 10;
   const serveAt = options.serveAt ? new Date(options.serveAt) : null;
+  const isRTL = options.isRTL ?? false;
+  const t = options.t ?? null;
 
   const courses = COURSE_KEYS.map((key) => {
     const mealId = menu?.courses?.[key];
@@ -70,8 +73,8 @@ export function buildServiceTimeline(menu, meals, options = {}) {
     steps.forEach((step) => {
       step.startTime = addMinutes(serveAt, step.startOffset);
       step.plateTime = addMinutes(serveAt, step.plateAt);
-      step.startClock = formatClock(step.startTime);
-      step.plateClock = formatClock(step.plateTime);
+      step.startClock = formatClockTime(step.startTime, isRTL, t);
+      step.plateClock = formatClockTime(step.plateTime, isRTL, t);
     });
   }
 
@@ -88,12 +91,8 @@ function addMinutes(date, mins) {
   return new Date(date.getTime() + mins * 60 * 1000);
 }
 
-function formatClock(date) {
-  const h = date.getHours();
-  const m = date.getMinutes();
-  const ampm = h >= 12 ? "PM" : "AM";
-  const hr = h % 12 || 12;
-  return `${hr}:${String(m).padStart(2, "0")} ${ampm}`;
+function formatClock(date, isRTL = false, t = null) {
+  return formatClockTime(date, isRTL, t);
 }
 
 /**

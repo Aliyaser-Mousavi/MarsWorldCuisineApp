@@ -9,15 +9,23 @@ import {
 import { Image } from "expo-image";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 import { MEALS } from "../data/dummy-data";
 import { suggestLeftoverRemixes } from "../utils/leftovers";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
+import { useAppLanguage, localizeIngredient } from "../utils/catalogue";
+import { MEALS_FA } from "../data/dummy-data.fa";
+import { toPersianDigits } from "../utils/formatters";
 
 const LeftoverRemixScreen = ({ navigation }) => {
-  const { colors, radii, spacing, type, shadows } = useTheme();
+  const { colors, radii, spacing, type } = useTheme();
+  const { t } = useTranslation();
+  const { isRTL } = useLocale();
+  const language = useAppLanguage();
   const styles = useMemo(
-    () => createStyles(colors, type, spacing, radii, shadows),
-    [colors, type, spacing, radii, shadows],
+    () => createStyles(colors, type, spacing, radii, isRTL),
+    [colors, type, spacing, radii, isRTL],
   );
   const metaById = useSelector((state) => state.recipeMeta.byId);
   const pantryItems = useSelector((state) => state.pantry.items);
@@ -39,16 +47,15 @@ const LeftoverRemixScreen = ({ navigation }) => {
     return (
       <View style={styles.emptyRoot}>
         <Ionicons name="sparkles-outline" size={40} color={colors.inkSoft} />
-        <Text style={styles.emptyTitle}>No leftovers yet</Text>
+        <Text style={styles.emptyTitle}>{t("leftover.noLeftoversTitle")}</Text>
         <Text style={styles.emptyBody}>
-          Finish a recipe in Cooking mode — then come back for remix ideas that
-          reuse what you already cooked.
+          {t("leftover.noLeftoversBody")}
         </Text>
         <Pressable
           style={styles.emptyBtn}
           onPress={() => navigation.navigate("Tonight")}
         >
-          <Text style={styles.emptyBtnText}>Pick something for tonight</Text>
+          <Text style={styles.emptyBtnText}>{t("leftover.pickTonight")}</Text>
         </Pressable>
       </View>
     );
@@ -57,19 +64,19 @@ const LeftoverRemixScreen = ({ navigation }) => {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.intro}>
-        <Text style={styles.kicker}>Leftover remix</Text>
-        <Text style={styles.headline}>Cook again, waste less</Text>
-        <Text style={styles.body}>
-          Ideas built from your recent plates and pantry — same flavors, new
-          dishes.
-        </Text>
+        <Text style={styles.kicker}>{t("leftover.kicker")}</Text>
+        <Text style={styles.headline}>{t("leftover.headline")}</Text>
+        <Text style={styles.body}>{t("leftover.body")}</Text>
       </View>
 
-      <Text style={styles.sectionLabel}>From your recent cooks</Text>
+      <Text style={styles.sectionLabel}>{t("leftover.fromRecentCooks")}</Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.sourceRow}
+        contentContainerStyle={[
+          styles.sourceRow,
+          isRTL && { flexDirection: "row-reverse", minWidth: "100%" },
+        ]}
       >
         {sources.map((meal) => (
           <Pressable
@@ -85,7 +92,9 @@ const LeftoverRemixScreen = ({ navigation }) => {
               contentFit="cover"
             />
             <Text style={styles.sourceTitle} numberOfLines={2}>
-              {meal.title}
+              {(language === "fa" && MEALS_FA[meal.id]?.title)
+                ? MEALS_FA[meal.id].title
+                : meal.title}
             </Text>
           </Pressable>
         ))}
@@ -93,14 +102,13 @@ const LeftoverRemixScreen = ({ navigation }) => {
 
       <Text style={styles.sectionLabel}>
         {suggestions.length
-          ? `${suggestions.length} remix ideas`
-          : "No remix matches yet"}
+          ? t("leftover.remixMatchesCount", { count: suggestions.length })
+          : t("leftover.noRemixMatches")}
       </Text>
 
       {!suggestions.length ? (
         <Text style={styles.body}>
-          Try stocking a few pantry staples — matches get sharper when we know
-          what you already have.
+          {t("leftover.stockPantryHint")}
         </Text>
       ) : (
         suggestions.map((row) => (
@@ -118,25 +126,42 @@ const LeftoverRemixScreen = ({ navigation }) => {
             />
             <View style={styles.cardBody}>
               <Text style={styles.cardTitle} numberOfLines={2}>
-                {row.meal.title}
+                {(language === "fa" && MEALS_FA[row.meal.id]?.title)
+                  ? MEALS_FA[row.meal.id].title
+                  : row.meal.title}
               </Text>
               <Text style={styles.cardMeta}>
-                {row.meal.duration} min · {row.meal.complexity}
+                {t("mealDetails.durationMin", {
+                  duration: isRTL ? toPersianDigits(row.meal.duration) : row.meal.duration,
+                  defaultValue: isRTL
+                    ? `${toPersianDigits(row.meal.duration)} دقیقه`
+                    : `${row.meal.duration} min`,
+                })} · {t(`mealDetails.complexity.${row.meal.complexity.toLowerCase()}`, { defaultValue: row.meal.complexity })}
                 {row.pantryRatio > 0
-                  ? ` · ${Math.round(row.pantryRatio * 100)}% pantry`
+                  ? ` · ${t("leftover.pantryShare", {
+                      percent: isRTL ? toPersianDigits(Math.round(row.pantryRatio * 100)) : Math.round(row.pantryRatio * 100),
+                    })}`
                   : ""}
               </Text>
               <View style={styles.chipRow}>
                 {row.sharedTokens.map((token) => (
                   <View key={token} style={styles.chip}>
-                    <Text style={styles.chipText}>{token}</Text>
+                    <Text style={styles.chipText}>{localizeIngredient(token, language)}</Text>
                   </View>
                 ))}
               </View>
-              <Text style={styles.fromLine}>Echoes {row.fromLabel}</Text>
+              <Text style={styles.fromLine}>
+                {t("leftover.echoes", {
+                  meal: row.fromMeal
+                    ? ((language === "fa" && MEALS_FA[row.fromMeal.id]?.title)
+                        ? MEALS_FA[row.fromMeal.id].title
+                        : row.fromMeal.title)
+                    : t("leftover.recentCooks", { defaultValue: "recent cooks" }),
+                })}
+              </Text>
             </View>
             <Ionicons
-              name="chevron-forward"
+              name={isRTL ? "chevron-back" : "chevron-forward"}
               size={18}
               color={colors.inkSoft}
             />
@@ -149,7 +174,7 @@ const LeftoverRemixScreen = ({ navigation }) => {
 
 export default LeftoverRemixScreen;
 
-const createStyles = (colors, type, spacing, radii, shadows) =>
+const createStyles = (colors, type, spacing, radii, isRTL) =>
   StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { paddingBottom: spacing.xl },
@@ -164,23 +189,35 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     textTransform: "uppercase",
     letterSpacing: 1.2,
     marginBottom: 6,
+    textAlign: isRTL ? "right" : "left",
   },
-  headline: { ...type.display, fontSize: 26, marginBottom: 8 },
-  body: { ...type.body },
+  headline: {
+    ...type.display,
+    fontSize: 26,
+    marginBottom: 8,
+    textAlign: isRTL ? "right" : "left",
+  },
+  body: {
+    ...type.body,
+    textAlign: isRTL ? "right" : "left",
+  },
   sectionLabel: {
     ...type.heading,
     fontSize: 15,
     paddingHorizontal: spacing.lg,
     marginTop: spacing.md,
     marginBottom: spacing.sm,
+    textAlign: isRTL ? "right" : "left",
   },
   sourceRow: {
     paddingHorizontal: spacing.lg,
     gap: spacing.sm,
+    flexDirection: isRTL ? "row-reverse" : "row",
   },
   sourceCard: {
     width: 120,
-    marginRight: spacing.sm,
+    alignItems: isRTL ? "flex-end" : "flex-start",
+    [isRTL ? "marginLeft" : "marginRight"]: spacing.sm,
   },
   sourceImage: {
     width: 120,
@@ -192,9 +229,10 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     ...type.label,
     color: colors.ink,
     marginTop: 6,
+    textAlign: isRTL ? "right" : "left",
   },
   card: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     marginHorizontal: spacing.lg,
     marginBottom: spacing.sm,
@@ -204,7 +242,6 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     borderWidth: 1,
     borderColor: colors.border,
     gap: spacing.sm,
-    ...shadows.soft,
   },
   cardImage: {
     width: 72,
@@ -214,13 +251,22 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
   },
   cardBody: { flex: 1 },
   cardTitle: {
-    fontFamily: "Fraunces_600SemiBold",
+    ...(isRTL ? {} : { fontFamily: "Fraunces_600SemiBold" }),
     fontSize: 16,
     color: colors.ink,
     marginBottom: 2,
+    textAlign: isRTL ? "right" : "left",
   },
-  cardMeta: { ...type.caption, marginBottom: 6 },
-  chipRow: { flexDirection: "row", flexWrap: "wrap", gap: 4 },
+  cardMeta: {
+    ...type.caption,
+    marginBottom: 6,
+    textAlign: isRTL ? "right" : "left",
+  },
+  chipRow: {
+    flexDirection: isRTL ? "row-reverse" : "row",
+    flexWrap: "wrap",
+    gap: 4,
+  },
   chip: {
     backgroundColor: colors.accentSoft,
     paddingHorizontal: 8,
@@ -236,6 +282,7 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     ...type.caption,
     marginTop: 6,
     fontStyle: "italic",
+    textAlign: isRTL ? "right" : "left",
   },
   emptyRoot: {
     flex: 1,

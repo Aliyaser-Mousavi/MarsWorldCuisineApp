@@ -17,9 +17,11 @@ import CustomButton from "../../components/UI/CustomButton";
 import FeedbackBanner from "../../components/UI/FeedbackBanner";
 import CustomModal from "../../components/CustomModal";
 import { useTheme } from "../../constants/theme";
+import { useLocale } from "../../constants/locale";
 
 const ForgotPasswordScreen = ({ navigation }) => {
-  const { colors, type, spacing, radii, shadows } = useTheme();
+  const { colors, type, spacing, radii } = useTheme();
+  const { t, isRTL } = useLocale();
   const styles = useMemo(
     () => createStyles(colors, type, spacing, radii),
     [colors, type, spacing, radii],
@@ -33,25 +35,35 @@ const ForgotPasswordScreen = ({ navigation }) => {
     const trimmedEmail = email.trim();
 
     if (!trimmedEmail) {
-      setLocalError("Please enter the email for your account.");
+      setLocalError(t("auth.pleaseEnterAccountEmail"));
       return;
     }
 
     setLocalError("");
     setSubmitting(true);
 
-    const { error } = await supabase.auth.resetPasswordForEmail(trimmedEmail, {
-      redirectTo: PASSWORD_RESET_REDIRECT_URL,
-    });
-
-    setSubmitting(false);
-
-    if (error) {
-      setLocalError(error.message || "Could not send reset link.");
+    if (!supabase) {
+      setSubmitting(false);
+      setLocalError("Authentication service is not available. Please check your network connection.");
       return;
     }
 
-    setSuccessDialog(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(trimmedEmail, {
+        redirectTo: PASSWORD_RESET_REDIRECT_URL,
+      });
+
+      if (error) {
+        setLocalError(error.message || t("auth.couldNotSendResetLink"));
+        return;
+      }
+
+      setSuccessDialog(true);
+    } catch (err) {
+      setLocalError(err?.message || t("auth.couldNotSendResetLink") || "Could not send reset link.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -70,28 +82,50 @@ const ForgotPasswordScreen = ({ navigation }) => {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <View style={styles.brandMark}>
+          <View
+            style={[
+              styles.brandMark,
+              { flexDirection: isRTL ? "row-reverse" : "row" },
+            ]}
+          >
             <View style={styles.brandIcon}>
               <Ionicons name="key-outline" size={22} color={colors.onBrand} />
             </View>
-            <Text style={styles.kicker}>Mars World Cuisine</Text>
+            <Text style={styles.kicker}>{t("common.appName")}</Text>
           </View>
 
-          <Text style={styles.title}>Reset password</Text>
-          <Text style={styles.subtitle}>
-            Enter your account email and we&apos;ll send a link to reset your
-            password.
+          <Text
+            style={[
+              styles.title,
+              {
+                textAlign: isRTL ? "right" : "left",
+                writingDirection: isRTL ? "rtl" : "ltr",
+              },
+            ]}
+          >
+            {t("auth.forgotPassword")}
+          </Text>
+          <Text
+            style={[
+              styles.subtitle,
+              {
+                textAlign: isRTL ? "right" : "left",
+                writingDirection: isRTL ? "rtl" : "ltr",
+              },
+            ]}
+          >
+            {t("auth.resetSubtitle")}
           </Text>
 
-          <View style={[styles.card, shadows.soft]}>
+          <View style={styles.card}>
             <CustomTextInput
-              label="Email"
+              label={t("auth.email")}
               value={email}
               onChangeText={(v) => {
                 setEmail(v);
                 if (localError) setLocalError("");
               }}
-              placeholder="you@example.com"
+              placeholder={t("auth.emailPlaceholder")}
               leftIcon="mail-outline"
               autoCapitalize="none"
               autoCorrect={false}
@@ -108,7 +142,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
             />
 
             <CustomButton
-              label="Send reset link"
+              label={t("auth.sendResetLink")}
               onPress={handleReset}
               loading={submitting}
               style={styles.submit}
@@ -119,12 +153,17 @@ const ForgotPasswordScreen = ({ navigation }) => {
           <Pressable
             style={({ pressed }) => [
               styles.linkRow,
+              { flexDirection: isRTL ? "row-reverse" : "row" },
               pressed && styles.linkPressed,
             ]}
             onPress={() => navigation.navigate("Login")}
           >
-            <Ionicons name="arrow-back" size={16} color={colors.accent} />
-            <Text style={styles.linkAccent}> Back to sign in</Text>
+            <Ionicons
+              name={isRTL ? "arrow-forward" : "arrow-back"}
+              size={16}
+              color={colors.accent}
+            />
+            <Text style={styles.linkAccent}> {t("auth.backToSignIn")}</Text>
           </Pressable>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -132,14 +171,14 @@ const ForgotPasswordScreen = ({ navigation }) => {
       <CustomModal
         visible={successDialog}
         variant="success"
-        title="Check your email"
-        message="Open that email on this phone (not on a computer). Tap Reset password — it should open Mars World Cuisine so you can choose a new password."
+        title={t("auth.checkYourEmail")}
+        message={t("auth.resetEmailInstructions")}
         onClose={() => {
           setSuccessDialog(false);
           navigation.navigate("Login");
         }}
         primaryAction={{
-          label: "Back to sign in",
+          label: t("auth.backToSignIn"),
           onPress: () => {
             setSuccessDialog(false);
             navigation.navigate("Login");

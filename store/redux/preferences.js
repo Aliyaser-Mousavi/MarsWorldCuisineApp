@@ -9,6 +9,7 @@ const preferencesSlice = createSlice({
     lactoseFree: false,
     defaultMaxDuration: 240,
     darkMode: false,
+    language: "en",
   },
   reducers: {
     setPreference: (state, action) => {
@@ -24,6 +25,10 @@ const preferencesSlice = createSlice({
     setDarkMode: (state, action) => {
       state.darkMode = !!action.payload;
     },
+    setLanguage: (state, action) => {
+      const lang = action.payload === "fa" ? "fa" : "en";
+      state.language = lang;
+    },
     resetPreferences: (state) => ({
       glutenFree: false,
       vegan: false,
@@ -31,6 +36,7 @@ const preferencesSlice = createSlice({
       lactoseFree: false,
       defaultMaxDuration: 240,
       darkMode: state.darkMode, // preserve theme setting on reset
+      language: state.language || "en", // preserve language setting on reset
     }),
   },
 });
@@ -40,6 +46,7 @@ export const {
   setPreferences,
   toggleDarkMode,
   setDarkMode,
+  setLanguage,
   resetPreferences,
 } = preferencesSlice.actions;
 export default preferencesSlice.reducer;

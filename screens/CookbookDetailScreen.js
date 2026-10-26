@@ -2,6 +2,7 @@ import { useLayoutEffect, useMemo } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 import { MEALS } from "../data/dummy-data";
 import MealsList from "../components/MealsList/MealsList";
 import {
@@ -9,12 +10,15 @@ import {
   deleteCookbook,
 } from "../store/redux/cookbooks";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
 
 const CookbookDetailScreen = ({ route, navigation }) => {
   const { colors, type, spacing } = useTheme();
+  const { t } = useTranslation();
+  const { isRTL } = useLocale();
   const styles = useMemo(
-    () => createStyles(colors, type, spacing),
-    [colors, type, spacing],
+    () => createStyles(colors, type, spacing, isRTL),
+    [colors, type, spacing, isRTL],
   );
   const { cookbookId } = route.params ?? {};
   const book = useSelector((state) =>
@@ -24,7 +28,7 @@ const CookbookDetailScreen = ({ route, navigation }) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: book?.title || "Cookbook",
+      title: book?.title || t("cookbookDetail.title"),
       headerRight: () =>
         book ? (
           <Pressable
@@ -39,12 +43,12 @@ const CookbookDetailScreen = ({ route, navigation }) => {
           </Pressable>
         ) : null,
     });
-  }, [navigation, book, dispatch, colors]);
+  }, [navigation, book, dispatch, colors, t]);
 
   if (!book) {
     return (
       <View style={styles.missing}>
-        <Text style={styles.missingText}>Cookbook not found.</Text>
+        <Text style={styles.missingText}>{t("cookbookDetail.missing")}</Text>
       </View>
     );
   }
@@ -59,7 +63,7 @@ const CookbookDetailScreen = ({ route, navigation }) => {
         <Ionicons name="book-outline" size={36} color={colors.inkSoft} />
         <Text style={styles.emptyTitle}>{book.title}</Text>
         <Text style={styles.emptyBody}>
-          Open a recipe and tap “Save to cookbook” to add it here.
+          {t("cookbookDetail.emptyBody")}
         </Text>
       </View>
     );
@@ -68,7 +72,9 @@ const CookbookDetailScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.toolbar}>
-        <Text style={styles.count}>{meals.length} recipes</Text>
+        <Text style={styles.count}>
+          {t("cookbookDetail.recipesCount", { count: meals.length })}
+        </Text>
         <Pressable
           hitSlop={8}
           onPress={() => {
@@ -83,7 +89,7 @@ const CookbookDetailScreen = ({ route, navigation }) => {
             }
           }}
         >
-          <Text style={styles.removeHint}>Remove latest</Text>
+          <Text style={styles.removeHint}>{t("cookbookDetail.removeLatest")}</Text>
         </Pressable>
       </View>
       <MealsList items={meals} />
@@ -93,14 +99,14 @@ const CookbookDetailScreen = ({ route, navigation }) => {
 
 export default CookbookDetailScreen;
 
-const createStyles = (colors, type, spacing) =>
+const createStyles = (colors, type, spacing, isRTL) =>
   StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: colors.bg,
     },
     toolbar: {
-      flexDirection: "row",
+      flexDirection: isRTL ? "row-reverse" : "row",
       justifyContent: "space-between",
       alignItems: "center",
       paddingHorizontal: spacing.lg,
@@ -110,10 +116,12 @@ const createStyles = (colors, type, spacing) =>
     count: {
       ...type.label,
       color: colors.ink,
+      textAlign: isRTL ? "right" : "left",
     },
     removeHint: {
       ...type.label,
       color: colors.danger,
+      textAlign: isRTL ? "left" : "right",
     },
     empty: {
       flex: 1,

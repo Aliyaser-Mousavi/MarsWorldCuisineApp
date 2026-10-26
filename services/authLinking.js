@@ -16,13 +16,12 @@ export const AUTH_EMAIL_REDIRECT_URL = "marsworldcuisine://auth";
  * and establish a session in the client.
  */
 export async function createSessionFromUrl(url) {
-  if (!url) return { session: null, error: null };
+  if (!url || !supabase) return { session: null, error: null };
 
   try {
     const parsed = Linking.parse(url);
     const query = parsed.queryParams || {};
 
-    // Hash fragments (implicit flow): marsworldcuisine://reset-password#access_token=...&refresh_token=...
     let hashParams = {};
     const hashIndex = url.indexOf("#");
     if (hashIndex >= 0) {

@@ -15,9 +15,11 @@ import MealsList from "../components/MealsList/MealsList";
 import { MEALS, CATEGORIES } from "../data/dummy-data";
 import IconButton from "../components/IconButton";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
 
 const MealsOverviewScreen = ({ route, navigation }) => {
   const { colors, type, spacing, radii } = useTheme();
+  const { t, isRTL } = useLocale();
   const styles = useMemo(
     () => createStyles(colors, type, spacing, radii),
     [colors, type, spacing, radii],
@@ -58,11 +60,22 @@ const MealsOverviewScreen = ({ route, navigation }) => {
   }, [catId, filters]);
 
   useLayoutEffect(() => {
-    const categoryTitle = CATEGORIES.find((cat) => cat.id === catId)?.title;
+    const rawCategoryTitle = CATEGORIES.find((cat) => cat.id === catId)?.title;
+    const localizedTitle = catId
+      ? t(`categories.items.${catId}`, {
+          defaultValue: rawCategoryTitle || t("mealsOverview.title"),
+        })
+      : t("mealsOverview.title");
+
     navigation.setOptions({
-      title: categoryTitle || "Recipes",
+      title: localizedTitle,
       headerRight: () => (
-        <View style={styles.filterTrigger}>
+        <View
+          style={[
+            styles.filterTrigger,
+            { marginRight: isRTL ? 0 : 4, marginLeft: isRTL ? 4 : 0 },
+          ]}
+        >
           <IconButton
             icon="options-outline"
             color={colors.ink}
@@ -76,7 +89,7 @@ const MealsOverviewScreen = ({ route, navigation }) => {
         </View>
       ),
     });
-  }, [catId, navigation, activeFilterCount, colors, styles]);
+  }, [catId, navigation, activeFilterCount, colors, styles, t, isRTL]);
 
   return (
     <View style={styles.screen}>
@@ -89,10 +102,35 @@ const MealsOverviewScreen = ({ route, navigation }) => {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
+            <View
+              style={[
+                styles.modalHeader,
+                { flexDirection: isRTL ? "row-reverse" : "row" },
+              ]}
+            >
               <View>
-                <Text style={styles.modalTitle}>Filters</Text>
-                <Text style={styles.modalSubtitle}>Diet and prep time</Text>
+                <Text
+                  style={[
+                    styles.modalTitle,
+                    {
+                      textAlign: isRTL ? "right" : "left",
+                      writingDirection: isRTL ? "rtl" : "ltr",
+                    },
+                  ]}
+                >
+                  {t("mealsOverview.filters")}
+                </Text>
+                <Text
+                  style={[
+                    styles.modalSubtitle,
+                    {
+                      textAlign: isRTL ? "right" : "left",
+                      writingDirection: isRTL ? "rtl" : "ltr",
+                    },
+                  ]}
+                >
+                  {t("mealsOverview.dietAndPrepTime")}
+                </Text>
               </View>
               <Pressable
                 onPress={() => setIsFilterModalVisible(false)}
@@ -104,46 +142,72 @@ const MealsOverviewScreen = ({ route, navigation }) => {
             </View>
 
             <ScrollView showsVerticalScrollIndicator={false}>
-              <Text style={styles.sectionTitle}>Dietary</Text>
+              <Text
+                style={[
+                  styles.sectionTitle,
+                  {
+                    textAlign: isRTL ? "right" : "left",
+                    writingDirection: isRTL ? "rtl" : "ltr",
+                  },
+                ]}
+              >
+                {t("mealsOverview.dietary")}
+              </Text>
               <FilterItem
-                label="Gluten-free"
+                label={t("mealsOverview.glutenFree")}
                 value={filters.glutenFree}
                 onToggle={(val) => updateFilter("glutenFree", val)}
                 colors={colors}
                 styles={styles}
+                isRTL={isRTL}
               />
               <FilterItem
-                label="Vegan"
+                label={t("mealsOverview.vegan")}
                 value={filters.vegan}
                 onToggle={(val) => updateFilter("vegan", val)}
                 colors={colors}
                 styles={styles}
+                isRTL={isRTL}
               />
               <FilterItem
-                label="Vegetarian"
+                label={t("mealsOverview.vegetarian")}
                 value={filters.vegetarian}
                 onToggle={(val) => updateFilter("vegetarian", val)}
                 colors={colors}
                 styles={styles}
+                isRTL={isRTL}
               />
               <FilterItem
-                label="Lactose-free"
+                label={t("mealsOverview.lactoseFree")}
                 value={filters.lactoseFree}
                 onToggle={(val) => updateFilter("lactoseFree", val)}
                 colors={colors}
                 styles={styles}
+                isRTL={isRTL}
               />
 
-              <View style={styles.timeSectionHeader}>
-                <Text style={styles.sectionTitle}>Max prep time</Text>
+              <View
+                style={[
+                  styles.timeSectionHeader,
+                  { flexDirection: isRTL ? "row-reverse" : "row" },
+                ]}
+              >
+                <Text style={styles.sectionTitle}>
+                  {t("mealsOverview.maxPrepTime")}
+                </Text>
                 <Text style={styles.timeValue}>
                   {filters.maxDuration === 240
-                    ? "Any"
+                    ? t("mealsOverview.anyTime")
                     : `≤ ${filters.maxDuration}m`}
                 </Text>
               </View>
 
-              <View style={styles.durationContainer}>
+              <View
+                style={[
+                  styles.durationContainer,
+                  { flexDirection: isRTL ? "row-reverse" : "row" },
+                ]}
+              >
                 {[30, 60, 120, 240].map((time) => (
                   <Pressable
                     key={time}
@@ -156,10 +220,12 @@ const MealsOverviewScreen = ({ route, navigation }) => {
                     <Text
                       style={[
                         styles.timeText,
-                        filters.maxDuration === time && styles.timeTextActive,
+                        filters.maxDuration === time && styles.timeBtnActive,
                       ]}
                     >
-                      {time === 240 ? "All" : `${time}m`}
+                      {time === 240
+                        ? t("mealsOverview.anyTime")
+                        : `${time}m`}
                     </Text>
                   </Pressable>
                 ))}
@@ -171,7 +237,7 @@ const MealsOverviewScreen = ({ route, navigation }) => {
               onPress={() => setIsFilterModalVisible(false)}
             >
               <Text style={styles.applyButtonText}>
-                Show {displayedMeals.length} recipes
+                {t("search.resultsCount", { count: displayedMeals.length })}
               </Text>
             </Pressable>
           </View>
@@ -183,8 +249,13 @@ const MealsOverviewScreen = ({ route, navigation }) => {
   );
 };
 
-const FilterItem = ({ label, value, onToggle, colors, styles }) => (
-  <View style={styles.filterRow}>
+const FilterItem = ({ label, value, onToggle, colors, styles, isRTL }) => (
+  <View
+    style={[
+      styles.filterRow,
+      { flexDirection: isRTL ? "row-reverse" : "row" },
+    ]}
+  >
     <Text style={styles.filterLabel}>{label}</Text>
     <Switch
       value={value}
@@ -195,6 +266,7 @@ const FilterItem = ({ label, value, onToggle, colors, styles }) => (
     />
   </View>
 );
+;
 
 export default MealsOverviewScreen;
 

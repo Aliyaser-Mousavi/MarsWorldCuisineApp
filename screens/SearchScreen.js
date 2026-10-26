@@ -13,7 +13,10 @@ import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import { CATEGORIES, MEALS } from "../data/dummy-data";
+import { MEALS_FA, CATEGORIES_FA } from "../data/dummy-data.fa";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
+import { useAppLanguage, getLocalizedMeal } from "../utils/catalogue";
 
 const { width: SCREEN_W } = Dimensions.get("window");
 const GRID_GAP = 12;
@@ -22,38 +25,39 @@ const CARD_W = (SCREEN_W - GRID_PAD * 2 - GRID_GAP) / 2;
 const CAT_W = (SCREEN_W - 16 * 2 - 10) / 2;
 
 const TIME_OPTIONS = [
-  { id: "any", label: "Any" },
-  { id: "15", label: "15m", max: 15 },
-  { id: "30", label: "30m", max: 30 },
-  { id: "45", label: "45m", max: 45 },
+  { id: "any", labelKey: "search.anyTime" },
+  { id: "15", labelKey: "search.time15", max: 15 },
+  { id: "30", labelKey: "search.time30", max: 30 },
+  { id: "45", labelKey: "search.time45", max: 45 },
 ];
 
 const DIET_OPTIONS = [
-  { id: "glutenFree", label: "Gluten-free", mealKey: "isGlutenFree" },
-  { id: "vegetarian", label: "Vegetarian", mealKey: "isVegetarian" },
-  { id: "vegan", label: "Vegan", mealKey: "isVegan" },
-  { id: "lactoseFree", label: "Lactose-free", mealKey: "isLactoseFree" },
+  { id: "glutenFree", labelKey: "search.glutenFree", mealKey: "isGlutenFree" },
+  { id: "vegetarian", labelKey: "search.vegetarian", mealKey: "isVegetarian" },
+  { id: "vegan", labelKey: "search.vegan", mealKey: "isVegan" },
+  { id: "lactoseFree", labelKey: "search.lactoseFree", mealKey: "isLactoseFree" },
 ];
 
 const SUGGESTIONS = [
-  "chicken",
-  "pasta",
-  "rice",
-  "tomato",
-  "garlic",
-  "salad",
-  "soup",
-  "beef",
+  { id: "chicken", labelKey: "search.suggestions.chicken" },
+  { id: "pasta", labelKey: "search.suggestions.pasta" },
+  { id: "rice", labelKey: "search.suggestions.rice" },
+  { id: "tomato", labelKey: "search.suggestions.tomato" },
+  { id: "garlic", labelKey: "search.suggestions.garlic" },
+  { id: "salad", labelKey: "search.suggestions.salad" },
+  { id: "soup", labelKey: "search.suggestions.soup" },
+  { id: "beef", labelKey: "search.suggestions.beef" },
 ];
 
 const SearchScreen = ({ navigation }) => {
   const { colors, type, spacing, radii } = useTheme();
+  const { t, isRTL } = useLocale();
   const styles = useMemo(
-    () => createStyles(colors, type, spacing, radii),
-    [colors, type, spacing, radii],
+    () => createStyles(colors, type, spacing, radii, isRTL),
+    [colors, type, spacing, radii, isRTL],
   );
   const prefs = useSelector((state) => state.preferences);
-  const recentIds = useSelector((state) => state.recentMeals.ids);
+  const recentIds = useSelector((state) => state.recentMeals?.ids || []);
   const [query, setQuery] = useState("");
   const [timeId, setTimeId] = useState("any");
   const [diets, setDiets] = useState(() => ({
@@ -76,6 +80,8 @@ const SearchScreen = ({ navigation }) => {
 
   const showing = query.trim().length >= 1 || activeFilterCount > 0;
 
+  const language = useAppLanguage();
+
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     const time = TIME_OPTIONS.find((t) => t.id === timeId);
@@ -83,10 +89,19 @@ const SearchScreen = ({ navigation }) => {
 
     return MEALS.filter((meal) => {
       if (q.length > 0) {
-        const hitTitle = meal.title.toLowerCase().includes(q);
-        const hitIng = meal.ingredients.some((i) =>
+        const enTitle = meal.title.toLowerCase();
+        const fa = MEALS_FA[meal.id];
+        const faTitle = fa?.title?.toLowerCase() || "";
+        const hitTitle = enTitle.includes(q) || faTitle.includes(q);
+
+        const hitEnIng = meal.ingredients.some((i) =>
           i.toLowerCase().includes(q),
         );
+        const hitFaIng = fa?.ingredients
+          ? fa.ingredients.some((i) => i.toLowerCase().includes(q))
+          : false;
+
+        const hitIng = hitEnIng || hitFaIng;
         if (!hitTitle && !hitIng) return false;
       }
       if (time?.max && meal.duration > time.max) return false;
@@ -138,15 +153,26 @@ const SearchScreen = ({ navigation }) => {
   const ListHeader = (
     <View>
       <View style={styles.intro}>
-        <Text style={styles.kicker}>Search</Text>
-        <Text style={styles.headline}>Find a recipe</Text>
+        <Text style={styles.kicker}>{t("search.kicker")}</Text>
+        <Text style={styles.headline}>{t("search.headline")}</Text>
       </View>
 
-      <View style={styles.searchBar}>
+      <View
+        style={[
+          styles.searchBar,
+          { flexDirection: isRTL ? "row-reverse" : "row" },
+        ]}
+      >
         <Ionicons name="search" size={18} color={colors.inkSoft} />
         <TextInput
-          style={styles.searchInput}
-          placeholder="Name or ingredient…"
+          style={[
+            styles.searchInput,
+            {
+              textAlign: isRTL ? "right" : "left",
+              writingDirection: isRTL ? "rtl" : "ltr",
+            },
+          ]}
+          placeholder={t("search.placeholder")}
           placeholderTextColor={colors.inkSoft}
           value={query}
           onChangeText={setQuery}
@@ -162,8 +188,20 @@ const SearchScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.filterBlock}>
-        <Text style={styles.filterLabel}>Time</Text>
-        <View style={styles.timeRow}>
+        <Text
+          style={[
+            styles.filterLabel,
+            { textAlign: isRTL ? "right" : "left" },
+          ]}
+        >
+          {t("search.time")}
+        </Text>
+        <View
+          style={[
+            styles.timeRow,
+            { flexDirection: isRTL ? "row-reverse" : "row" },
+          ]}
+        >
           {TIME_OPTIONS.map((item) => {
             const active = timeId === item.id;
             return (
@@ -175,17 +213,27 @@ const SearchScreen = ({ navigation }) => {
                 <Text
                   style={[styles.timeText, active && styles.timeTextActive]}
                 >
-                  {item.label}
+                  {t(item.labelKey)}
                 </Text>
               </Pressable>
             );
           })}
         </View>
 
-        <Text style={[styles.filterLabel, { marginTop: spacing.md }]}>
-          Diet
+        <Text
+          style={[
+            styles.filterLabel,
+            { marginTop: spacing.md, textAlign: isRTL ? "right" : "left" },
+          ]}
+        >
+          {t("search.diet")}
         </Text>
-        <View style={styles.dietRow}>
+        <View
+          style={[
+            styles.dietRow,
+            { flexDirection: isRTL ? "row-reverse" : "row" },
+          ]}
+        >
           {DIET_OPTIONS.map((item) => {
             const active = diets[item.id];
             return (
@@ -197,7 +245,7 @@ const SearchScreen = ({ navigation }) => {
                 <Text
                   style={[styles.dietText, active && styles.dietTextActive]}
                 >
-                  {item.label}
+                  {t(item.labelKey)}
                 </Text>
               </Pressable>
             );
@@ -206,7 +254,7 @@ const SearchScreen = ({ navigation }) => {
 
         {activeFilterCount > 0 && (
           <Pressable onPress={clearAll} style={styles.clearRow}>
-            <Text style={styles.clearText}>Clear filters</Text>
+            <Text style={styles.clearText}>{t("search.clearFilters")}</Text>
           </Pressable>
         )}
       </View>
@@ -214,7 +262,7 @@ const SearchScreen = ({ navigation }) => {
       {showing ? (
         <View style={styles.resultHead}>
           <Text style={styles.resultCount}>
-            {results.length} recipe{results.length === 1 ? "" : "s"}
+            {t("search.resultsCount", { count: results.length })}
           </Text>
         </View>
       ) : (
@@ -247,9 +295,9 @@ const SearchScreen = ({ navigation }) => {
         showing ? (
           <View style={styles.empty}>
             <Ionicons name="search-outline" size={36} color={colors.inkSoft} />
-            <Text style={styles.emptyTitle}>Nothing matched</Text>
+            <Text style={styles.emptyTitle}>{t("search.nothingMatched")}</Text>
             <Text style={styles.emptyBody}>
-              Try another word, or loosen the time and diet filters.
+              {t("search.tryDifferentQuery")}
             </Text>
           </View>
         ) : null
@@ -263,18 +311,30 @@ const SearchScreen = ({ navigation }) => {
 
 const RecipeCard = ({ meal, width, onPress }) => {
   const { colors, type, spacing, radii } = useTheme();
+  const { t, isRTL } = useLocale();
   const styles = useMemo(
-    () => createStyles(colors, type, spacing, radii),
-    [colors, type, spacing, radii],
+    () => createStyles(colors, type, spacing, radii, isRTL),
+    [colors, type, spacing, radii, isRTL],
   );
 
   const imageH = width * 1.15;
+  const complexityLabel = meal.complexity
+    ? t(`mealDetails.complexity.${meal.complexity.toLowerCase()}`, {
+        defaultValue: meal.complexity,
+      })
+    : "";
+
+  const language = useAppLanguage();
+  const displayTitle = (language === "fa" && MEALS_FA[meal.id]?.title)
+    ? MEALS_FA[meal.id].title
+    : meal.title;
+
   return (
     <Pressable
       style={[styles.card, { width }]}
       onPress={onPress}
       accessibilityRole="button"
-      accessibilityLabel={meal.title}
+      accessibilityLabel={displayTitle}
     >
       <Image
         source={meal.imageUrl}
@@ -285,10 +345,20 @@ const RecipeCard = ({ meal, width, onPress }) => {
         recyclingKey={meal.id}
       />
       <Text style={styles.cardTitle} numberOfLines={2}>
-        {meal.title}
+        {displayTitle}
       </Text>
       <Text style={styles.cardMeta}>
-        {meal.duration} min · {meal.complexity}
+        {[
+          t("mealDetails.durationMin", {
+            duration: isRTL
+              ? String(meal.duration).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d])
+              : meal.duration,
+            defaultValue: `${meal.duration} min`,
+          }),
+          complexityLabel,
+        ]
+          .filter(Boolean)
+          .join(" · ")}
       </Text>
     </Pressable>
   );
@@ -304,60 +374,120 @@ const IdleDiscover = ({
   onCategory,
 }) => {
   const { colors, type, spacing, radii } = useTheme();
+  const { t, isRTL } = useLocale();
+  const language = useAppLanguage();
   const styles = useMemo(
-    () => createStyles(colors, type, spacing, radii),
-    [colors, type, spacing, radii],
+    () => createStyles(colors, type, spacing, radii, isRTL),
+    [colors, type, spacing, radii, isRTL],
   );
 
   const showcase = recentMeals.length > 0 ? recentMeals : featured;
   const showcaseLabel =
-    recentMeals.length > 0 ? "Recently opened" : "Quick to cook";
+    recentMeals.length > 0
+      ? t("search.recentlyViewed")
+      : t("search.quickWeeknightPicks");
 
   return (
     <View style={styles.idle}>
-      <Text style={styles.sectionTitle}>Try searching</Text>
-      <View style={styles.suggestRow}>
-        {suggestions.map((word) => (
-          <Pressable
-            key={word}
-            onPress={() => onSuggest(word)}
-            style={styles.suggestBtn}
-          >
-            <Text style={styles.suggestText}>{word}</Text>
-          </Pressable>
-        ))}
+      <Text
+        style={[
+          styles.sectionTitle,
+          { textAlign: isRTL ? "right" : "left" },
+        ]}
+      >
+        {t("search.trySuggestions")}
+      </Text>
+      <View
+        style={[
+          styles.suggestRow,
+          { flexDirection: isRTL ? "row-reverse" : "row" },
+        ]}
+      >
+        {suggestions.map((item) => {
+          const key = typeof item === "string" ? item : item.id;
+          const label =
+            typeof item === "string"
+              ? t(`search.suggestions.${item}`, { defaultValue: item })
+              : t(item.labelKey, { defaultValue: item.id });
+
+          return (
+            <Pressable
+              key={key}
+              onPress={() => onSuggest(label)}
+              style={styles.suggestBtn}
+              accessibilityRole="button"
+              accessibilityLabel={label}
+            >
+              <Text style={styles.suggestText}>{label}</Text>
+            </Pressable>
+          );
+        })}
       </View>
 
-      <Text style={styles.sectionTitle}>{showcaseLabel}</Text>
+      <Text
+        style={[
+          styles.sectionTitle,
+          { textAlign: isRTL ? "right" : "left" },
+        ]}
+      >
+        {showcaseLabel}
+      </Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.hRow}
+        contentContainerStyle={[
+          styles.hRow,
+          isRTL && { flexDirection: "row-reverse", minWidth: "100%" },
+        ]}
       >
-        {showcase.map((item) => (
-          <Pressable
-            key={item.id}
-            style={styles.hCard}
-            onPress={() => onMeal(item.id)}
-          >
-            <Image
-              source={item.imageUrl}
-              style={styles.hImage}
-              contentFit="cover"
-              transition={200}
-              cachePolicy="memory-disk"
-              recyclingKey={`idle-${item.id}`}
-            />
-            <Text style={styles.hTitle} numberOfLines={2}>
-              {item.title}
-            </Text>
-            <Text style={styles.hMeta}>{item.duration} min</Text>
-          </Pressable>
-        ))}
+        {showcase.map((item) => {
+          const itemTitle = (language === "fa" && MEALS_FA[item.id]?.title)
+            ? MEALS_FA[item.id].title
+            : item.title;
+          return (
+            <Pressable
+              key={item.id}
+              style={styles.hCard}
+              onPress={() => onMeal(item.id)}
+            >
+              <Image
+                source={item.imageUrl}
+                style={styles.hImage}
+                contentFit="cover"
+                transition={200}
+                cachePolicy="memory-disk"
+                recyclingKey={`idle-${item.id}`}
+              />
+              <Text style={styles.hTitle} numberOfLines={2}>
+                {itemTitle}
+              </Text>
+              <Text style={styles.hMeta}>
+                {t("mealDetails.durationMin", {
+                  duration: isRTL
+                    ? String(item.duration).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d])
+                    : item.duration,
+                  defaultValue: `${item.duration} min`,
+                })}
+              </Text>
+            </Pressable>
+          );
+        })}
       </ScrollView>
 
-      <Text style={styles.sectionTitle}>Browse a cuisine</Text>
-      <View style={styles.catGrid}>
+      <Text
+        style={[
+          styles.sectionTitle,
+          { textAlign: isRTL ? "right" : "left" },
+        ]}
+      >
+        {t("search.categories")}
+      </Text>
+      <View
+        style={[
+          styles.catGrid,
+          { flexDirection: isRTL ? "row-reverse" : "row" },
+        ]}
+      >
         {categories.map((cat) => (
           <Pressable
             key={cat.id}
@@ -372,7 +502,7 @@ const IdleDiscover = ({
               cachePolicy="memory-disk"
             />
             <Text style={styles.catTitle} numberOfLines={1}>
-              {cat.title}
+              {t(`categories.items.${cat.id}`, { defaultValue: cat.title })}
             </Text>
           </Pressable>
         ))}
@@ -383,7 +513,7 @@ const IdleDiscover = ({
 
 export default SearchScreen;
 
-const createStyles = (colors, type, spacing, radii) =>
+const createStyles = (colors, type, spacing, radii, isRTL) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -396,15 +526,20 @@ const createStyles = (colors, type, spacing, radii) =>
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.md,
     paddingBottom: spacing.sm,
+    alignItems: isRTL ? "flex-end" : "flex-start",
   },
   kicker: {
     ...type.label,
     color: colors.accent,
     marginBottom: 4,
+    textAlign: isRTL ? "right" : "left",
+    writingDirection: isRTL ? "rtl" : "ltr",
   },
   headline: {
     ...type.display,
     fontSize: 26,
+    textAlign: isRTL ? "right" : "left",
+    writingDirection: isRTL ? "rtl" : "ltr",
   },
   searchBar: {
     flexDirection: "row",
@@ -438,9 +573,11 @@ const createStyles = (colors, type, spacing, radii) =>
     ...type.label,
     color: colors.inkSoft,
     marginBottom: 8,
-    textTransform: "uppercase",
-    letterSpacing: 0.6,
+    textTransform: isRTL ? undefined : "uppercase",
+    letterSpacing: isRTL ? 0 : 0.6,
     fontSize: 11,
+    textAlign: isRTL ? "right" : "left",
+    writingDirection: isRTL ? "rtl" : "ltr",
   },
   timeRow: {
     flexDirection: "row",
@@ -492,7 +629,7 @@ const createStyles = (colors, type, spacing, radii) =>
   },
   clearRow: {
     marginTop: spacing.md,
-    alignSelf: "flex-start",
+    alignSelf: isRTL ? "flex-end" : "flex-start",
   },
   clearText: {
     ...type.label,
@@ -502,10 +639,13 @@ const createStyles = (colors, type, spacing, radii) =>
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.lg,
     paddingBottom: spacing.sm,
+    alignItems: isRTL ? "flex-end" : "flex-start",
   },
   resultCount: {
     ...type.heading,
     fontSize: 15,
+    textAlign: isRTL ? "right" : "left",
+    writingDirection: isRTL ? "rtl" : "ltr",
   },
   gridRow: {
     paddingHorizontal: GRID_PAD,
@@ -520,11 +660,15 @@ const createStyles = (colors, type, spacing, radii) =>
     fontSize: 14,
     lineHeight: 18,
     marginTop: 8,
+    textAlign: isRTL ? "right" : "left",
+    writingDirection: isRTL ? "rtl" : "ltr",
   },
   cardMeta: {
     ...type.caption,
     marginTop: 2,
     textTransform: "capitalize",
+    textAlign: isRTL ? "right" : "left",
+    writingDirection: isRTL ? "rtl" : "ltr",
   },
   empty: {
     alignItems: "center",
@@ -571,9 +715,11 @@ const createStyles = (colors, type, spacing, radii) =>
     paddingHorizontal: spacing.md,
     gap: 12,
     paddingBottom: spacing.sm,
+    flexDirection: isRTL ? "row-reverse" : "row",
   },
   hCard: {
     width: 148,
+    alignItems: isRTL ? "flex-end" : "flex-start",
   },
   hImage: {
     width: 148,
@@ -586,10 +732,14 @@ const createStyles = (colors, type, spacing, radii) =>
     ...type.heading,
     fontSize: 14,
     lineHeight: 18,
+    textAlign: isRTL ? "right" : "left",
+    writingDirection: isRTL ? "rtl" : "ltr",
   },
   hMeta: {
     ...type.caption,
     marginTop: 2,
+    textAlign: isRTL ? "right" : "left",
+    writingDirection: isRTL ? "rtl" : "ltr",
   },
   catGrid: {
     flexDirection: "row",
@@ -610,5 +760,7 @@ const createStyles = (colors, type, spacing, radii) =>
   catTitle: {
     ...type.label,
     color: colors.ink,
+    textAlign: isRTL ? "right" : "left",
+    writingDirection: isRTL ? "rtl" : "ltr",
   },
 });

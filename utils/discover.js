@@ -68,7 +68,7 @@ export function buildDiscoverShelves({
     for (const similar of getSimilarMeals(seed.id, { prefs, limit: 4 })) {
       if (seen.has(similar.id)) continue;
       seen.add(similar.id);
-      becauseYouLiked.push({ meal: similar, because: seed.title });
+      becauseYouLiked.push({ meal: similar, because: seed.title, becauseMeal: seed });
       if (becauseYouLiked.length >= 8) break;
     }
     if (becauseYouLiked.length >= 8) break;
@@ -110,6 +110,8 @@ export function buildDiscoverShelves({
   if (becauseYouLiked.length > 0) {
     shelves.push({
       id: "liked",
+      titleKey: "discover.shelves.likedTitle",
+      subtitleKey: "discover.shelves.likedSubtitle",
       title: "Because you liked",
       subtitle: "Neighbors to your favorites and high ratings",
       kind: "because",
@@ -120,6 +122,8 @@ export function buildDiscoverShelves({
   if (quickWins.length > 0) {
     shelves.push({
       id: "quick",
+      titleKey: "discover.shelves.quickTitle",
+      subtitleKey: "discover.shelves.quickSubtitle",
       title: "On the table fast",
       subtitle: "Thirty minutes or less",
       kind: "meals",
@@ -130,6 +134,12 @@ export function buildDiscoverShelves({
   if (spotlightCat && spotlightMeals.length > 0) {
     shelves.push({
       id: "spotlight",
+      category: spotlightCat,
+      isBasedOnCooked: likedMeals.length > 0,
+      titleKey: "discover.shelves.spotlightTitle",
+      subtitleKey: likedMeals.length
+        ? "discover.shelves.spotlightSubtitleLiked"
+        : "discover.shelves.spotlightSubtitleExplore",
       title: `${spotlightCat.title} spotlight`,
       subtitle: likedMeals.length
         ? "Based on what you cook most"
@@ -142,6 +152,8 @@ export function buildDiscoverShelves({
   if (newToYou.length > 0) {
     shelves.push({
       id: "new",
+      titleKey: "discover.shelves.newTitle",
+      subtitleKey: "discover.shelves.newSubtitle",
       title: "New to your kitchen",
       subtitle: "Not cooked or opened recently",
       kind: "meals",

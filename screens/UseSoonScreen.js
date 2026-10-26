@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import { Image } from "expo-image";
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
+import { useTranslation } from "react-i18next";
 import { MEALS } from "../data/dummy-data";
 import { setPantryUseBy } from "../store/redux/pantry";
 import {
@@ -19,21 +20,22 @@ import {
   useByUrgency,
 } from "../utils/pantry";
 import { useTheme } from "../constants/theme";
-
-const QUICK_DATES = [
-  { label: "Today", days: 0 },
-  { label: "Tomorrow", days: 1 },
-  { label: "3 days", days: 3 },
-  { label: "1 week", days: 7 },
-];
+import { useLocale } from "../constants/locale";
+import { useAppLanguage, localizeIngredient } from "../utils/catalogue";
+import { MEALS_FA } from "../data/dummy-data.fa";
+import { syncPantryExpirationAlerts } from "../services/notificationService";
+import { toPersianDigits } from "../utils/formatters";
 
 const EMPTY_USE_BY = Object.freeze({});
 
 const UseSoonScreen = ({ navigation }) => {
-  const { colors, radii, spacing, type, shadows } = useTheme();
+  const { colors, radii, spacing, type } = useTheme();
+  const { t } = useTranslation();
+  const { isRTL } = useLocale();
+  const language = useAppLanguage();
   const styles = useMemo(
-    () => createStyles(colors, type, spacing, radii, shadows),
-    [colors, type, spacing, radii, shadows],
+    () => createStyles(colors, type, spacing, radii, isRTL),
+    [colors, type, spacing, radii, isRTL],
   );
   const dispatch = useDispatch();
   const pantry = useSelector((state) => state.pantry.items);
@@ -41,10 +43,24 @@ const UseSoonScreen = ({ navigation }) => {
   const prefs = useSelector((state) => state.preferences);
   const [picking, setPicking] = useState(null);
 
+  const quickDates = useMemo(
+    () => [
+      { label: t("useSoon.today"), days: 0 },
+      { label: t("useSoon.tomorrow"), days: 1 },
+      { label: t("useSoon.threeDays"), days: 3 },
+      { label: t("useSoon.oneWeek"), days: 7 },
+    ],
+    [t],
+  );
+
   const urgent = useMemo(
     () => getUseSoonItems(pantry, useBy, 7),
     [pantry, useBy],
   );
+
+  useEffect(() => {
+    syncPantryExpirationAlerts({ pantry, useBy }).catch(() => {});
+  }, [pantry, useBy]);
 
   const suggestions = useMemo(
     () =>
@@ -83,43 +99,44 @@ const UseSoonScreen = ({ navigation }) => {
   };
 
   const urgencyLabel = (days) => {
-    if (days < 0) return `${Math.abs(days)}d overdue`;
-    if (days === 0) return "Use today";
-    if (days === 1) return "Tomorrow";
-    return `${days} days left`;
+    if (days < 0) return t("useSoon.overdue", { count: isRTL ? toPersianDigits(Math.abs(days)) : Math.abs(days) });
+    if (days === 0) return t("useSoon.useToday");
+    if (days === 1) return t("useSoon.tomorrow");
+    return t("useSoon.daysLeft", { count: isRTL ? toPersianDigits(days) : days });
   };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.intro}>
-        <Text style={styles.kicker}>Use soon</Text>
-        <Text style={styles.headline}>Cook what won’t wait</Text>
-        <Text style={styles.body}>
-          Tag pantry items with a use-by date. We’ll surface recipes that burn
-          them down before they fade.
-        </Text>
+        <Text style={styles.kicker}>{t("useSoon.kicker")}</Text>
+        <Text style={styles.headline}>{t("useSoon.headline")}</Text>
+        <Text style={styles.body}>{t("useSoon.body")}</Text>
       </View>
 
       <View style={styles.stats}>
         <Text style={styles.statsText}>
-          {urgent.length} urgent · {datedCount} dated · {pantry.length} in pantry
+          {t("useSoon.stats", {
+            urgent: isRTL ? toPersianDigits(urgent.length) : urgent.length,
+            dated: isRTL ? toPersianDigits(datedCount) : datedCount,
+            total: isRTL ? toPersianDigits(pantry.length) : pantry.length,
+          })}
         </Text>
         <Pressable onPress={() => navigation.navigate("Pantry")} hitSlop={8}>
-          <Text style={styles.link}>Edit pantry</Text>
+          <Text style={styles.link}>{t("useSoon.editPantry")}</Text>
         </Pressable>
       </View>
 
       {pantry.length === 0 ? (
         <View style={styles.empty}>
           <Ionicons name="leaf-outline" size={36} color={colors.inkSoft} />
-          <Text style={styles.emptyTitle}>Pantry is empty</Text>
+          <Text style={styles.emptyTitle}>{t("useSoon.emptyTitle")}</Text>
           <Text style={styles.emptyBody}>
-            Add staples first, then mark what needs cooking soon.
+            {t("useSoon.emptyBody")}
           </Text>
         </View>
       ) : (
         <>
-          <Text style={styles.section}>Mark use-by</Text>
+          <Text style={styles.section}>{t("useSoon.markUseBy")}</Text>
           <View style={styles.chipWrap}>
             {pantry.map((name) => {
               const key = name.toLowerCase();
@@ -144,7 +161,7 @@ const UseSoonScreen = ({ navigation }) => {
                         useBy[key] && { color: urgencyColor(urgency) },
                       ]}
                     >
-                      {name}
+                      {localizeIngredient(name, language)}
                     </Text>
                     {useBy[key] && days != null && (
                       <Text style={styles.itemChipSub}>
@@ -154,7 +171,7 @@ const UseSoonScreen = ({ navigation }) => {
                   </Pressable>
                   {active && (
                     <View style={styles.dateRow}>
-                      {QUICK_DATES.map((opt) => (
+                      {quickDates.map((opt) => (
                         <Pressable
                           key={opt.label}
                           style={styles.dateBtn}
@@ -168,7 +185,7 @@ const UseSoonScreen = ({ navigation }) => {
                           style={styles.clearBtn}
                           onPress={() => clearDate(name)}
                         >
-                          <Text style={styles.clearBtnText}>Clear</Text>
+                          <Text style={styles.clearBtnText}>{t("useSoon.clearDate")}</Text>
                         </Pressable>
                       )}
                     </View>
@@ -180,14 +197,13 @@ const UseSoonScreen = ({ navigation }) => {
 
           <Text style={styles.section}>
             {urgent.length
-              ? `Recipes for ${urgent.length} urgent item${urgent.length === 1 ? "" : "s"}`
-              : "No urgent items yet"}
+              ? t("useSoon.cookTheseFirst")
+              : t("useSoon.emptyTitle")}
           </Text>
 
           {!urgent.length ? (
             <Text style={styles.bodyPad}>
-              Tap an item above and set Today, Tomorrow, or 3 days — then watch
-              suggestions appear.
+              {t("useSoon.emptyBody")}
             </Text>
           ) : (
             suggestions.map((row) => (
@@ -205,14 +221,21 @@ const UseSoonScreen = ({ navigation }) => {
                 />
                 <View style={styles.cardBody}>
                   <Text style={styles.cardTitle} numberOfLines={2}>
-                    {row.meal.title}
+                    {(language === "fa" && MEALS_FA[row.meal.id]?.title)
+                      ? MEALS_FA[row.meal.id].title
+                      : row.meal.title}
                   </Text>
                   <Text style={styles.cardMeta}>
-                    {row.meal.duration} min · uses {row.used.join(", ")}
+                    {t("mealDetails.durationMin", {
+                      duration: isRTL ? toPersianDigits(row.meal.duration) : row.meal.duration,
+                      defaultValue: isRTL
+                        ? `${toPersianDigits(row.meal.duration)} دقیقه`
+                        : `${row.meal.duration} min`,
+                    })} · {t("useSoon.usesItem", { item: row.used.map((it) => localizeIngredient(it, language)).join(isRTL ? "، " : ", ") })}
                   </Text>
                 </View>
                 <Ionicons
-                  name="chevron-forward"
+                  name={isRTL ? "chevron-back" : "chevron-forward"}
                   size={16}
                   color={colors.inkSoft}
                 />
@@ -235,7 +258,7 @@ function suggestDays(dateStr) {
 
 export default UseSoonScreen;
 
-const createStyles = (colors, type, spacing, radii, shadows) =>
+const createStyles = (colors, type, spacing, radii, isRTL) =>
   StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { paddingBottom: spacing.xl },
@@ -250,15 +273,25 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     textTransform: "uppercase",
     letterSpacing: 1.2,
     marginBottom: 6,
+    textAlign: isRTL ? "right" : "left",
   },
-  headline: { ...type.display, fontSize: 26, marginBottom: 8 },
-  body: { ...type.body },
+  headline: {
+    ...type.display,
+    fontSize: 26,
+    marginBottom: 8,
+    textAlign: isRTL ? "right" : "left",
+  },
+  body: {
+    ...type.body,
+    textAlign: isRTL ? "right" : "left",
+  },
   bodyPad: {
     ...type.body,
     paddingHorizontal: spacing.lg,
+    textAlign: isRTL ? "right" : "left",
   },
   stats: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: spacing.lg,
@@ -272,6 +305,7 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     paddingHorizontal: spacing.lg,
     marginTop: spacing.md,
     marginBottom: spacing.sm,
+    textAlign: isRTL ? "right" : "left",
   },
   chipWrap: {
     paddingHorizontal: spacing.lg,
@@ -295,13 +329,15 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
   itemChipText: {
     ...type.heading,
     fontSize: 14,
+    textAlign: isRTL ? "right" : "left",
   },
   itemChipSub: {
     ...type.caption,
     marginTop: 2,
+    textAlign: isRTL ? "right" : "left",
   },
   dateRow: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     flexWrap: "wrap",
     gap: 6,
     marginTop: 6,
@@ -328,7 +364,7 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     fontSize: 12,
   },
   card: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     marginHorizontal: spacing.lg,
     marginBottom: spacing.sm,
@@ -338,7 +374,6 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     borderWidth: 1,
     borderColor: colors.border,
     gap: spacing.sm,
-    ...shadows.soft,
   },
   cardImage: {
     width: 64,
@@ -348,11 +383,17 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
   },
   cardBody: { flex: 1 },
   cardTitle: {
-    fontFamily: "Fraunces_600SemiBold",
+    ...(isRTL ? {} : { fontFamily: "Fraunces_600SemiBold" }),
     fontSize: 16,
     color: colors.ink,
+    textAlign: isRTL ? "right" : "left",
   },
-  cardMeta: { ...type.caption, marginTop: 4, textTransform: "capitalize" },
+  cardMeta: {
+    ...type.caption,
+    marginTop: 4,
+    textTransform: "capitalize",
+    textAlign: isRTL ? "right" : "left",
+  },
   empty: {
     alignItems: "center",
     padding: spacing.xl,

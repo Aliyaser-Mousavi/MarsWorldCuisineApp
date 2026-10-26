@@ -8,7 +8,9 @@ import {
   StatusBar,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "../../constants/theme";
+import { useLocale } from "../../constants/locale";
 
 const getTone = (variant, colors) => {
   switch (variant) {
@@ -51,6 +53,12 @@ const FeedbackToast = ({
   onHide,
 }) => {
   const { colors, shadows } = useTheme();
+  const { isRTL } = useLocale();
+  const insets = useSafeAreaInsets();
+  const topInset = Math.max(
+    insets.top,
+    Platform.OS === "android" ? (StatusBar.currentHeight ?? 24) : 20,
+  );
   const slide = useRef(new Animated.Value(-120)).current;
   const opacity = useRef(new Animated.Value(0)).current;
 
@@ -98,6 +106,7 @@ const FeedbackToast = ({
       style={[
         styles.host,
         {
+          top: topInset + 12,
           opacity,
           transform: [{ translateY: slide }],
         },
@@ -105,10 +114,27 @@ const FeedbackToast = ({
     >
       <Pressable
         onPress={onHide}
-        style={[styles.toast, { backgroundColor: tone.bg }, shadows.lift]}
+        accessibilityRole="alert"
+        style={[
+          styles.toast,
+          {
+            backgroundColor: tone.bg,
+            flexDirection: isRTL ? "row-reverse" : "row",
+          },
+          shadows.lift,
+        ]}
       >
         <Ionicons name={tone.icon} size={18} color={tone.ink} />
-        <Text style={[styles.text, { color: tone.ink }]} numberOfLines={3}>
+        <Text
+          style={[
+            styles.text,
+            {
+              color: tone.ink,
+              textAlign: isRTL ? "right" : "left",
+            },
+          ]}
+          numberOfLines={3}
+        >
           {message}
         </Text>
       </Pressable>
@@ -121,13 +147,11 @@ export default FeedbackToast;
 const styles = StyleSheet.create({
   host: {
     position: "absolute",
-    top: Platform.OS === "android" ? (StatusBar.currentHeight ?? 0) + 12 : 56,
     left: 16,
     right: 16,
     zIndex: 12000,
   },
   toast: {
-    flexDirection: "row",
     alignItems: "center",
     gap: 8,
     paddingVertical: 16,

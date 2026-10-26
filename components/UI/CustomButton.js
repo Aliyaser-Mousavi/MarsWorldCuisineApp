@@ -66,7 +66,7 @@ const CustomButton = ({
   textStyle,
   fullWidth = true,
 }) => {
-  const { colors, shadows } = useTheme();
+  const { colors } = useTheme();
   const palette = getVariant(variant, colors);
   const isDisabled = disabled || loading;
 
@@ -83,7 +83,6 @@ const CustomButton = ({
           borderColor: palette.border,
         },
         fullWidth && styles.fullWidth,
-        variant === "primary" || variant === "accent" ? shadows.soft : null,
         pressed && !isDisabled && styles.pressed,
         isDisabled && styles.disabled,
         style,

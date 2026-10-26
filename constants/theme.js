@@ -1,5 +1,5 @@
 import { createElement, createContext, useContext, useMemo } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { DefaultTheme, DarkTheme } from "@react-navigation/native";
 import { toggleDarkMode, setDarkMode } from "../store/redux/preferences";
@@ -50,40 +50,39 @@ export const darkColors = {
   onBrandSoft: "rgba(255, 255, 255, 0.85)",
 };
 
-// Safe static default exports for fallback
 export const colors = lightColors;
 
 export const lightShadows = {
   soft: {
     shadowColor: "#1A1410",
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.08,
-    shadowRadius: 18,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.04,
+    shadowRadius: 4,
+    elevation: 1,
   },
   lift: {
     shadowColor: "#1A1410",
-    shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.12,
-    shadowRadius: 24,
-    elevation: 6,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.07,
+    shadowRadius: 12,
+    elevation: 3,
   },
 };
 
 export const darkShadows = {
   soft: {
     shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.35,
-    shadowRadius: 18,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.16,
+    shadowRadius: 4,
+    elevation: 1,
   },
   lift: {
     shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.45,
-    shadowRadius: 24,
-    elevation: 6,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 3,
   },
 };
 
@@ -104,87 +103,73 @@ export const radii = {
   pill: 999,
 };
 
-export const lightType = {
-  display: {
-    fontFamily: "Fraunces_600SemiBold",
-    fontSize: 28,
-    lineHeight: 34,
-    color: lightColors.ink,
-  },
-  title: {
-    fontFamily: "Fraunces_600SemiBold",
-    fontSize: 22,
-    lineHeight: 28,
-    color: lightColors.ink,
-  },
-  heading: {
-    fontFamily: "DMSans_600SemiBold",
-    fontSize: 17,
-    lineHeight: 22,
-    color: lightColors.ink,
-  },
-  body: {
-    fontFamily: "DMSans_400Regular",
-    fontSize: 15,
-    lineHeight: 22,
-    color: lightColors.inkMuted,
-  },
-  label: {
-    fontFamily: "DMSans_500Medium",
-    fontSize: 13,
-    lineHeight: 18,
-    color: lightColors.inkMuted,
-  },
-  caption: {
-    fontFamily: "DMSans_400Regular",
-    fontSize: 12,
-    lineHeight: 16,
-    color: lightColors.inkSoft,
-  },
-};
+export function createTypography(isDark = false, isPersian = false) {
+  const currentColors = isDark ? darkColors : lightColors;
 
-export const darkType = {
-  display: {
-    fontFamily: "Fraunces_600SemiBold",
-    fontSize: 28,
-    lineHeight: 34,
-    color: darkColors.ink,
-  },
-  title: {
-    fontFamily: "Fraunces_600SemiBold",
-    fontSize: 22,
-    lineHeight: 28,
-    color: darkColors.ink,
-  },
-  heading: {
-    fontFamily: "DMSans_600SemiBold",
-    fontSize: 17,
-    lineHeight: 22,
-    color: darkColors.ink,
-  },
-  body: {
-    fontFamily: "DMSans_400Regular",
-    fontSize: 15,
-    lineHeight: 22,
-    color: darkColors.inkMuted,
-  },
-  label: {
-    fontFamily: "DMSans_500Medium",
-    fontSize: 13,
-    lineHeight: 18,
-    color: darkColors.inkMuted,
-  },
-  caption: {
-    fontFamily: "DMSans_400Regular",
-    fontSize: 12,
-    lineHeight: 16,
-    color: darkColors.inkSoft,
-  },
-};
+  const baseFamily = isPersian ? undefined : "DMSans_400Regular";
+  const mediumFamily = isPersian ? undefined : "DMSans_500Medium";
+  const semiFamily = isPersian ? undefined : "DMSans_600SemiBold";
+  const displayFamily = isPersian ? undefined : "Fraunces_600SemiBold";
 
+  const extraLineHeight = isPersian ? 4 : 0;
+
+  return {
+    display: {
+      fontFamily: displayFamily,
+      fontSize: 28,
+      lineHeight: 34 + extraLineHeight,
+      color: currentColors.ink,
+      writingDirection: isPersian ? "rtl" : "ltr",
+      textAlign: isPersian ? "right" : "left",
+    },
+    title: {
+      fontFamily: displayFamily,
+      fontSize: 22,
+      lineHeight: 28 + extraLineHeight,
+      color: currentColors.ink,
+      writingDirection: isPersian ? "rtl" : "ltr",
+      textAlign: isPersian ? "right" : "left",
+    },
+    heading: {
+      fontFamily: semiFamily,
+      fontSize: 17,
+      lineHeight: 22 + extraLineHeight,
+      color: currentColors.ink,
+      writingDirection: isPersian ? "rtl" : "ltr",
+      textAlign: isPersian ? "right" : "left",
+    },
+    body: {
+      fontFamily: baseFamily,
+      fontSize: 15,
+      lineHeight: 22 + extraLineHeight,
+      color: currentColors.inkMuted,
+      writingDirection: isPersian ? "rtl" : "ltr",
+      textAlign: isPersian ? "right" : "left",
+    },
+    label: {
+      fontFamily: mediumFamily,
+      fontSize: 13,
+      lineHeight: 18 + extraLineHeight,
+      color: currentColors.inkMuted,
+      writingDirection: isPersian ? "rtl" : "ltr",
+      textAlign: isPersian ? "right" : "left",
+    },
+    caption: {
+      fontFamily: baseFamily,
+      fontSize: 12,
+      lineHeight: 16 + extraLineHeight,
+      color: currentColors.inkSoft,
+      writingDirection: isPersian ? "rtl" : "ltr",
+      textAlign: isPersian ? "right" : "left",
+    },
+  };
+}
+
+export const lightType = createTypography(false, false);
+export const darkType = createTypography(true, false);
 export const type = lightType;
 
-export function getNavTheme(isDark = false) {
+export function getNavTheme(isDark = false, isRTL = false) {
   const currentColors = isDark ? darkColors : lightColors;
   return {
     headerStyle: {
@@ -196,9 +181,11 @@ export function getNavTheme(isDark = false) {
     },
     headerTintColor: currentColors.ink,
     headerTitleStyle: {
-      fontFamily: "Fraunces_600SemiBold",
+      fontFamily: isRTL ? undefined : "Fraunces_600SemiBold",
       fontSize: 18,
     },
+    headerTitleAlign:
+      Platform.OS === "ios" ? "center" : isRTL ? "center" : "left",
     contentStyle: { backgroundColor: currentColors.bg },
     sceneStyle: { backgroundColor: currentColors.bg },
   };
@@ -232,7 +219,6 @@ export const AppDarkTheme = {
   },
 };
 
-// React Theme Context & Hook
 export const ThemeContext = createContext({
   isDark: false,
   colors: lightColors,
@@ -247,19 +233,21 @@ export const ThemeContext = createContext({
 export const ThemeProvider = ({ children }) => {
   const dispatch = useDispatch();
   const isDark = useSelector((state) => state.preferences?.darkMode ?? false);
+  const language = useSelector((state) => state.preferences?.language ?? "en");
+  const isPersian = language === "fa";
 
   const value = useMemo(
     () => ({
       isDark,
       colors: isDark ? darkColors : lightColors,
       shadows: isDark ? darkShadows : lightShadows,
-      type: isDark ? darkType : lightType,
+      type: createTypography(isDark, isPersian),
       radii,
       spacing,
       toggleTheme: () => dispatch(toggleDarkMode()),
       setDarkMode: (val) => dispatch(setDarkMode(val)),
     }),
-    [isDark, dispatch],
+    [isDark, isPersian, dispatch],
   );
 
   return createElement(ThemeContext.Provider, { value }, children);

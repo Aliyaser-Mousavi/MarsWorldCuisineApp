@@ -16,6 +16,10 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { StatusBar } from "expo-status-bar";
+import {
+  SafeAreaProvider,
+  initialWindowMetrics,
+} from "react-native-safe-area-context";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { Image } from "expo-image";
@@ -38,8 +42,18 @@ import {
   setPasswordRecovery,
 } from "./store/redux/authSlice";
 import { hydrateKitchenFromRemote } from "./services/hydrateKitchen";
+import * as Notifications from "expo-notifications";
+import {
+  setupNotificationChannels,
+  handleNotificationNavigation,
+  syncMealPlanReminders,
+  syncPantryExpirationAlerts,
+  cancelUserScopedNotifications,
+} from "./services/notificationService";
+import { addHistoryItem } from "./store/redux/notifications";
 import ThemedSpinner from "./components/UI/ThemedSpinner";
 import OfflineBanner from "./components/UI/OfflineBanner";
+import InAppNotificationBanner from "./components/UI/InAppNotificationBanner";
 import CategoriesScreen from "./screens/CategoriesScreen";
 import MealsOverviewScreen from "./screens/MealsOverviewScreen";
 import MealDetailScreen from "./screens/MealDetailScreen";
@@ -69,11 +83,12 @@ import StoreWalkScreen from "./screens/StoreWalkScreen";
 import UseSoonScreen from "./screens/UseSoonScreen";
 import BatchFreezeScreen from "./screens/BatchFreezeScreen";
 import FlavorPassportScreen from "./screens/FlavorPassportScreen";
+import { MEALS } from "./data/dummy-data";
 import * as SystemUI from "expo-system-ui";
 import CustomDrawerContent from "./components/CustomDrawerContent";
 import HeaderThemeButton from "./components/UI/HeaderThemeButton";
+import DrawerHeader from "./components/DrawerHeader";
 import { store, persistor } from "./store/redux/store";
-import { MEALS } from "./data/dummy-data";
 import {
   colors,
   spacing,
@@ -84,6 +99,7 @@ import {
   ThemeProvider,
   useTheme,
 } from "./constants/theme";
+import { LocaleProvider, useLocale } from "./constants/locale";
 
 ExpoSplashScreen.preventAutoHideAsync().catch(() => {});
 
@@ -93,50 +109,57 @@ const Drawer = createDrawerNavigator();
 const navigationRef = createNavigationContainerRef();
 
 async function fetchUserProfile(userId, dispatch) {
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", userId)
-    .single();
+  if (!supabase || !userId) return;
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", userId)
+      .single();
 
-  if (error) {
-    console.warn("Profile fetch failed:", error.message);
-    return;
+    if (error) {
+      console.warn("Profile fetch failed:", error.message);
+      return;
+    }
+
+    dispatch(setProfile(data));
+  } catch (err) {
+    console.warn("Profile fetch exception:", err?.message || err);
   }
-
-  dispatch(setProfile(data));
 }
 
 function AuthNavigator({ initialRouteName = "Login" }) {
   const { isDark } = useTheme();
+  const { isRTL, t } = useLocale();
   return (
     <AuthStack.Navigator
+      key={isRTL ? "auth-rtl" : "auth-ltr"}
       initialRouteName={initialRouteName}
       screenOptions={{
-        ...getNavTheme(isDark),
+        ...getNavTheme(isDark, isRTL),
         headerBackTitleVisible: false,
       }}
     >
       <AuthStack.Screen
         name="Login"
         component={LoginScreen}
-        options={{ title: "Sign in" }}
+        options={{ title: t("auth.signIn") }}
       />
       <AuthStack.Screen
         name="Register"
         component={RegisterScreen}
-        options={{ title: "Create account" }}
+        options={{ title: t("auth.createAccount") }}
       />
       <AuthStack.Screen
         name="ForgotPassword"
         component={ForgotPasswordScreen}
-        options={{ title: "Forgot password" }}
+        options={{ title: t("auth.forgotPassword") }}
       />
       <AuthStack.Screen
         name="ResetPassword"
         component={ResetPasswordScreen}
         options={{
-          title: "New password",
+          title: t("auth.newPassword"),
           headerBackVisible: false,
           gestureEnabled: false,
         }}
@@ -145,34 +168,73 @@ function AuthNavigator({ initialRouteName = "Login" }) {
   );
 }
 
+const DRAWER_ROUTE_NAMES = [
+  "Tonight",
+  "Categories",
+  "Discover",
+  "Search",
+  "AboutDeveloper",
+  "Favorites",
+  "Cookbooks",
+  "DinnerParties",
+  "Surprise",
+  "RecipeDuel",
+  "LeftoverRemix",
+  "Quests",
+  "FlavorPassport",
+  "UseSoon",
+  "BatchFreeze",
+  "History",
+  "MealPlan",
+  "Prep",
+  "ShoppingList",
+  "Pantry",
+  "Timers",
+  "Insights",
+  "Preferences",
+];
+
 function DrawerNavigator() {
   const { isDark, colors } = useTheme();
+  const { t, isRTL } = useLocale();
+  const routeCandidate = navigationRef.isReady()
+    ? navigationRef.getCurrentRoute()?.name
+    : null;
+  const initialRouteName =
+    routeCandidate && DRAWER_ROUTE_NAMES.includes(routeCandidate)
+      ? routeCandidate
+      : "Tonight";
+
   return (
     <Drawer.Navigator
+      key={isRTL ? "drawer-rtl" : "drawer-ltr"}
+      initialRouteName={initialRouteName}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
-        ...getNavTheme(isDark),
+        ...getNavTheme(isDark, isRTL),
+        drawerPosition: isRTL ? "right" : "left",
         drawerContentStyle: { backgroundColor: colors.surface },
         drawerInactiveTintColor: colors.inkMuted,
         drawerActiveTintColor: colors.accent,
         drawerActiveBackgroundColor: colors.accentSoft,
         drawerLabelStyle: {
-          fontFamily: "DMSans_500Medium",
+          fontFamily: isRTL ? undefined : "DMSans_500Medium",
           fontSize: 15,
+          textAlign: isRTL ? "right" : "left",
         },
         drawerItemStyle: {
           borderRadius: 10,
           marginHorizontal: 10,
           marginVertical: 2,
         },
-        headerRight: () => <HeaderThemeButton />,
+        header: (props) => <DrawerHeader {...props} />,
       }}
     >
       <Drawer.Screen
         name="Tonight"
         component={TonightScreen}
         options={{
-          title: "Tonight",
+          title: t("navigation.tonight"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="moon-outline" size={size} color={color} />
           ),
@@ -182,7 +244,7 @@ function DrawerNavigator() {
         name="Categories"
         component={CategoriesScreen}
         options={{
-          title: "Browse",
+          title: t("navigation.browse"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="grid-outline" size={size} color={color} />
           ),
@@ -192,7 +254,7 @@ function DrawerNavigator() {
         name="Discover"
         component={DiscoverScreen}
         options={{
-          title: "Discover",
+          title: t("navigation.discover"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="compass-outline" size={size} color={color} />
           ),
@@ -202,6 +264,7 @@ function DrawerNavigator() {
         name="Search"
         component={SearchScreen}
         options={{
+          title: t("navigation.search"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="search-outline" size={size} color={color} />
           ),
@@ -211,7 +274,7 @@ function DrawerNavigator() {
         name="AboutDeveloper"
         component={AboutDeveloperScreen}
         options={{
-          title: "The Maker",
+          title: t("navigation.aboutDeveloper"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="person-circle-outline" size={size} color={color} />
           ),
@@ -221,6 +284,7 @@ function DrawerNavigator() {
         name="Favorites"
         component={FavoritesScreen}
         options={{
+          title: t("navigation.favorites"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="heart-outline" size={size} color={color} />
           ),
@@ -230,6 +294,7 @@ function DrawerNavigator() {
         name="Cookbooks"
         component={CookbooksScreen}
         options={{
+          title: t("navigation.cookbooks"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="book-outline" size={size} color={color} />
           ),
@@ -239,7 +304,7 @@ function DrawerNavigator() {
         name="DinnerParties"
         component={DinnerMenusScreen}
         options={{
-          title: "Dinner parties",
+          title: t("navigation.dinnerParties"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="wine-outline" size={size} color={color} />
           ),
@@ -249,7 +314,7 @@ function DrawerNavigator() {
         name="Surprise"
         component={SurpriseScreen}
         options={{
-          title: "Surprise me",
+          title: t("navigation.surpriseMe"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="dice-outline" size={size} color={color} />
           ),
@@ -259,7 +324,7 @@ function DrawerNavigator() {
         name="RecipeDuel"
         component={RecipeDuelScreen}
         options={{
-          title: "Recipe duel",
+          title: t("navigation.recipeDuel"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="git-compare-outline" size={size} color={color} />
           ),
@@ -269,7 +334,7 @@ function DrawerNavigator() {
         name="LeftoverRemix"
         component={LeftoverRemixScreen}
         options={{
-          title: "Leftover remix",
+          title: t("navigation.leftoverRemix"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="sparkles-outline" size={size} color={color} />
           ),
@@ -279,7 +344,7 @@ function DrawerNavigator() {
         name="Quests"
         component={QuestsScreen}
         options={{
-          title: "Kitchen quests",
+          title: t("navigation.kitchenQuests"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="ribbon-outline" size={size} color={color} />
           ),
@@ -289,7 +354,7 @@ function DrawerNavigator() {
         name="FlavorPassport"
         component={FlavorPassportScreen}
         options={{
-          title: "Flavor passport",
+          title: t("navigation.flavorPassport"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="globe-outline" size={size} color={color} />
           ),
@@ -299,7 +364,7 @@ function DrawerNavigator() {
         name="UseSoon"
         component={UseSoonScreen}
         options={{
-          title: "Use soon",
+          title: t("navigation.useSoon"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="hourglass-outline" size={size} color={color} />
           ),
@@ -309,7 +374,7 @@ function DrawerNavigator() {
         name="BatchFreeze"
         component={BatchFreezeScreen}
         options={{
-          title: "Batch & freeze",
+          title: t("navigation.batchAndFreeze"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="snow-outline" size={size} color={color} />
           ),
@@ -319,7 +384,7 @@ function DrawerNavigator() {
         name="History"
         component={HistoryScreen}
         options={{
-          title: "History",
+          title: t("navigation.history"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="time-outline" size={size} color={color} />
           ),
@@ -329,7 +394,7 @@ function DrawerNavigator() {
         name="MealPlan"
         component={MealPlanScreen}
         options={{
-          title: "Meal plan",
+          title: t("navigation.mealPlan"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="calendar-outline" size={size} color={color} />
           ),
@@ -339,7 +404,7 @@ function DrawerNavigator() {
         name="Prep"
         component={PrepScreen}
         options={{
-          title: "Prep list",
+          title: t("navigation.prepList"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="checkbox-outline" size={size} color={color} />
           ),
@@ -349,7 +414,7 @@ function DrawerNavigator() {
         name="ShoppingList"
         component={ShoppingListScreen}
         options={{
-          title: "Shopping list",
+          title: t("navigation.shoppingList"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="basket-outline" size={size} color={color} />
           ),
@@ -359,6 +424,7 @@ function DrawerNavigator() {
         name="Pantry"
         component={PantryScreen}
         options={{
+          title: t("navigation.pantry"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="leaf-outline" size={size} color={color} />
           ),
@@ -368,7 +434,7 @@ function DrawerNavigator() {
         name="Timers"
         component={TimersScreen}
         options={{
-          title: "Timers",
+          title: t("navigation.timers"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="timer-outline" size={size} color={color} />
           ),
@@ -378,7 +444,7 @@ function DrawerNavigator() {
         name="Insights"
         component={InsightsScreen}
         options={{
-          title: "Kitchen journal",
+          title: t("navigation.kitchenJournal"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="stats-chart-outline" size={size} color={color} />
           ),
@@ -388,7 +454,7 @@ function DrawerNavigator() {
         name="Preferences"
         component={PreferencesScreen}
         options={{
-          title: "Preferences",
+          title: t("navigation.preferences"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="settings-outline" size={size} color={color} />
           ),
@@ -400,10 +466,12 @@ function DrawerNavigator() {
 
 function MainNavigator() {
   const { isDark } = useTheme();
+  const { isRTL, t } = useLocale();
   return (
     <Stack.Navigator
+      key={isRTL ? "main-stack-rtl" : "main-stack-ltr"}
       screenOptions={{
-        ...getNavTheme(isDark),
+        ...getNavTheme(isDark, isRTL),
         headerBackTitleVisible: false,
       }}
     >
@@ -417,7 +485,7 @@ function MainNavigator() {
       <Stack.Screen
         name="BatchFreeze"
         component={BatchFreezeScreen}
-        options={{ title: "Batch & freeze" }}
+        options={{ title: t("navigation.batchAndFreeze") }}
       />
       <Stack.Screen name="CookbookDetail" component={CookbookDetailScreen} />
       <Stack.Screen
@@ -436,7 +504,6 @@ function MainNavigator() {
         name="StoreWalk"
         component={StoreWalkScreen}
         options={{
-          headerShown: false,
           presentation: "fullScreenModal",
           animation: "slide_from_bottom",
         }}
@@ -463,28 +530,36 @@ function AppNavigation() {
     const applySession = async (session, event) => {
       if (!mounted) return;
 
-      if (event === "PASSWORD_RECOVERY") {
-        dispatch(setPasswordRecovery(true));
-      }
-
-      if (session) {
-        dispatch(setSession(session));
-        dispatch(setUser(session.user));
-        await fetchUserProfile(session.user.id, dispatch);
-
-        // Pull remote kitchen data on login / cold start only — not token refresh / recovery.
-        const shouldPull =
-          event === "SIGNED_IN" ||
-          event === "INITIAL_SESSION" ||
-          event === "bootstrap";
-        if (shouldPull && event !== "PASSWORD_RECOVERY") {
-          await hydrateKitchenFromRemote(session.user.id, dispatch);
+      try {
+        if (event === "PASSWORD_RECOVERY") {
+          dispatch(setPasswordRecovery(true));
         }
-      } else {
-        dispatch(clearAuth());
-      }
 
-      if (mounted) dispatch(setLoading(false));
+        if (session) {
+          dispatch(setSession(session));
+          dispatch(setUser(session.user));
+          if (session.user?.id) {
+            await fetchUserProfile(session.user.id, dispatch);
+          }
+
+          const shouldPull =
+            event === "SIGNED_IN" ||
+            event === "INITIAL_SESSION" ||
+            event === "bootstrap";
+          if (shouldPull && event !== "PASSWORD_RECOVERY" && session.user?.id) {
+            await hydrateKitchenFromRemote(session.user.id, dispatch);
+          }
+          syncMealPlanReminders().catch(() => {});
+          syncPantryExpirationAlerts().catch(() => {});
+        } else {
+          dispatch(clearAuth());
+          cancelUserScopedNotifications().catch(() => {});
+        }
+      } catch (err) {
+        console.warn("[auth] applySession error:", err?.message || err);
+      } finally {
+        if (mounted) dispatch(setLoading(false));
+      }
     };
 
     const handleIncomingUrl = async (url) => {
@@ -506,21 +581,35 @@ function AppNavigation() {
         await handleIncomingUrl(initialUrl);
       }
 
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      await applySession(session, "bootstrap");
+      if (supabase) {
+        try {
+          const {
+            data: { session },
+          } = await supabase.auth.getSession();
+          await applySession(session, "bootstrap");
+        } catch (err) {
+          console.warn("Supabase getSession failed:", err.message);
+          dispatch(setLoading(false));
+        }
+      } else {
+        dispatch(setLoading(false));
+      }
     };
 
     bootstrap();
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      // Skip INITIAL_SESSION — already handled by getSession bootstrap.
-      if (event === "INITIAL_SESSION") return;
-      applySession(session, event);
-    });
+    let subscription = null;
+    if (supabase) {
+      const {
+        data: { subscription: sub },
+      } = supabase.auth.onAuthStateChange((event, session) => {
+        if (event === "INITIAL_SESSION") return;
+        applySession(session, event).catch((err) => {
+          console.warn("[auth] onAuthStateChange error:", err?.message || err);
+        });
+      });
+      subscription = sub;
+    }
 
     const linkingSub = Linking.addEventListener("url", ({ url }) => {
       handleIncomingUrl(url);
@@ -528,7 +617,7 @@ function AppNavigation() {
 
     return () => {
       mounted = false;
-      subscription.unsubscribe();
+      if (subscription) subscription.unsubscribe();
       linkingSub.remove();
     };
   }, [dispatch]);
@@ -538,6 +627,43 @@ function AppNavigation() {
     if (!navigationRef.isReady()) return;
     navigationRef.navigate("ResetPassword");
   }, [passwordRecovery, isLoading]);
+
+  useEffect(() => {
+    setupNotificationChannels();
+
+    Notifications.getLastNotificationResponseAsync()
+      .then((response) => {
+        if (response) {
+          handleNotificationNavigation(response, navigationRef);
+        }
+      })
+      .catch(() => {});
+
+    const receivedSub = Notifications.addNotificationReceivedListener((notification) => {
+      const content = notification?.request?.content;
+      if (content?.title) {
+        dispatch(
+          addHistoryItem({
+            id: notification.request.identifier,
+            title: content.title,
+            body: content.body,
+            category: content.data?.category || "general",
+            date: new Date().toISOString(),
+            data: content.data || {},
+          }),
+        );
+      }
+    });
+
+    const responseSub = Notifications.addNotificationResponseReceivedListener((response) => {
+      handleNotificationNavigation(response, navigationRef);
+    });
+
+    return () => {
+      receivedSub.remove();
+      responseSub.remove();
+    };
+  }, [dispatch]);
 
   if (isLoading) {
     return (
@@ -550,7 +676,6 @@ function AppNavigation() {
     );
   }
 
-  // During password recovery, keep the Auth stack even if a recovery session exists.
   const showMainApp = isAuthenticated && !passwordRecovery;
 
   return (
@@ -573,6 +698,7 @@ function AppNavigation() {
           />
         )}
       </NavigationContainer>
+      <InAppNotificationBanner navigationRef={navigationRef} />
     </>
   );
 }
@@ -586,7 +712,10 @@ export default function App() {
   });
 
   useEffect(() => {
-    Image.prefetch(MEALS.map((meal) => meal.imageUrl)).catch(() => {});
+    const urls = MEALS?.map((meal) => meal.imageUrl).filter(Boolean) || [];
+    if (urls.length > 0) {
+      Image.prefetch(urls).catch(() => {});
+    }
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
@@ -604,13 +733,17 @@ export default function App() {
   }
 
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ThemeProvider>
-          <AppNavigation />
-        </ThemeProvider>
-      </PersistGate>
-    </Provider>
+    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <ThemeProvider>
+            <LocaleProvider>
+              <AppNavigation />
+            </LocaleProvider>
+          </ThemeProvider>
+        </PersistGate>
+      </Provider>
+    </SafeAreaProvider>
   );
 }
 

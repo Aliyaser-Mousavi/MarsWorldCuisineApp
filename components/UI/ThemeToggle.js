@@ -2,7 +2,9 @@ import { useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Pressable, Animated } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
+import { useTranslation } from "react-i18next";
 import { useTheme } from "../../constants/theme";
+import { useLocale } from "../../constants/locale";
 
 /**
  * Animated theme toggle switch component.
@@ -13,6 +15,8 @@ import { useTheme } from "../../constants/theme";
  */
 const ThemeToggle = ({ variant = "compact", style }) => {
   const { isDark, toggleTheme, colors, type, radii, spacing } = useTheme();
+  const { t } = useTranslation();
+  const { isRTL } = useLocale();
 
   const slideAnim = useRef(new Animated.Value(isDark ? 1 : 0)).current;
 
@@ -72,7 +76,9 @@ const ThemeToggle = ({ variant = "compact", style }) => {
         accessibilityRole="switch"
         accessibilityState={{ checked: isDark }}
         accessibilityLabel={
-          isDark ? "Dark mode enabled. Tap to switch to light mode" : "Light mode enabled. Tap to switch to dark mode"
+          isDark
+            ? t("common.switchToLight")
+            : t("common.switchToDark")
         }
       >
         {renderSwitchVisual()}
@@ -88,15 +94,25 @@ const ThemeToggle = ({ variant = "compact", style }) => {
         {
           backgroundColor: colors.surface,
           borderColor: colors.border,
+          flexDirection: isRTL ? "row-reverse" : "row",
         },
         pressed && styles.cardPressed,
         style,
       ]}
       accessibilityRole="switch"
       accessibilityState={{ checked: isDark }}
-      accessibilityLabel="Toggle dark mode"
+      accessibilityLabel={t("common.toggleDarkMode")}
     >
-      <View style={styles.cardInfo}>
+      <View
+        style={[
+          styles.cardInfo,
+          {
+            flexDirection: isRTL ? "row-reverse" : "row",
+            marginRight: isRTL ? 0 : 8,
+            marginLeft: isRTL ? 8 : 0,
+          },
+        ]}
+      >
         <View
           style={[
             styles.iconCircle,
@@ -113,13 +129,29 @@ const ThemeToggle = ({ variant = "compact", style }) => {
           />
         </View>
         <View style={styles.cardText}>
-          <Text style={[styles.cardTitle, { color: colors.ink }]}>
-            {isDark ? "Night Kitchen" : "Daylight Kitchen"}
+          <Text
+            style={[
+              styles.cardTitle,
+              {
+                color: colors.ink,
+                textAlign: isRTL ? "right" : "left",
+              },
+            ]}
+          >
+            {isDark ? t("common.nightKitchen") : t("common.daylightKitchen")}
           </Text>
-          <Text style={[styles.cardSubtitle, { color: colors.inkMuted }]}>
+          <Text
+            style={[
+              styles.cardSubtitle,
+              {
+                color: colors.inkMuted,
+                textAlign: isRTL ? "right" : "left",
+              },
+            ]}
+          >
             {isDark
-              ? "Deep obsidian palette for low light"
-              : "Warm parchment & terracotta tones"}
+              ? t("common.nightSubtitle")
+              : t("common.daylightSubtitle")}
           </Text>
         </View>
       </View>
@@ -148,10 +180,10 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     alignItems: "center",
     justifyContent: "center",
-    elevation: 2,
+    elevation: 1,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.12,
     shadowRadius: 2,
   },
   card: {

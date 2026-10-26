@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import ThemeToggle from "./UI/ThemeToggle";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 /**
@@ -15,6 +16,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
  */
 const CustomDrawerContent = (props) => {
   const { isDark, colors, type, spacing, radii } = useTheme();
+  const { t, isRTL } = useLocale();
   const user = useSelector((state) => state.auth?.user);
   const profile = useSelector((state) => state.auth?.profile);
   const insets = useSafeAreaInsets();
@@ -23,22 +25,48 @@ const CustomDrawerContent = (props) => {
     profile?.full_name ||
     user?.user_metadata?.full_name ||
     user?.email ||
-    "Chef";
+    t("drawer.defaultUser");
 
   return (
     <View style={[styles.root, { backgroundColor: colors.surface }]}>
       <View style={{ paddingTop: insets.top }}>
         {/* Brand Header */}
-        <View style={styles.header}>
+        <View
+          style={[
+            styles.header,
+            { flexDirection: isRTL ? "row-reverse" : "row" },
+          ]}
+        >
           <View style={[styles.brandBadge, { backgroundColor: colors.brand }]}>
             <Ionicons name="restaurant" size={20} color={colors.onBrand} />
           </View>
-          <View style={styles.headerText}>
-            <Text style={[styles.brandTitle, { color: colors.ink }]}>
-              Mars Cuisine
+          <View
+            style={[
+              styles.headerText,
+              { alignItems: isRTL ? "flex-end" : "flex-start" },
+            ]}
+          >
+            <Text
+              style={[
+                styles.brandTitle,
+                {
+                  color: colors.ink,
+                  fontFamily: isRTL ? undefined : "Fraunces_600SemiBold",
+                  writingDirection: isRTL ? "rtl" : "ltr",
+                },
+              ]}
+            >
+              {t("drawer.brandTitle")}
             </Text>
             <Text
-              style={[styles.userSubtitle, { color: colors.inkMuted }]}
+              style={[
+                styles.userSubtitle,
+                {
+                  color: colors.inkMuted,
+                  fontFamily: isRTL ? undefined : "DMSans_400Regular",
+                  writingDirection: isRTL ? "rtl" : "ltr",
+                },
+              ]}
               numberOfLines={1}
             >
               {displayName}
@@ -65,17 +93,34 @@ const CustomDrawerContent = (props) => {
           {
             backgroundColor: colors.surface,
             borderTopColor: colors.border,
+            flexDirection: isRTL ? "row-reverse" : "row",
           },
         ]}
       >
-        <View style={styles.footerLabelGroup}>
+        <View
+          style={[
+            styles.footerLabelGroup,
+            { flexDirection: isRTL ? "row-reverse" : "row" },
+          ]}
+        >
           <Ionicons
             name={isDark ? "moon-outline" : "sunny-outline"}
             size={19}
             color={isDark ? colors.accent : colors.inkMuted}
           />
-          <Text style={[styles.footerTitle, { color: colors.ink }]}>
-            {isDark ? "Night Kitchen" : "Daylight Mode"}
+          <Text
+            style={[
+              styles.footerTitle,
+              {
+                color: colors.ink,
+                fontFamily: isRTL ? undefined : "DMSans_500Medium",
+                writingDirection: isRTL ? "rtl" : "ltr",
+              },
+            ]}
+          >
+            {isDark
+              ? t("common.nightKitchen")
+              : t("common.daylightMode")}
           </Text>
         </View>
         <ThemeToggle variant="compact" />

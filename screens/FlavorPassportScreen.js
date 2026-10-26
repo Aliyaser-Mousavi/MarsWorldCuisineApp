@@ -11,18 +11,23 @@ import { Image } from "expo-image";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useTranslation } from "react-i18next";
 import { buildFlavorPassport } from "../utils/passport";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
+import { formatNumber } from "../utils/formatters";
 
 const { width } = Dimensions.get("window");
 const GAP = 10;
 const COL = (width - 24 * 2 - GAP) / 2;
 
 const FlavorPassportScreen = ({ navigation }) => {
-  const { colors, radii, spacing, type, shadows } = useTheme();
+  const { colors, radii, spacing, type } = useTheme();
+  const { t } = useTranslation();
+  const { isRTL } = useLocale();
   const styles = useMemo(
-    () => createStyles(colors, type, spacing, radii, shadows),
-    [colors, type, spacing, radii, shadows],
+    () => createStyles(colors, type, spacing, radii, isRTL),
+    [colors, type, spacing, radii, isRTL],
   );
   const metaById = useSelector((state) => state.recipeMeta.byId);
   const passport = useMemo(() => buildFlavorPassport(metaById), [metaById]);
@@ -30,19 +35,16 @@ const FlavorPassportScreen = ({ navigation }) => {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.intro}>
-        <Text style={styles.kicker}>Flavor passport</Text>
-        <Text style={styles.headline}>Collect the world</Text>
-        <Text style={styles.body}>
-          Every cuisine you cook earns a stamp. Frequent visits turn gold —
-          your private map of what you’ve tasted.
-        </Text>
+        <Text style={styles.kicker}>{t("passport.kicker")}</Text>
+        <Text style={styles.headline}>{t("passport.headline")}</Text>
+        <Text style={styles.body}>{t("passport.body")}</Text>
       </View>
 
       <View style={styles.hero}>
         <Text style={styles.heroNumber}>
-          {passport.visited}/{passport.total}
+          {formatNumber(passport.visited, isRTL)}/{formatNumber(passport.total, isRTL)}
         </Text>
-        <Text style={styles.heroLabel}>cuisines stamped</Text>
+        <Text style={styles.heroLabel}>{t("passport.cuisinesStamped")}</Text>
         <View style={styles.progressTrack}>
           <View
             style={[
@@ -52,10 +54,14 @@ const FlavorPassportScreen = ({ navigation }) => {
           />
         </View>
         <Text style={styles.heroSub}>
-          {passport.frequent} frequent ·{" "}
+          {t("passport.frequent", { count: passport.frequent })} ·{" "}
           {passport.nextTarget
-            ? `Next: try ${passport.nextTarget.title}`
-            : "Passport complete"}
+            ? t("passport.nextTry", {
+                title: t(`categories.items.${passport.nextTarget.id}`, {
+                  defaultValue: passport.nextTarget.title,
+                }),
+              })
+            : t("passport.complete")}
         </Text>
       </View>
 
@@ -105,14 +111,14 @@ const FlavorPassportScreen = ({ navigation }) => {
                 style={[styles.stampTitle, locked && styles.stampTitleLocked]}
                 numberOfLines={1}
               >
-                {stamp.title}
+                {t(`categories.items.${stamp.id}`, { defaultValue: stamp.title })}
               </Text>
               <Text style={styles.stampMeta}>
                 {locked
-                  ? "Not cooked yet"
+                  ? t("passport.notCookedYet")
                   : stamp.cooked === 1
-                    ? "1 cook"
-                    : `${stamp.cooked} cooks`}
+                  ? t("passport.cooksCount_one")
+                  : t("passport.cooksCount_other", { count: stamp.cooked })}
               </Text>
             </Pressable>
           );
@@ -124,7 +130,7 @@ const FlavorPassportScreen = ({ navigation }) => {
 
 export default FlavorPassportScreen;
 
-const createStyles = (colors, type, spacing, radii, shadows) =>
+const createStyles = (colors, type, spacing, radii, isRTL) =>
   StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { paddingBottom: spacing.xl },
@@ -139,26 +145,36 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     textTransform: "uppercase",
     letterSpacing: 1.2,
     marginBottom: 6,
+    textAlign: isRTL ? "right" : "left",
   },
-  headline: { ...type.display, fontSize: 26, marginBottom: 8 },
-  body: { ...type.body },
+  headline: {
+    ...type.display,
+    fontSize: 26,
+    marginBottom: 8,
+    textAlign: isRTL ? "right" : "left",
+  },
+  body: {
+    ...type.body,
+    textAlign: isRTL ? "right" : "left",
+  },
   hero: {
     marginHorizontal: spacing.lg,
     marginBottom: spacing.lg,
     padding: spacing.lg,
     backgroundColor: colors.brand,
     borderRadius: radii.lg,
-    ...shadows.soft,
   },
   heroNumber: {
     fontFamily: "Fraunces_600SemiBold",
     fontSize: 36,
     color: colors.onBrand,
+    textAlign: isRTL ? "right" : "left",
   },
   heroLabel: {
     ...type.label,
     color: "rgba(255,255,255,0.7)",
     marginBottom: spacing.md,
+    textAlign: isRTL ? "right" : "left",
   },
   progressTrack: {
     height: 4,
@@ -174,9 +190,10 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     ...type.caption,
     color: "rgba(255,255,255,0.65)",
     marginTop: 10,
+    textAlign: isRTL ? "right" : "left",
   },
   grid: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     flexWrap: "wrap",
     paddingHorizontal: spacing.lg,
     gap: GAP,
@@ -206,7 +223,7 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
   lockBadge: {
     position: "absolute",
     top: 8,
-    right: 8,
+    [isRTL ? "left" : "right"]: 8,
     width: 28,
     height: 28,
     borderRadius: 14,
@@ -217,7 +234,7 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
   goldBadge: {
     position: "absolute",
     top: 8,
-    right: 8,
+    [isRTL ? "left" : "right"]: 8,
     width: 28,
     height: 28,
     borderRadius: 14,
@@ -228,7 +245,7 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
   visitBadge: {
     position: "absolute",
     top: 8,
-    right: 8,
+    [isRTL ? "left" : "right"]: 8,
     width: 28,
     height: 28,
     borderRadius: 14,
@@ -237,11 +254,12 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     justifyContent: "center",
   },
   stampTitle: {
-    fontFamily: "Fraunces_600SemiBold",
+    ...(isRTL ? {} : { fontFamily: "Fraunces_600SemiBold" }),
     fontSize: 15,
     color: colors.ink,
     paddingHorizontal: 10,
     marginTop: 8,
+    textAlign: isRTL ? "right" : "left",
   },
   stampTitleLocked: {
     color: colors.inkMuted,
@@ -250,5 +268,6 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     ...type.caption,
     paddingHorizontal: 10,
     marginTop: 2,
+    textAlign: isRTL ? "right" : "left",
   },
 });

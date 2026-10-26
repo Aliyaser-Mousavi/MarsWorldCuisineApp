@@ -16,38 +16,55 @@ import { Ionicons } from "@expo/vector-icons";
 import FadeInView from "../components/UI/FadeInView";
 import { WEEK_DAYS } from "../store/redux/mealPlan";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
+import { useLocalizedCategories, useLocalizedMeals } from "../utils/catalogue";
 
 const CategoriesScreen = ({ navigation }) => {
   const { colors, type, spacing, radii } = useTheme();
+  const { t, isRTL } = useLocale();
   const styles = useMemo(
-    () => createStyles(colors, type, spacing, radii),
-    [colors, type, spacing, radii],
+    () => createStyles(colors, type, spacing, radii, isRTL),
+    [colors, type, spacing, radii, isRTL],
   );
   const [searchText, setSearchText] = useState("");
-  const recentIds = useSelector((state) => state.recentMeals.ids);
-  const week = useSelector((state) => state.mealPlan.week);
-  const recentMeals = recentIds
-    .map((id) => MEALS.find((m) => m.id === id))
-    .filter(Boolean);
+  const recentIds = useSelector((state) => state.recentMeals?.ids || []);
+  const week = useSelector((state) => state.mealPlan?.week || {});
+
+  const localizedCategories = useLocalizedCategories(CATEGORIES);
+  const rawRecentMeals = useMemo(
+    () => recentIds.map((id) => MEALS.find((m) => m.id === id)).filter(Boolean),
+    [recentIds],
+  );
+  const recentMeals = useLocalizedMeals(rawRecentMeals);
 
   const todayKey = useMemo(() => {
     const jsDay = new Date().getDay();
     return WEEK_DAYS[jsDay === 0 ? 6 : jsDay - 1];
   }, []);
 
-  const todayMeals = (week[todayKey] || [])
-    .map((id) => MEALS.find((m) => m.id === id))
-    .filter(Boolean);
-
-  const filteredCategories = CATEGORIES.filter((category) =>
-    category.title.toLowerCase().includes(searchText.toLowerCase()),
+  const rawTodayMeals = useMemo(
+    () => (week[todayKey] || []).map((id) => MEALS.find((m) => m.id === id)).filter(Boolean),
+    [week, todayKey],
   );
+  const todayMeals = useLocalizedMeals(rawTodayMeals);
+
+  const filteredCategories = useMemo(() => {
+    const q = searchText.trim().toLowerCase();
+    if (!q) return localizedCategories;
+    return localizedCategories.filter((category) => {
+      const canonicalCat = CATEGORIES.find((c) => c.id === category.id);
+      const enTitle = canonicalCat?.title?.toLowerCase() || "";
+      const locTitle = category.title?.toLowerCase() || "";
+      return enTitle.includes(q) || locTitle.includes(q);
+    });
+  }, [localizedCategories, searchText]);
 
   function renderCategoryItem(itemData) {
     return (
       <FadeInView index={itemData.index} style={{ flex: 1 }}>
         <CategoryGridTile
           title={itemData.item.title}
+          categoryId={itemData.item.id}
           color={itemData.item.color}
           onPress={() =>
             navigation.navigate("MealsOverview", {
@@ -62,20 +79,31 @@ const CategoriesScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerBlock}>
-        <Text style={styles.kicker}>Mars World Cuisine</Text>
-        <Text style={styles.headline}>What are you cooking?</Text>
+        <Text style={styles.kicker}>{t("categories.kicker")}</Text>
+        <Text style={styles.headline}>{t("categories.headline")}</Text>
       </View>
 
-      <View style={styles.searchContainer}>
+      <View
+        style={[
+          styles.searchContainer,
+          { flexDirection: isRTL ? "row-reverse" : "row" },
+        ]}
+      >
         <Ionicons
           name="search"
           size={18}
           color={colors.inkSoft}
-          style={styles.searchIcon}
+          style={isRTL ? styles.searchIconRTL : styles.searchIcon}
         />
         <TextInput
-          style={styles.searchInput}
-          placeholder="Search categories"
+          style={[
+            styles.searchInput,
+            {
+              textAlign: isRTL ? "right" : "left",
+              writingDirection: isRTL ? "rtl" : "ltr",
+            },
+          ]}
+          placeholder={t("categories.searchPlaceholder")}
           placeholderTextColor={colors.inkSoft}
           value={searchText}
           onChangeText={setSearchText}
@@ -89,6 +117,7 @@ const CategoriesScreen = ({ navigation }) => {
       </View>
 
       <FlatList
+        key={isRTL ? "categories-grid-rtl" : "categories-grid-ltr"}
         data={filteredCategories}
         keyExtractor={(item) => item.id}
         renderItem={renderCategoryItem}
@@ -99,16 +128,24 @@ const CategoriesScreen = ({ navigation }) => {
             <View>
               {todayMeals.length > 0 && (
                 <View style={styles.recentSection}>
-                  <View style={styles.recentHeader}>
-                    <Text style={styles.sectionLabel}>Today’s plan</Text>
+                  <View
+                    style={[
+                      styles.recentHeader,
+                      { flexDirection: isRTL ? "row-reverse" : "row" },
+                    ]}
+                  >
+                    <Text style={styles.sectionLabel}>{t("categories.todaysPlan")}</Text>
                     <Pressable onPress={() => navigation.navigate("MealPlan")}>
-                      <Text style={styles.link}>Full week</Text>
+                      <Text style={styles.link}>{t("categories.fullWeek")}</Text>
                     </Pressable>
                   </View>
                   <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.recentScroll}
+                    contentContainerStyle={[
+                      styles.recentScroll,
+                      isRTL && { flexDirection: "row-reverse", minWidth: "100%" },
+                    ]}
                   >
                     {todayMeals.map((meal) => (
                       <Pressable
@@ -135,16 +172,24 @@ const CategoriesScreen = ({ navigation }) => {
               )}
               {recentMeals.length > 0 && (
                 <View style={styles.recentSection}>
-                  <View style={styles.recentHeader}>
-                    <Text style={styles.sectionLabel}>Recently viewed</Text>
+                  <View
+                    style={[
+                      styles.recentHeader,
+                      { flexDirection: isRTL ? "row-reverse" : "row" },
+                    ]}
+                  >
+                    <Text style={styles.sectionLabel}>{t("categories.recentlyViewed")}</Text>
                     <Pressable onPress={() => navigation.navigate("Search")}>
-                      <Text style={styles.link}>Search all</Text>
+                      <Text style={styles.link}>{t("categories.searchAll")}</Text>
                     </Pressable>
                   </View>
                   <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.recentScroll}
+                    contentContainerStyle={[
+                      styles.recentScroll,
+                      isRTL && { flexDirection: "row-reverse", minWidth: "100%" },
+                    ]}
                   >
                     {recentMeals.map((meal) => (
                       <Pressable
@@ -173,7 +218,7 @@ const CategoriesScreen = ({ navigation }) => {
           ) : null
         }
         ListEmptyComponent={
-          <Text style={styles.empty}>No categories found.</Text>
+          <Text style={styles.empty}>{t("categories.noCategoriesFound")}</Text>
         }
       />
     </View>
@@ -182,7 +227,7 @@ const CategoriesScreen = ({ navigation }) => {
 
 export default CategoriesScreen;
 
-const createStyles = (colors, type, spacing, radii) =>
+const createStyles = (colors, type, spacing, radii, isRTL) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -192,19 +237,23 @@ const createStyles = (colors, type, spacing, radii) =>
       paddingHorizontal: spacing.lg,
       paddingTop: spacing.md,
       paddingBottom: spacing.sm,
+      alignItems: isRTL ? "flex-end" : "flex-start",
     },
     kicker: {
       ...type.label,
       color: colors.accent,
       marginBottom: 4,
+      textAlign: isRTL ? "right" : "left",
+      writingDirection: isRTL ? "rtl" : "ltr",
     },
     headline: {
       ...type.title,
       color: colors.ink,
       fontSize: 24,
+      textAlign: isRTL ? "right" : "left",
+      writingDirection: isRTL ? "rtl" : "ltr",
     },
     searchContainer: {
-      flexDirection: "row",
       alignItems: "center",
       backgroundColor: colors.surface,
       marginHorizontal: spacing.md,
@@ -217,6 +266,9 @@ const createStyles = (colors, type, spacing, radii) =>
     },
     searchIcon: {
       marginRight: 10,
+    },
+    searchIconRTL: {
+      marginLeft: 10,
     },
     searchInput: {
       flex: 1,
@@ -243,6 +295,8 @@ const createStyles = (colors, type, spacing, radii) =>
       ...type.heading,
       color: colors.ink,
       fontSize: 15,
+      textAlign: isRTL ? "right" : "left",
+      writingDirection: isRTL ? "rtl" : "ltr",
     },
     link: {
       ...type.label,
@@ -251,9 +305,11 @@ const createStyles = (colors, type, spacing, radii) =>
     recentScroll: {
       paddingHorizontal: spacing.sm,
       gap: 12,
+      flexDirection: isRTL ? "row-reverse" : "row",
     },
     recentCard: {
       width: 120,
+      alignItems: isRTL ? "flex-end" : "flex-start",
     },
     recentImage: {
       width: 120,
@@ -266,6 +322,8 @@ const createStyles = (colors, type, spacing, radii) =>
       ...type.label,
       color: colors.ink,
       fontSize: 12,
+      textAlign: isRTL ? "right" : "left",
+      writingDirection: isRTL ? "rtl" : "ltr",
     },
     empty: {
       ...type.body,

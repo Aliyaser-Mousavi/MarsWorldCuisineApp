@@ -6,15 +6,19 @@ import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { useSelector } from "react-redux";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
 
 const FavoritesScreen = () => {
   const navigation = useNavigation();
   const { colors, type, spacing, radii } = useTheme();
+  const { t, isRTL } = useLocale();
   const styles = useMemo(
     () => createStyles(colors, type, spacing, radii),
     [colors, type, spacing, radii],
   );
-  const favoriteMealIds = useSelector((state) => state.favoriteMeals.ids);
+  const favoriteMealIds = useSelector(
+    (state) => state.favoriteMeals?.ids || [],
+  );
 
   const favoriteMeals = MEALS.filter((meal) =>
     favoriteMealIds.includes(meal.id),
@@ -24,15 +28,33 @@ const FavoritesScreen = () => {
     return (
       <View style={styles.rootContainer}>
         <Ionicons name="heart-outline" size={36} color={colors.inkSoft} />
-        <Text style={styles.title}>No favorites yet</Text>
-        <Text style={styles.text}>
-          Tap the heart on any recipe to save it here for later.
+        <Text
+          style={[
+            styles.title,
+            {
+              textAlign: isRTL ? "right" : "left",
+              writingDirection: isRTL ? "rtl" : "ltr",
+            },
+          ]}
+        >
+          {t("favorites.title")}
+        </Text>
+        <Text
+          style={[
+            styles.text,
+            {
+              textAlign: "center",
+              writingDirection: isRTL ? "rtl" : "ltr",
+            },
+          ]}
+        >
+          {t("favorites.emptyBody")}
         </Text>
         <Pressable
           style={styles.button}
           onPress={() => navigation.navigate("Categories")}
         >
-          <Text style={styles.buttonText}>Browse recipes</Text>
+          <Text style={styles.buttonText}>{t("favorites.browseRecipes")}</Text>
         </Pressable>
       </View>
     );

@@ -1,4 +1,6 @@
 import { MEALS } from "../data/dummy-data";
+import i18n from "../services/i18n";
+import { toPersianDigits } from "./formatters";
 
 export const MOODS = [
   { id: "all", label: "For you", hint: "Balanced pick" },
@@ -62,8 +64,42 @@ function scoreMeal(meal, { prefs, metaById, favoriteIds, hour }) {
   return score;
 }
 
-export function getTimeGreeting(date = new Date()) {
-  const hour = date.getHours();
+export function getTimeGreeting(date = new Date(), language) {
+  let lang = language;
+  let d = date;
+
+  if (typeof date === "string") {
+    lang = date;
+    d = new Date();
+  } else if (!date || typeof date.getHours !== "function") {
+    d = new Date();
+  }
+
+  if (!lang) {
+    try {
+      if (typeof i18n !== "undefined" && i18n?.language) {
+        lang = i18n.language;
+      }
+    } catch {
+      // fallback
+    }
+  }
+
+  const hour = d.getHours();
+
+  if (lang === "fa") {
+    if (hour < 11) {
+      return { title: "صبح بخیر", line: "شروعی سبک و آشپزی با نشاط." };
+    }
+    if (hour < 16) {
+      return { title: "بعد از ظهر بخیر", line: "پیشنهادی دلچسب برای ساعاتی دیگر." };
+    }
+    if (hour < 21) {
+      return { title: "امشب", line: "یک پیشنهاد عالی برای شام." };
+    }
+    return { title: "آشپزخانه شبانه", line: "ساده، بی‌دردسر و دلچسب." };
+  }
+
   if (hour < 11) return { title: "Good morning", line: "Start light, cook happy." };
   if (hour < 16) return { title: "Good afternoon", line: "Something satisfying for later." };
   if (hour < 21) return { title: "Tonight", line: "One clear idea for dinner." };
@@ -110,14 +146,55 @@ export function getRatedMeals(metaById = {}, limit = 6) {
     .slice(0, limit);
 }
 
-export function getWhyPicked(meal, prefs, hour = new Date().getHours()) {
+export function getWhyPicked(
+  meal,
+  prefs,
+  hour = new Date().getHours(),
+  language,
+) {
+  if (!meal) return [];
+  let lang = language;
+  if (!lang) {
+    try {
+      if (typeof i18n !== "undefined" && i18n?.language) {
+        lang = i18n.language;
+      }
+    } catch {
+      // fallback
+    }
+  }
+
+  const isFa = lang === "fa";
   const reasons = [];
-  if (hour >= 17 && meal.duration <= 40) reasons.push("Fits a weeknight pace");
-  if (meal.duration <= 30) reasons.push(`${meal.duration} minutes`);
-  if (meal.isVegetarian) reasons.push("Vegetarian-friendly");
-  if (meal.isVegan) reasons.push("Fully vegan");
-  if (prefs?.glutenFree && meal.isGlutenFree) reasons.push("Matches gluten-free");
-  if (meal.complexity === "simple") reasons.push("Simple steps");
-  if (!reasons.length) reasons.push(`${meal.complexity} · ${meal.affordability}`);
+
+  if (hour >= 17 && meal.duration <= 40) {
+    reasons.push(isFa ? "مناسب شام سریع" : "Fits a weeknight pace");
+  }
+  if (meal.duration <= 30) {
+    reasons.push(isFa ? `${toPersianDigits(meal.duration)} دقیقه` : `${meal.duration} minutes`);
+  }
+  if (meal.isVegetarian) {
+    reasons.push(isFa ? "مناسب گیاه‌خواران" : "Vegetarian-friendly");
+  }
+  if (meal.isVegan) {
+    reasons.push(isFa ? "کاملاً گیاهی (وگان)" : "Fully vegan");
+  }
+  if (prefs?.glutenFree && meal.isGlutenFree) {
+    reasons.push(isFa ? "بدون گلوتن" : "Matches gluten-free");
+  }
+  if (meal.complexity === "simple") {
+    reasons.push(isFa ? "مراحل ساده و آسان" : "Simple steps");
+  }
+  if (!reasons.length) {
+    if (isFa) {
+      const cMap = { simple: "ساده", challenging: "متوسط", hard: "دشوار" };
+      const aMap = { affordable: "اقتصادی", pricey: "نسبتاً گران", luxurious: "لوکس" };
+      const c = cMap[meal.complexity?.toLowerCase()] || meal.complexity;
+      const a = aMap[meal.affordability?.toLowerCase()] || meal.affordability;
+      reasons.push(`${c} · ${a}`);
+    } else {
+      reasons.push(`${meal.complexity} · ${meal.affordability}`);
+    }
+  }
   return reasons.slice(0, 3);
 }

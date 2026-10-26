@@ -19,9 +19,11 @@ import {
   deleteCookbook,
 } from "../store/redux/cookbooks";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
 
 const CookbooksScreen = ({ navigation }) => {
   const { colors, type, spacing, radii } = useTheme();
+  const { t, isRTL } = useLocale();
   const styles = useMemo(
     () => createStyles(colors, type, spacing, radii),
     [colors, type, spacing, radii],
@@ -43,17 +45,20 @@ const CookbooksScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.intro}>
-        <Text style={styles.kicker}>Your shelves</Text>
-        <Text style={styles.headline}>Cookbooks</Text>
-        <Text style={styles.body}>
-          Group recipes into personal collections — weeknight wins, guests,
-          comfort food. Saved on this phone.
-        </Text>
+        <Text style={styles.kicker}>{t("cookbooks.kicker")}</Text>
+        <Text style={styles.headline}>{t("cookbooks.headline")}</Text>
+        <Text style={styles.body}>{t("cookbooks.body")}</Text>
       </View>
 
-      <Pressable style={styles.createBtn} onPress={() => setModalOpen(true)}>
+      <Pressable
+        style={[
+          styles.createBtn,
+          { flexDirection: isRTL ? "row-reverse" : "row" },
+        ]}
+        onPress={() => setModalOpen(true)}
+      >
         <Ionicons name="add" size={18} color={colors.onBrand} />
-        <Text style={styles.createText}>New cookbook</Text>
+        <Text style={styles.createText}>{t("cookbooks.newCookbook")}</Text>
       </Pressable>
 
       <FlatList
@@ -63,9 +68,9 @@ const CookbooksScreen = ({ navigation }) => {
         ListEmptyComponent={
           <View style={styles.empty}>
             <Ionicons name="book-outline" size={36} color={colors.inkSoft} />
-            <Text style={styles.emptyTitle}>No cookbooks yet</Text>
+            <Text style={styles.emptyTitle}>{t("cookbooks.noCookbooksYet")}</Text>
             <Text style={styles.emptyBody}>
-              Create one, then save recipes from any meal detail screen.
+              {t("cookbooks.noCookbooksBody")}
             </Text>
           </View>
         }
@@ -76,7 +81,10 @@ const CookbooksScreen = ({ navigation }) => {
             .slice(0, 3);
           return (
             <Pressable
-              style={styles.card}
+              style={[
+                styles.card,
+                { flexDirection: isRTL ? "row-reverse" : "row" },
+              ]}
               onPress={() =>
                 navigation.navigate("CookbookDetail", { cookbookId: item.id })
               }
@@ -89,6 +97,7 @@ const CookbooksScreen = ({ navigation }) => {
                 style={[
                   styles.coverRow,
                   {
+                    flexDirection: isRTL ? "row-reverse" : "row",
                     width:
                       covers.length > 0
                         ? 56 + (covers.length - 1) * 38
@@ -103,7 +112,7 @@ const CookbooksScreen = ({ navigation }) => {
                       source={{ uri: meal.imageUrl }}
                       style={[
                         styles.cover,
-                        index > 0 && { marginLeft: -18 },
+                        index > 0 && (isRTL ? { marginRight: -18 } : { marginLeft: -18 }),
                         { zIndex: covers.length - index },
                       ]}
                       contentFit="cover"
@@ -119,17 +128,37 @@ const CookbooksScreen = ({ navigation }) => {
                   </View>
                 )}
               </View>
-              <View style={styles.cardMeta}>
-                <Text style={styles.cardTitle} numberOfLines={1}>
+              <View
+                style={[
+                  styles.cardMeta,
+                  {
+                    alignItems: isRTL ? "flex-end" : "flex-start",
+                    marginLeft: isRTL ? 0 : 12,
+                    marginRight: isRTL ? 12 : 0,
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.cardTitle,
+                    { textAlign: isRTL ? "right" : "left" },
+                  ]}
+                  numberOfLines={1}
+                >
                   {item.title}
                 </Text>
-                <Text style={styles.cardSub} numberOfLines={1}>
-                  {item.mealIds.length} recipe
-                  {item.mealIds.length === 1 ? "" : "s"}
+                <Text
+                  style={[
+                    styles.cardSub,
+                    { textAlign: isRTL ? "right" : "left" },
+                  ]}
+                  numberOfLines={1}
+                >
+                  {t("cookbooks.recipesCount", { count: item.mealIds.length })}
                 </Text>
               </View>
               <Ionicons
-                name="chevron-forward"
+                name={isRTL ? "chevron-back" : "chevron-forward"}
                 size={16}
                 color={colors.inkSoft}
               />
@@ -146,24 +175,42 @@ const CookbooksScreen = ({ navigation }) => {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalCard}>
-            <Text style={styles.modalTitle}>New cookbook</Text>
+            <Text
+              style={[
+                styles.modalTitle,
+                { textAlign: isRTL ? "right" : "left" },
+              ]}
+            >
+              {t("cookbooks.modalTitle")}
+            </Text>
             <TextInput
-              style={styles.input}
-              placeholder="e.g. Sunday roasting"
+              style={[
+                styles.input,
+                {
+                  textAlign: isRTL ? "right" : "left",
+                  writingDirection: isRTL ? "rtl" : "ltr",
+                },
+              ]}
+              placeholder={t("cookbooks.modalPlaceholder")}
               placeholderTextColor={colors.inkSoft}
               value={title}
               onChangeText={setTitle}
               autoFocus
             />
-            <View style={styles.modalActions}>
+            <View
+              style={[
+                styles.modalActions,
+                { flexDirection: isRTL ? "row-reverse" : "row" },
+              ]}
+            >
               <Pressable
                 style={styles.modalCancel}
                 onPress={() => setModalOpen(false)}
               >
-                <Text style={styles.modalCancelText}>Cancel</Text>
+                <Text style={styles.modalCancelText}>{t("common.cancel")}</Text>
               </Pressable>
               <Pressable style={styles.modalSave} onPress={create}>
-                <Text style={styles.modalSaveText}>Create</Text>
+                <Text style={styles.modalSaveText}>{t("cookbooks.create")}</Text>
               </Pressable>
             </View>
           </View>

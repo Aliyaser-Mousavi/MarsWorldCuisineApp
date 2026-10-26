@@ -17,7 +17,10 @@ import {
   Share,
   TextInput,
   ScrollView,
+  StatusBar,
+  ActivityIndicator,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
@@ -41,26 +44,30 @@ import { scaleIngredients } from "../utils/servings";
 import { getSimilarMeals } from "../utils/discover";
 import { getSubstitutions } from "../utils/substitutions";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
+import {
+  getLocalizedMeal,
+  getScaledMealIngredients,
+  useAppLanguage,
+} from "../utils/catalogue";
+import { syncMealPlanReminders } from "../services/notificationService";
+import { toPersianDigits } from "../utils/formatters";
 
 const HEADER_MAX_HEIGHT = 280;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT;
 const EMPTY_META = Object.freeze({});
 
-const DAY_LABELS = {
-  monday: "Monday",
-  tuesday: "Tuesday",
-  wednesday: "Wednesday",
-  thursday: "Thursday",
-  friday: "Friday",
-  saturday: "Saturday",
-  sunday: "Sunday",
-};
-
 const MealDetailScreen = ({ route, navigation }) => {
   const { colors, type, spacing, radii } = useTheme();
+  const { t, isRTL } = useLocale();
+  const insets = useSafeAreaInsets();
+  const topInset = Math.max(
+    insets.top,
+    Platform.OS === "android" ? (StatusBar.currentHeight ?? 24) : 20,
+  );
   const styles = useMemo(
-    () => createStyles(colors, type, spacing, radii),
-    [colors, type, spacing, radii],
+    () => createStyles(colors, type, spacing, radii, isRTL, topInset),
+    [colors, type, spacing, radii, isRTL, topInset],
   );
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPlanModalVisible, setIsPlanModalVisible] = useState(false);
@@ -83,7 +90,12 @@ const MealDetailScreen = ({ route, navigation }) => {
   const books = useSelector((state) => state.cookbooks?.books || []);
   const prefs = useSelector((state) => state.preferences);
   const dispatch = useDispatch();
-  const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+  const language = useAppLanguage();
+  const canonicalMeal = MEALS.find((meal) => meal.id === mealId);
+  const selectedMeal = useMemo(
+    () => getLocalizedMeal(canonicalMeal, language),
+    [canonicalMeal, language],
+  );
   const mealIsFavorite = favoriteMealIds.includes(mealId);
   const [noteDraft, setNoteDraft] = useState(meta.note || "");
 
@@ -126,16 +138,46 @@ const MealDetailScreen = ({ route, navigation }) => {
     }
   }, [mealIsFavorite, mealId, dispatch]);
 
+  const baseServings = 2;
+  const multiplier = servings / baseServings;
+  const scaledIngredients = useMemo(
+    () => getScaledMealIngredients(canonicalMeal, multiplier, language),
+    [canonicalMeal, multiplier, language],
+  );
+
   const shareHandler = useCallback(async () => {
     if (!selectedMeal) return;
     try {
-      await Share.share({
-        message: `${selectedMeal.title}\n\n${selectedMeal.duration} min · ${selectedMeal.complexity}\n\nIngredients:\n${selectedMeal.ingredients.map((i) => `• ${i}`).join("\n")}`,
+      const durationStr = t("mealDetails.durationMin", {
+        duration: isRTL
+          ? String(selectedMeal.duration).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d])
+          : selectedMeal.duration,
+        defaultValue: `${selectedMeal.duration} min`,
       });
-    } catch {
-      // cancelled
-    }
-  }, [selectedMeal]);
+      const complexityStr = selectedMeal.complexity
+        ? t(`mealDetails.complexity.${selectedMeal.complexity.toLowerCase()}`, {
+            defaultValue: selectedMeal.complexity,
+          })
+        : "";
+      const metaLine = [durationStr, complexityStr].filter(Boolean).join(" · ");
+      const ingredientsList = (
+        scaledIngredients ||
+        selectedMeal.ingredients ||
+        []
+      )
+        .map(
+          (i) =>
+            `• ${String(i || "")
+              .replace(/\{qty\}\s*/g, "")
+              .trim()}`,
+        )
+        .join("\n");
+
+      await Share.share({
+        message: `${selectedMeal.title}\n\n${metaLine}\n\n${t("mealDetail.ingredients")}:\n${ingredientsList}`,
+      });
+    } catch {}
+  }, [selectedMeal, scaledIngredients, t, isRTL]);
 
   const onNoteChange = (text) => {
     setNoteDraft(text);
@@ -150,6 +192,7 @@ const MealDetailScreen = ({ route, navigation }) => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     setPlannedDay(day);
     setIsPlanModalVisible(false);
+    syncMealPlanReminders().catch(() => {});
   };
 
   const savedInBooks = books.filter((b) => b.mealIds.includes(mealId));
@@ -176,13 +219,16 @@ const MealDetailScreen = ({ route, navigation }) => {
   };
 
   const cookedTimes = meta.cookedAt?.length || 0;
-  const baseServings = 2;
-  const multiplier = servings / baseServings;
-  const scaledIngredients = scaleIngredients(
-    selectedMeal?.ingredients || [],
-    multiplier,
+  const substitutions = useMemo(
+    () =>
+      getSubstitutions(
+        canonicalMeal?.ingredients || [],
+        4,
+        language,
+        scaledIngredients,
+      ),
+    [canonicalMeal, language, scaledIngredients],
   );
-  const substitutions = getSubstitutions(selectedMeal?.ingredients || [], 4);
 
   const addToShoppingList = () => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -214,21 +260,28 @@ const MealDetailScreen = ({ route, navigation }) => {
         </View>
       ),
     });
-  }, [navigation, mealIsFavorite, changeFavoriteStatusHandler, shareHandler, colors, styles]);
+  }, [
+    navigation,
+    mealIsFavorite,
+    changeFavoriteStatusHandler,
+    shareHandler,
+    colors,
+    styles,
+  ]);
 
   if (!selectedMeal) {
     return (
       <View style={styles.missing}>
-        <Text style={styles.missingText}>Recipe not found.</Text>
+        <Text style={styles.missingText}>{t("mealDetail.recipeNotFound")}</Text>
       </View>
     );
   }
 
   const dietTags = [
-    selectedMeal.isGlutenFree && "Gluten-free",
-    selectedMeal.isVegan && "Vegan",
-    selectedMeal.isVegetarian && "Vegetarian",
-    selectedMeal.isLactoseFree && "Lactose-free",
+    selectedMeal.isGlutenFree && t("mealDetail.glutenFree"),
+    selectedMeal.isVegan && t("mealDetail.vegan"),
+    selectedMeal.isVegetarian && t("mealDetail.vegetarian"),
+    selectedMeal.isLactoseFree && t("mealDetail.lactoseFree"),
   ].filter(Boolean);
 
   return (
@@ -241,17 +294,37 @@ const MealDetailScreen = ({ route, navigation }) => {
         onRequestClose={() => setIsModalVisible(false)}
       >
         <View style={styles.modalOverlay}>
+          <StatusBar barStyle="light-content" />
+          <Pressable
+            style={styles.modalBackdropPressable}
+            onPress={() => setIsModalVisible(false)}
+          >
+            <ActivityIndicator
+              size="large"
+              color={colors.accent || "#FFFFFF"}
+              style={StyleSheet.absoluteFillObject}
+            />
+            <Image
+              source={
+                typeof selectedMeal?.imageUrl === "string"
+                  ? { uri: selectedMeal.imageUrl }
+                  : selectedMeal?.imageUrl
+              }
+              style={styles.fullImage}
+              contentFit="contain"
+              cachePolicy="memory-disk"
+              transition={200}
+            />
+          </Pressable>
           <Pressable
             style={styles.closeButton}
             onPress={() => setIsModalVisible(false)}
+            hitSlop={12}
+            accessibilityRole="button"
+            accessibilityLabel={t("common.close", { defaultValue: "Close" })}
           >
-            <Ionicons name="close" size={28} color="#FFFFFF" />
+            <Ionicons name="close" size={26} color="#FFFFFF" />
           </Pressable>
-          <Image
-            source={{ uri: selectedMeal.imageUrl }}
-            style={styles.fullImage}
-            contentFit="contain"
-          />
         </View>
       </Modal>
 
@@ -270,9 +343,33 @@ const MealDetailScreen = ({ route, navigation }) => {
           <View style={styles.planSheet}>
             <View style={styles.planHandle} />
             <View style={styles.planHeader}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.planTitle}>Add to meal plan</Text>
-                <Text style={styles.planSubtitle} numberOfLines={1}>
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: isRTL ? "flex-end" : "flex-start",
+                }}
+              >
+                <Text
+                  style={[
+                    styles.planTitle,
+                    {
+                      textAlign: isRTL ? "right" : "left",
+                      writingDirection: isRTL ? "rtl" : "ltr",
+                    },
+                  ]}
+                >
+                  {t("mealDetail.addToMealPlan")}
+                </Text>
+                <Text
+                  style={[
+                    styles.planSubtitle,
+                    {
+                      textAlign: isRTL ? "right" : "left",
+                      writingDirection: isRTL ? "rtl" : "ltr",
+                    },
+                  ]}
+                  numberOfLines={1}
+                >
                   {selectedMeal.title}
                 </Text>
               </View>
@@ -294,6 +391,7 @@ const MealDetailScreen = ({ route, navigation }) => {
                     style={[
                       styles.dayRow,
                       alreadyPlanned && styles.dayRowActive,
+                      { flexDirection: isRTL ? "row-reverse" : "row" },
                     ]}
                     onPress={() => planForDay(day)}
                   >
@@ -301,18 +399,29 @@ const MealDetailScreen = ({ route, navigation }) => {
                       style={[
                         styles.dayLabel,
                         alreadyPlanned && styles.dayLabelActive,
+                        {
+                          textAlign: isRTL ? "right" : "left",
+                          writingDirection: isRTL ? "rtl" : "ltr",
+                        },
                       ]}
                     >
-                      {DAY_LABELS[day]}
+                      {t(`mealDetail.days.${day}`)}
                     </Text>
                     {alreadyPlanned ? (
-                      <View style={styles.plannedBadge}>
+                      <View
+                        style={[
+                          styles.plannedBadge,
+                          { flexDirection: isRTL ? "row-reverse" : "row" },
+                        ]}
+                      >
                         <Ionicons
                           name="checkmark"
                           size={14}
                           color={colors.accent}
                         />
-                        <Text style={styles.plannedBadgeText}>Planned</Text>
+                        <Text style={styles.plannedBadgeText}>
+                          {t("mealDetail.planned")}
+                        </Text>
                       </View>
                     ) : (
                       <Ionicons name="add" size={20} color={colors.inkSoft} />
@@ -340,9 +449,33 @@ const MealDetailScreen = ({ route, navigation }) => {
           <View style={styles.planSheet}>
             <View style={styles.planHandle} />
             <View style={styles.planHeader}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.planTitle}>Save to cookbook</Text>
-                <Text style={styles.planSubtitle} numberOfLines={1}>
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: isRTL ? "flex-end" : "flex-start",
+                }}
+              >
+                <Text
+                  style={[
+                    styles.planTitle,
+                    {
+                      textAlign: isRTL ? "right" : "left",
+                      writingDirection: isRTL ? "rtl" : "ltr",
+                    },
+                  ]}
+                >
+                  {t("mealDetail.saveToCookbook")}
+                </Text>
+                <Text
+                  style={[
+                    styles.planSubtitle,
+                    {
+                      textAlign: isRTL ? "right" : "left",
+                      writingDirection: isRTL ? "rtl" : "ltr",
+                    },
+                  ]}
+                  numberOfLines={1}
+                >
                   {selectedMeal.title}
                 </Text>
               </View>
@@ -355,23 +488,34 @@ const MealDetailScreen = ({ route, navigation }) => {
               </Pressable>
             </View>
 
-            <View style={styles.newBookRow}>
+            <View
+              style={[
+                styles.newBookRow,
+                { flexDirection: isRTL ? "row-reverse" : "row" },
+              ]}
+            >
               <TextInput
-                style={styles.newBookInput}
-                placeholder="New cookbook name"
+                style={[
+                  styles.newBookInput,
+                  {
+                    textAlign: isRTL ? "right" : "left",
+                    writingDirection: isRTL ? "rtl" : "ltr",
+                  },
+                ]}
+                placeholder={t("mealDetail.newCookbookName")}
                 placeholderTextColor={colors.inkSoft}
                 value={newBookTitle}
                 onChangeText={setNewBookTitle}
               />
               <Pressable style={styles.newBookBtn} onPress={createAndSave}>
-                <Text style={styles.newBookBtnText}>Add</Text>
+                <Text style={styles.newBookBtnText}>{t("common.add")}</Text>
               </Pressable>
             </View>
 
             <View style={styles.dayList}>
               {books.length === 0 ? (
                 <Text style={styles.noBooks}>
-                  No cookbooks yet — create one above.
+                  {t("mealDetail.noCookbooksYet")}
                 </Text>
               ) : (
                 books.map((book) => {
@@ -379,21 +523,34 @@ const MealDetailScreen = ({ route, navigation }) => {
                   return (
                     <Pressable
                       key={book.id}
-                      style={[styles.dayRow, saved && styles.dayRowActive]}
+                      style={[
+                        styles.dayRow,
+                        saved && styles.dayRowActive,
+                        { flexDirection: isRTL ? "row-reverse" : "row" },
+                      ]}
                       onPress={() => toggleCookbook(book.id)}
                     >
-                      <View>
+                      <View
+                        style={{
+                          alignItems: isRTL ? "flex-end" : "flex-start",
+                        }}
+                      >
                         <Text
                           style={[
                             styles.dayLabel,
                             saved && styles.dayLabelActive,
+                            {
+                              textAlign: isRTL ? "right" : "left",
+                              writingDirection: isRTL ? "rtl" : "ltr",
+                            },
                           ]}
                         >
                           {book.title}
                         </Text>
                         <Text style={styles.bookCount}>
-                          {book.mealIds.length} recipe
-                          {book.mealIds.length === 1 ? "" : "s"}
+                          {t("mealDetail.recipesCount", {
+                            count: book.mealIds.length,
+                          })}
                         </Text>
                       </View>
                       <Ionicons
@@ -456,7 +613,12 @@ const MealDetailScreen = ({ route, navigation }) => {
             </View>
           )}
 
-          <View style={styles.ratingRow}>
+          <View
+            style={[
+              styles.ratingRow,
+              { flexDirection: isRTL ? "row-reverse" : "row" },
+            ]}
+          >
             {[1, 2, 3, 4, 5].map((star) => (
               <Pressable
                 key={star}
@@ -475,30 +637,47 @@ const MealDetailScreen = ({ route, navigation }) => {
                 />
               </Pressable>
             ))}
-            <Text style={styles.ratingLabel}>Your rating</Text>
+            <Text style={styles.ratingLabel}>{t("mealDetail.yourRating")}</Text>
           </View>
 
           <Pressable
-            style={styles.cookBtn}
+            style={[
+              styles.cookBtn,
+              { flexDirection: isRTL ? "row-reverse" : "row" },
+            ]}
             onPress={() => navigation.navigate("CookingMode", { mealId })}
           >
             <Ionicons name="flame-outline" size={18} color={colors.onBrand} />
-            <Text style={styles.cookBtnText}>Start cooking</Text>
+            <Text style={styles.cookBtnText}>
+              {t("mealDetail.startCooking")}
+            </Text>
           </Pressable>
 
           <Pressable
-            style={styles.batchBtn}
-            onPress={() =>
-              navigation.navigate("BatchFreeze", { mealId })
-            }
+            style={[
+              styles.batchBtn,
+              { flexDirection: isRTL ? "row-reverse" : "row" },
+            ]}
+            onPress={() => navigation.navigate("BatchFreeze", { mealId })}
           >
             <Ionicons name="snow-outline" size={16} color={colors.accent} />
-            <Text style={styles.batchBtnText}>Batch & freeze this</Text>
+            <Text style={styles.batchBtnText}>
+              {t("mealDetail.batchAndFreezeThis")}
+            </Text>
           </Pressable>
 
-          <View style={styles.actionRow}>
+          <View
+            style={[
+              styles.actionRow,
+              { flexDirection: isRTL ? "row-reverse" : "row" },
+            ]}
+          >
             <Pressable
-              style={[styles.secondaryBtn, addedToList && styles.secondaryDone]}
+              style={[
+                styles.secondaryBtn,
+                addedToList && styles.secondaryDone,
+                { flexDirection: isRTL ? "row-reverse" : "row" },
+              ]}
               onPress={addToShoppingList}
             >
               <Ionicons
@@ -512,13 +691,14 @@ const MealDetailScreen = ({ route, navigation }) => {
                   addedToList && styles.secondaryTextDone,
                 ]}
               >
-                {addedToList ? "On list" : "Shop"}
+                {addedToList ? t("mealDetail.onList") : t("mealDetail.shop")}
               </Text>
             </Pressable>
             <Pressable
               style={[
                 styles.secondaryBtn,
                 (plannedDay || daysWithMeal.length > 0) && styles.secondaryDone,
+                { flexDirection: isRTL ? "row-reverse" : "row" },
               ]}
               onPress={() => setIsPlanModalVisible(true)}
             >
@@ -539,14 +719,17 @@ const MealDetailScreen = ({ route, navigation }) => {
                 ]}
               >
                 {plannedDay
-                  ? DAY_LABELS[plannedDay].slice(0, 3)
+                  ? t(`mealDetail.days.${plannedDay}`).slice(0, 3)
                   : daysWithMeal.length > 0
-                    ? "Planned"
-                    : "Plan"}
+                    ? t("mealDetail.planned")
+                    : t("mealDetail.plan")}
               </Text>
             </Pressable>
             <Pressable
-              style={styles.secondaryBtn}
+              style={[
+                styles.secondaryBtn,
+                { flexDirection: isRTL ? "row-reverse" : "row" },
+              ]}
               onPress={() => {
                 dispatch(markCooked({ mealId }));
                 Haptics.notificationAsync(
@@ -560,7 +743,9 @@ const MealDetailScreen = ({ route, navigation }) => {
                 color={colors.ink}
               />
               <Text style={styles.secondaryText}>
-                {cookedTimes > 0 ? `Made ×${cookedTimes}` : "Made it"}
+                {cookedTimes > 0
+                  ? t("mealDetail.madeTimes", { count: cookedTimes })
+                  : t("mealDetail.madeIt")}
               </Text>
             </Pressable>
           </View>
@@ -569,6 +754,7 @@ const MealDetailScreen = ({ route, navigation }) => {
             style={[
               styles.saveBookBtn,
               savedInBooks.length > 0 && styles.saveBookBtnDone,
+              { flexDirection: isRTL ? "row-reverse" : "row" },
             ]}
             onPress={() => setIsSaveModalVisible(true)}
           >
@@ -584,16 +770,22 @@ const MealDetailScreen = ({ route, navigation }) => {
               ]}
             >
               {savedInBooks.length > 0
-                ? `In ${savedInBooks.length} cookbook${savedInBooks.length === 1 ? "" : "s"}`
-                : "Save to cookbook"}
+                ? t("mealDetail.inCookbooks", { count: savedInBooks.length })
+                : t("mealDetail.saveToCookbook")}
             </Text>
           </Pressable>
 
           <View style={styles.noteBlock}>
-            <Subtitle title="Your notes" />
+            <Subtitle title={t("mealDetail.yourNotes")} />
             <TextInput
-              style={styles.noteInput}
-              placeholder="Tips, swaps, oven quirks… saved on this phone"
+              style={[
+                styles.noteInput,
+                {
+                  textAlign: isRTL ? "right" : "left",
+                  writingDirection: isRTL ? "rtl" : "ltr",
+                },
+              ]}
+              placeholder={t("mealDetail.notesPlaceholder")}
               placeholderTextColor={colors.inkSoft}
               multiline
               value={noteDraft}
@@ -603,10 +795,35 @@ const MealDetailScreen = ({ route, navigation }) => {
           </View>
 
           <View style={styles.listContainer}>
-            <View style={styles.servingsHeader}>
-              <Subtitle title="Ingredients" />
-              <View style={styles.servingsRow}>
-                <Text style={styles.servingsLabel}>Servings</Text>
+            <Subtitle title={t("mealDetail.ingredients")} />
+            <View
+              style={[
+                styles.servingsRow,
+                {
+                  flexDirection: isRTL ? "row-reverse" : "row",
+                  justifyContent: isRTL ? "flex-start" : "flex-start",
+                },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.servingsLabel,
+                  {
+                    textAlign: isRTL ? "right" : "left",
+                    writingDirection: isRTL ? "rtl" : "ltr",
+                    marginLeft: isRTL ? 10 : 0,
+                    marginRight: isRTL ? 0 : 10,
+                  },
+                ]}
+              >
+                {t("mealDetail.servings")}
+              </Text>
+              <View
+                style={[
+                  styles.chipsContainer,
+                  { flexDirection: isRTL ? "row-reverse" : "row" },
+                ]}
+              >
                 {[1, 2, 3, 4, 5, 6].map((n) => (
                   <Pressable
                     key={n}
@@ -625,50 +842,100 @@ const MealDetailScreen = ({ route, navigation }) => {
                         servings === n && styles.servingChipTextActive,
                       ]}
                     >
-                      {n}
+                      {isRTL ? toPersianDigits(n) : n}
                     </Text>
                   </Pressable>
                 ))}
               </View>
             </View>
             {multiplier !== 1 && (
-              <Text style={styles.scaleHint}>
-                Scaled to {servings} servings (base recipe serves {baseServings}
-                )
+              <Text
+                style={[
+                  styles.scaleHint,
+                  {
+                    textAlign: isRTL ? "right" : "left",
+                    writingDirection: isRTL ? "rtl" : "ltr",
+                  },
+                ]}
+              >
+                {t("mealDetail.scaleHint", { servings, baseServings })}
               </Text>
             )}
             <List data={scaledIngredients} />
             {substitutions.length > 0 && (
               <View style={styles.swapBlock}>
-                <Subtitle title="Smart swaps" />
+                <Subtitle title={t("mealDetail.smartSwaps")} />
                 {substitutions.map((item) => (
-                  <View key={`${item.original}-${item.swap}`} style={styles.swapRow}>
+                  <View
+                    key={`${item.original}-${item.swap}`}
+                    style={[
+                      styles.swapRow,
+                      { flexDirection: isRTL ? "row-reverse" : "row" },
+                    ]}
+                  >
                     <Ionicons
                       name="swap-horizontal"
                       size={16}
                       color={colors.accent}
                     />
-                    <View style={{ flex: 1 }}>
-                      <Text style={styles.swapTitle}>{item.swap}</Text>
-                      <Text style={styles.swapSub} numberOfLines={1}>
-                        Instead of {item.original}
+                    <View
+                      style={{
+                        flex: 1,
+                        alignItems: isRTL ? "flex-end" : "flex-start",
+                      }}
+                    >
+                      <Text
+                        style={[
+                          styles.swapTitle,
+                          {
+                            textAlign: isRTL ? "right" : "left",
+                            writingDirection: isRTL ? "rtl" : "ltr",
+                          },
+                        ]}
+                      >
+                        {item.swap}
                       </Text>
-                      <Text style={styles.swapNote}>{item.note}</Text>
+                      <Text
+                        style={[
+                          styles.swapSub,
+                          {
+                            textAlign: isRTL ? "right" : "left",
+                            writingDirection: isRTL ? "rtl" : "ltr",
+                          },
+                        ]}
+                        numberOfLines={1}
+                      >
+                        {t("mealDetail.insteadOf", { original: item.original })}
+                      </Text>
+                      <Text
+                        style={[
+                          styles.swapNote,
+                          {
+                            textAlign: isRTL ? "right" : "left",
+                            writingDirection: isRTL ? "rtl" : "ltr",
+                          },
+                        ]}
+                      >
+                        {item.note}
+                      </Text>
                     </View>
                   </View>
                 ))}
               </View>
             )}
-            <Subtitle title="Steps" />
+            <Subtitle title={t("mealDetail.steps")} />
             <List data={selectedMeal.steps || []} numbered />
 
             {similarMeals.length > 0 && (
               <View style={styles.similarBlock}>
-                <Subtitle title="You might also like" />
+                <Subtitle title={t("mealDetail.youMightAlsoLike")} />
                 <ScrollView
                   horizontal
                   showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={styles.similarRow}
+                  contentContainerStyle={[
+                    styles.similarRow,
+                    isRTL && { flexDirection: "row-reverse", minWidth: "100%" },
+                  ]}
                 >
                   {similarMeals.map((meal) => (
                     <Pressable
@@ -684,11 +951,48 @@ const MealDetailScreen = ({ route, navigation }) => {
                         contentFit="cover"
                         cachePolicy="memory-disk"
                       />
-                      <Text style={styles.similarTitle} numberOfLines={2}>
-                        {meal.title}
+                      <Text
+                        style={[
+                          styles.similarTitle,
+                          {
+                            textAlign: isRTL ? "right" : "left",
+                            writingDirection: isRTL ? "rtl" : "ltr",
+                          },
+                        ]}
+                        numberOfLines={2}
+                      >
+                        {getLocalizedMeal(meal, language).title}
                       </Text>
-                      <Text style={styles.similarMeta}>
-                        {meal.duration} min · {meal.complexity}
+                      <Text
+                        style={[
+                          styles.similarMeta,
+                          {
+                            textAlign: isRTL ? "right" : "left",
+                            writingDirection: isRTL ? "rtl" : "ltr",
+                          },
+                        ]}
+                      >
+                        {[
+                          t("mealDetails.durationMin", {
+                            duration: isRTL
+                              ? String(meal.duration).replace(
+                                  /\d/g,
+                                  (d) => "۰۱۲۳۴۵۶۷۸۹"[d],
+                                )
+                              : meal.duration,
+                            defaultValue: `${meal.duration} min`,
+                          }),
+                          meal.complexity
+                            ? t(
+                                `mealDetails.complexity.${meal.complexity.toLowerCase()}`,
+                                {
+                                  defaultValue: meal.complexity,
+                                },
+                              )
+                            : "",
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
                       </Text>
                     </Pressable>
                   ))}
@@ -704,409 +1008,437 @@ const MealDetailScreen = ({ route, navigation }) => {
 
 export default MealDetailScreen;
 
-const createStyles = (colors, type, spacing, radii) =>
+const createStyles = (colors, type, spacing, radii, isRTL, topInset = 20) =>
   StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: colors.bg,
     },
-  headerActions: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  header: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1,
-    overflow: "hidden",
-    backgroundColor: colors.brand,
-  },
-  rootContainer: {
-    flex: 1,
-  },
-  contentContainer: {
-    backgroundColor: colors.bg,
-    borderTopLeftRadius: radii.lg,
-    borderTopRightRadius: radii.lg,
-    marginTop: -16,
-    paddingTop: spacing.lg,
-    minHeight: 400,
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-  },
-  title: {
-    ...type.title,
-    marginHorizontal: spacing.lg,
-  },
-  detailText: {
-    color: colors.inkMuted,
-  },
-  tags: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
-    marginHorizontal: spacing.lg,
-    marginBottom: spacing.sm,
-  },
-  tag: {
-    backgroundColor: colors.accentSoft,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: radii.pill,
-  },
-  tagText: {
-    ...type.caption,
-    color: colors.accent,
-  },
-  ratingRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    marginHorizontal: spacing.lg,
-    marginBottom: spacing.md,
-  },
-  ratingLabel: {
-    ...type.caption,
-    marginLeft: 8,
-  },
-  cookBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    marginHorizontal: spacing.lg,
-    marginBottom: spacing.sm,
-    backgroundColor: colors.brand,
-    paddingVertical: 14,
-    borderRadius: radii.md,
-  },
-  cookBtnText: {
-    ...type.heading,
-    fontSize: 15,
-    color: colors.onBrand,
-  },
-  batchBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    marginHorizontal: spacing.lg,
-    marginBottom: spacing.sm,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-    paddingVertical: 12,
-    borderRadius: radii.md,
-  },
-  batchBtnText: {
-    ...type.heading,
-    fontSize: 14,
-    color: colors.accent,
-  },
-  actionRow: {
-    flexDirection: "row",
-    gap: 8,
-    marginHorizontal: spacing.lg,
-    marginBottom: spacing.md,
-  },
-  secondaryBtn: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 6,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-    paddingVertical: 12,
-    borderRadius: radii.md,
-  },
-  secondaryDone: {
-    backgroundColor: colors.accentSoft,
-    borderColor: colors.accentSoft,
-  },
-  secondaryText: {
-    ...type.label,
-    color: colors.ink,
-    fontSize: 12,
-  },
-  secondaryTextDone: {
-    color: colors.accent,
-  },
-  saveBookBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    marginHorizontal: spacing.lg,
-    marginBottom: spacing.md,
-    paddingVertical: 12,
-    borderRadius: radii.md,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  saveBookBtnDone: {
-    backgroundColor: colors.accentSoft,
-    borderColor: colors.accentSoft,
-  },
-  saveBookText: {
-    ...type.label,
-    color: colors.ink,
-  },
-  saveBookTextDone: {
-    color: colors.accent,
-  },
-  newBookRow: {
-    flexDirection: "row",
-    gap: 8,
-    marginBottom: spacing.md,
-  },
-  newBookInput: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radii.md,
-    paddingHorizontal: 12,
-    paddingVertical: Platform.OS === "ios" ? 12 : 8,
-    ...type.body,
-    color: colors.ink,
-  },
-  newBookBtn: {
-    paddingHorizontal: 16,
-    borderRadius: radii.md,
-    backgroundColor: colors.brand,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  newBookBtnText: {
-    ...type.heading,
-    fontSize: 14,
-    color: colors.onBrand,
-  },
-  noBooks: {
-    ...type.body,
-    paddingVertical: spacing.md,
-  },
-  bookCount: {
-    ...type.caption,
-    marginTop: 2,
-  },
-  noteBlock: {
-    marginBottom: spacing.sm,
-  },
-  noteInput: {
-    marginHorizontal: spacing.lg,
-    minHeight: 88,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radii.md,
-    padding: 12,
-    ...type.body,
-    color: colors.ink,
-  },
-  listContainer: {
-    width: "100%",
-  },
-  servingsHeader: {
-    marginBottom: 4,
-  },
-  servingsRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginHorizontal: spacing.lg,
-    marginBottom: spacing.sm,
-  },
-  servingsLabel: {
-    ...type.label,
-    marginRight: 4,
-  },
-  servingChip: {
-    minWidth: 36,
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderRadius: radii.pill,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.border,
-    alignItems: "center",
-  },
-  servingChipActive: {
-    backgroundColor: colors.brand,
-    borderColor: colors.brand,
-  },
-  servingChipText: {
-    ...type.label,
-    color: colors.ink,
-  },
-  servingChipTextActive: {
-    color: colors.onBrand,
-  },
-  scaleHint: {
-    ...type.caption,
-    marginHorizontal: spacing.lg,
-    marginBottom: spacing.sm,
-  },
-  swapBlock: {
-    marginBottom: spacing.sm,
-  },
-  swapRow: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    gap: 10,
-    marginHorizontal: spacing.lg,
-    marginBottom: 8,
-    padding: 12,
-    backgroundColor: colors.surface,
-    borderRadius: radii.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  swapTitle: {
-    ...type.heading,
-    fontSize: 14,
-  },
-  swapSub: {
-    ...type.caption,
-    marginTop: 2,
-  },
-  swapNote: {
-    ...type.label,
-    color: colors.accent,
-    marginTop: 4,
-    fontSize: 12,
-  },
-  similarBlock: {
-    marginTop: spacing.md,
-    marginBottom: spacing.lg,
-  },
-  similarRow: {
-    paddingHorizontal: spacing.lg,
-    gap: 12,
-  },
-  similarCard: {
-    width: 148,
-  },
-  similarImage: {
-    width: 148,
-    height: 110,
-    borderRadius: radii.md,
-    backgroundColor: colors.border,
-    marginBottom: 8,
-  },
-  similarTitle: {
-    ...type.heading,
-    fontSize: 14,
-    lineHeight: 18,
-  },
-  similarMeta: {
-    ...type.caption,
-    marginTop: 2,
-    textTransform: "capitalize",
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "#000",
-    justifyContent: "center",
-  },
-  planOverlay: {
-    flex: 1,
-    justifyContent: "flex-end",
-    backgroundColor: colors.overlay,
-  },
-  planSheet: {
-    backgroundColor: colors.surface,
-    borderTopLeftRadius: radii.lg,
-    borderTopRightRadius: radii.lg,
-    paddingHorizontal: spacing.lg,
-    paddingBottom: Platform.OS === "ios" ? 36 : 24,
-    paddingTop: spacing.sm,
-  },
-  planHandle: {
-    alignSelf: "center",
-    width: 36,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: colors.border,
-    marginBottom: spacing.md,
-  },
-  planHeader: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    marginBottom: spacing.md,
-    gap: 12,
-  },
-  planTitle: {
-    ...type.title,
-    fontSize: 20,
-  },
-  planSubtitle: {
-    ...type.body,
-    marginTop: 2,
-  },
-  planClose: {
-    padding: 6,
-    borderRadius: radii.pill,
-    backgroundColor: colors.bg,
-  },
-  dayList: {
-    gap: 8,
-  },
-  dayRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 14,
-    paddingHorizontal: 14,
-    borderRadius: radii.md,
-    backgroundColor: colors.bg,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  dayRowActive: {
-    backgroundColor: colors.accentSoft,
-    borderColor: colors.accentSoft,
-  },
-  dayLabel: {
-    ...type.heading,
-    fontSize: 15,
-  },
-  dayLabelActive: {
-    color: colors.accent,
-  },
-  plannedBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-  },
-  plannedBadgeText: {
-    ...type.label,
-    color: colors.accent,
-  },
-  fullImage: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  closeButton: {
-    position: "absolute",
-    top: Platform.OS === "ios" ? 56 : 40,
-    right: 20,
-    zIndex: 10,
-    padding: 8,
-  },
-  missing: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: colors.bg,
-  },
-  missingText: {
-    ...type.body,
-  },
-});
+    headerActions: {
+      flexDirection: isRTL ? "row-reverse" : "row",
+      alignItems: "center",
+      gap: 8,
+    },
+    header: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 1,
+      overflow: "hidden",
+      backgroundColor: colors.brand,
+    },
+    rootContainer: {
+      flex: 1,
+    },
+    contentContainer: {
+      backgroundColor: colors.bg,
+      borderTopLeftRadius: radii.lg,
+      borderTopRightRadius: radii.lg,
+      marginTop: -16,
+      paddingTop: spacing.lg,
+      minHeight: 400,
+    },
+    image: {
+      width: "100%",
+      height: "100%",
+    },
+    title: {
+      ...type.title,
+      marginHorizontal: spacing.lg,
+      textAlign: isRTL ? "right" : "left",
+      writingDirection: isRTL ? "rtl" : "ltr",
+    },
+    detailText: {
+      color: colors.inkMuted,
+    },
+    tags: {
+      flexDirection: isRTL ? "row-reverse" : "row",
+      flexWrap: "wrap",
+      gap: 8,
+      marginHorizontal: spacing.lg,
+      marginBottom: spacing.sm,
+    },
+    tag: {
+      backgroundColor: colors.accentSoft,
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      borderRadius: radii.pill,
+    },
+    tagText: {
+      ...type.caption,
+      color: colors.accent,
+    },
+    ratingRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 4,
+      marginHorizontal: spacing.lg,
+      marginBottom: spacing.md,
+    },
+    ratingLabel: {
+      ...type.caption,
+      marginLeft: 8,
+    },
+    cookBtn: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 8,
+      marginHorizontal: spacing.lg,
+      marginBottom: spacing.sm,
+      backgroundColor: colors.brand,
+      paddingVertical: 14,
+      borderRadius: radii.md,
+    },
+    cookBtnText: {
+      ...type.heading,
+      fontSize: 15,
+      color: colors.onBrand,
+    },
+    batchBtn: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 8,
+      marginHorizontal: spacing.lg,
+      marginBottom: spacing.sm,
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+      paddingVertical: 12,
+      borderRadius: radii.md,
+    },
+    batchBtnText: {
+      ...type.heading,
+      fontSize: 14,
+      color: colors.accent,
+    },
+    actionRow: {
+      flexDirection: "row",
+      gap: 8,
+      marginHorizontal: spacing.lg,
+      marginBottom: spacing.md,
+    },
+    secondaryBtn: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 6,
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+      paddingVertical: 12,
+      borderRadius: radii.md,
+    },
+    secondaryDone: {
+      backgroundColor: colors.accentSoft,
+      borderColor: colors.accentSoft,
+    },
+    secondaryText: {
+      ...type.label,
+      color: colors.ink,
+      fontSize: 12,
+    },
+    secondaryTextDone: {
+      color: colors.accent,
+    },
+    saveBookBtn: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 8,
+      marginHorizontal: spacing.lg,
+      marginBottom: spacing.md,
+      paddingVertical: 12,
+      borderRadius: radii.md,
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    saveBookBtnDone: {
+      backgroundColor: colors.accentSoft,
+      borderColor: colors.accentSoft,
+    },
+    saveBookText: {
+      ...type.label,
+      color: colors.ink,
+    },
+    saveBookTextDone: {
+      color: colors.accent,
+    },
+    newBookRow: {
+      flexDirection: "row",
+      gap: 8,
+      marginBottom: spacing.md,
+    },
+    newBookInput: {
+      flex: 1,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: radii.md,
+      paddingHorizontal: 12,
+      paddingVertical: Platform.OS === "ios" ? 12 : 8,
+      ...type.body,
+      color: colors.ink,
+    },
+    newBookBtn: {
+      paddingHorizontal: 16,
+      borderRadius: radii.md,
+      backgroundColor: colors.brand,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    newBookBtnText: {
+      ...type.heading,
+      fontSize: 14,
+      color: colors.onBrand,
+    },
+    noBooks: {
+      ...type.body,
+      paddingVertical: spacing.md,
+    },
+    bookCount: {
+      ...type.caption,
+      marginTop: 2,
+    },
+    noteBlock: {
+      marginBottom: spacing.sm,
+    },
+    noteInput: {
+      marginHorizontal: spacing.lg,
+      minHeight: 88,
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: radii.md,
+      padding: 12,
+      ...type.body,
+      color: colors.ink,
+    },
+    listContainer: {
+      width: "100%",
+    },
+    servingsHeader: {
+      marginBottom: 4,
+    },
+    servingsRow: {
+      flexDirection: isRTL ? "row-reverse" : "row",
+      alignItems: "center",
+      justifyContent: isRTL ? "flex-start" : "flex-start",
+      marginHorizontal: 24,
+      marginBottom: spacing.sm,
+      flexWrap: "wrap",
+      gap: 8,
+    },
+    servingsLabel: {
+      ...type.label,
+      color: colors.inkMuted,
+    },
+    chipsContainer: {
+      flexDirection: isRTL ? "row-reverse" : "row",
+      alignItems: "center",
+      gap: 8,
+    },
+    servingChip: {
+      minWidth: 36,
+      height: 32,
+      paddingHorizontal: 8,
+      borderRadius: radii.pill,
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    servingChipActive: {
+      backgroundColor: colors.brand,
+      borderColor: colors.brand,
+    },
+    servingChipText: {
+      ...type.label,
+      color: colors.ink,
+    },
+    servingChipTextActive: {
+      color: colors.onBrand,
+    },
+    scaleHint: {
+      ...type.caption,
+      marginHorizontal: spacing.lg,
+      marginBottom: spacing.sm,
+    },
+    swapBlock: {
+      marginBottom: spacing.sm,
+    },
+    swapRow: {
+      flexDirection: "row",
+      alignItems: "flex-start",
+      gap: 10,
+      marginHorizontal: spacing.lg,
+      marginBottom: 8,
+      padding: 12,
+      backgroundColor: colors.surface,
+      borderRadius: radii.md,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    swapTitle: {
+      ...type.heading,
+      fontSize: 14,
+    },
+    swapSub: {
+      ...type.caption,
+      marginTop: 2,
+    },
+    swapNote: {
+      ...type.label,
+      color: colors.accent,
+      marginTop: 4,
+      fontSize: 12,
+    },
+    similarBlock: {
+      marginTop: spacing.md,
+      marginBottom: spacing.lg,
+    },
+    similarRow: {
+      paddingHorizontal: spacing.lg,
+      gap: 12,
+      flexDirection: isRTL ? "row-reverse" : "row",
+    },
+    similarCard: {
+      width: 148,
+      alignItems: isRTL ? "flex-end" : "flex-start",
+    },
+    similarImage: {
+      width: 148,
+      height: 110,
+      borderRadius: radii.md,
+      backgroundColor: colors.border,
+      marginBottom: 8,
+    },
+    similarTitle: {
+      ...type.heading,
+      fontSize: 14,
+      lineHeight: 18,
+    },
+    similarMeta: {
+      ...type.caption,
+      marginTop: 2,
+      textTransform: "capitalize",
+    },
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: "#000000",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    modalBackdropPressable: {
+      flex: 1,
+      width: "100%",
+      height: "100%",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    planOverlay: {
+      flex: 1,
+      justifyContent: "flex-end",
+      backgroundColor: colors.overlay,
+    },
+    planSheet: {
+      backgroundColor: colors.surface,
+      borderTopLeftRadius: radii.lg,
+      borderTopRightRadius: radii.lg,
+      paddingHorizontal: spacing.lg,
+      paddingBottom: Platform.OS === "ios" ? 36 : 24,
+      paddingTop: spacing.sm,
+    },
+    planHandle: {
+      alignSelf: "center",
+      width: 36,
+      height: 4,
+      borderRadius: 2,
+      backgroundColor: colors.border,
+      marginBottom: spacing.md,
+    },
+    planHeader: {
+      flexDirection: "row",
+      alignItems: "flex-start",
+      marginBottom: spacing.md,
+      gap: 12,
+    },
+    planTitle: {
+      ...type.title,
+      fontSize: 20,
+    },
+    planSubtitle: {
+      ...type.body,
+      marginTop: 2,
+    },
+    planClose: {
+      padding: 6,
+      borderRadius: radii.pill,
+      backgroundColor: colors.bg,
+    },
+    dayList: {
+      gap: 8,
+    },
+    dayRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingVertical: 14,
+      paddingHorizontal: 14,
+      borderRadius: radii.md,
+      backgroundColor: colors.bg,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    dayRowActive: {
+      backgroundColor: colors.accentSoft,
+      borderColor: colors.accentSoft,
+    },
+    dayLabel: {
+      ...type.heading,
+      fontSize: 15,
+    },
+    dayLabelActive: {
+      color: colors.accent,
+    },
+    plannedBadge: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 4,
+    },
+    plannedBadgeText: {
+      ...type.label,
+      color: colors.accent,
+    },
+    fullImage: {
+      width: "100%",
+      height: "100%",
+    },
+    closeButton: {
+      position: "absolute",
+      top: topInset + 12,
+      [isRTL ? "left" : "right"]: 20,
+      zIndex: 20,
+      width: 44,
+      height: 44,
+      borderRadius: 22,
+      backgroundColor: "rgba(0, 0, 0, 0.55)",
+      borderWidth: 1,
+      borderColor: "rgba(255, 255, 255, 0.2)",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    missing: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: colors.bg,
+    },
+    missingText: {
+      ...type.body,
+    },
+  });

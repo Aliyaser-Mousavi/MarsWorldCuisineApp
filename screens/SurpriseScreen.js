@@ -14,16 +14,24 @@ import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { LinearGradient } from "expo-linear-gradient";
+import { useTranslation } from "react-i18next";
 import { MEALS } from "../data/dummy-data";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
+import { useAppLanguage } from "../utils/catalogue";
+import { MEALS_FA } from "../data/dummy-data.fa";
+import { toPersianDigits } from "../utils/formatters";
 
 const { width } = Dimensions.get("window");
 
 const SurpriseScreen = ({ navigation }) => {
   const { colors, radii, spacing, type } = useTheme();
+  const { t } = useTranslation();
+  const { isRTL } = useLocale();
+  const language = useAppLanguage();
   const styles = useMemo(
-    () => createStyles(colors, type, spacing, radii),
-    [colors, type, spacing, radii],
+    () => createStyles(colors, type, spacing, radii, isRTL),
+    [colors, type, spacing, radii, isRTL],
   );
   const prefs = useSelector((state) => state.preferences);
   const spin = useRef(new Animated.Value(0)).current;
@@ -131,7 +139,7 @@ const SurpriseScreen = ({ navigation }) => {
   if (!result) {
     return (
       <View style={styles.empty}>
-        <Text style={styles.emptyText}>No recipes match your preferences.</Text>
+        <Text style={styles.emptyText}>{t("surprise.empty")}</Text>
       </View>
     );
   }
@@ -143,12 +151,9 @@ const SurpriseScreen = ({ navigation }) => {
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.intro}>
-        <Text style={styles.kicker}>Feeling undecided?</Text>
-        <Text style={styles.headline}>Surprise me</Text>
-        <Text style={styles.body}>
-          Spin for a recipe that respects your dietary preferences. Pure chance,
-          good dinner.
-        </Text>
+        <Text style={styles.kicker}>{t("surprise.kicker")}</Text>
+        <Text style={styles.headline}>{t("surprise.headline")}</Text>
+        <Text style={styles.body}>{t("surprise.body")}</Text>
       </View>
 
       <Animated.View
@@ -188,11 +193,20 @@ const SurpriseScreen = ({ navigation }) => {
           />
           <View style={styles.copy} pointerEvents="none">
             <Text style={styles.badge}>
-              {spinning ? "Choosing…" : "Your pick"}
+              {spinning ? t("surprise.rolling") : t("tonight.surprise")}
             </Text>
-            <Text style={styles.title}>{result.title}</Text>
+            <Text style={styles.title}>
+              {(language === "fa" && MEALS_FA[result.id]?.title)
+                ? MEALS_FA[result.id].title
+                : result.title}
+            </Text>
             <Text style={styles.meta}>
-              {result.duration} min · {result.complexity}
+              {t("mealDetails.durationMin", {
+                duration: isRTL ? toPersianDigits(result.duration) : result.duration,
+                defaultValue: isRTL
+                  ? `${toPersianDigits(result.duration)} دقیقه`
+                  : `${result.duration} min`,
+              })} · {t(`mealDetails.complexity.${result.complexity.toLowerCase()}`, { defaultValue: result.complexity })}
             </Text>
           </View>
         </Pressable>
@@ -205,7 +219,7 @@ const SurpriseScreen = ({ navigation }) => {
       >
         <Ionicons name="dice-outline" size={20} color={colors.onBrand} />
         <Text style={styles.spinText}>
-          {spinning ? "Spinning…" : "Spin again"}
+          {spinning ? t("surprise.rolling") : t("surprise.spinAgain")}
         </Text>
       </Pressable>
 
@@ -217,8 +231,12 @@ const SurpriseScreen = ({ navigation }) => {
           }
           disabled={spinning}
         >
-          <Text style={styles.openText}>Open recipe</Text>
-          <Ionicons name="arrow-forward" size={16} color={colors.accent} />
+          <Text style={styles.openText}>{t("surprise.openRecipe")}</Text>
+          <Ionicons
+            name={isRTL ? "arrow-back" : "arrow-forward"}
+            size={16}
+            color={colors.accent}
+          />
         </Pressable>
         <Pressable
           style={styles.cookBtn}
@@ -228,7 +246,7 @@ const SurpriseScreen = ({ navigation }) => {
           disabled={spinning}
         >
           <Ionicons name="flame-outline" size={16} color={colors.accent} />
-          <Text style={styles.cookText}>Cook</Text>
+          <Text style={styles.cookText}>{t("tonight.cookTonight")}</Text>
         </Pressable>
       </View>
     </ScrollView>
@@ -237,7 +255,7 @@ const SurpriseScreen = ({ navigation }) => {
 
 export default SurpriseScreen;
 
-const createStyles = (colors, type, spacing, radii) => {
+const createStyles = (colors, type, spacing, radii, isRTL) => {
   const CARD = Math.min(width - spacing.md * 2, 360);
   return StyleSheet.create({
   container: {
@@ -256,14 +274,17 @@ const createStyles = (colors, type, spacing, radii) => {
     ...type.label,
     color: colors.accent,
     marginBottom: 4,
+    textAlign: isRTL ? "right" : "left",
   },
   headline: {
     ...type.title,
     fontSize: 24,
     marginBottom: 6,
+    textAlign: isRTL ? "right" : "left",
   },
   body: {
     ...type.body,
+    textAlign: isRTL ? "right" : "left",
   },
   stage: {
     alignItems: "center",
@@ -296,23 +317,26 @@ const createStyles = (colors, type, spacing, radii) => {
     ...type.label,
     color: "rgba(255,255,255,0.7)",
     marginBottom: 6,
+    textAlign: isRTL ? "right" : "left",
   },
   title: {
-    fontFamily: "Fraunces_600SemiBold",
+    ...(isRTL ? {} : { fontFamily: "Fraunces_600SemiBold" }),
     fontSize: 26,
     lineHeight: 32,
     color: colors.onBrand,
     marginBottom: 4,
+    textAlign: isRTL ? "right" : "left",
   },
   meta: {
     ...type.label,
     color: "rgba(255,255,255,0.75)",
     textTransform: "capitalize",
+    textAlign: isRTL ? "right" : "left",
   },
   spinBtn: {
     marginTop: spacing.xl,
     marginHorizontal: spacing.lg,
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
@@ -330,14 +354,14 @@ const createStyles = (colors, type, spacing, radii) => {
   },
   secondaryRow: {
     marginTop: spacing.sm,
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     justifyContent: "center",
     gap: spacing.lg,
     paddingHorizontal: spacing.lg,
   },
   openBtn: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     gap: 6,
     paddingVertical: 12,
@@ -347,7 +371,7 @@ const createStyles = (colors, type, spacing, radii) => {
     color: colors.accent,
   },
   cookBtn: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     gap: 6,
     paddingVertical: 12,

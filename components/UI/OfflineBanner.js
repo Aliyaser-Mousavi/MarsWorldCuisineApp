@@ -9,10 +9,20 @@ import {
 } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "../../constants/theme";
+import { useLocale } from "../../constants/locale";
 
 const OfflineBanner = () => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
+  const { isRTL } = useLocale();
+  const insets = useSafeAreaInsets();
+  const topInset = Math.max(
+    insets.top,
+    Platform.OS === "android" ? (StatusBar.currentHeight ?? 24) : 20,
+  );
   const [show, setShow] = useState(false);
   const slideAnim = useRef(new Animated.Value(-200)).current;
   const timerRef = useRef(null);
@@ -60,13 +70,14 @@ const OfflineBanner = () => {
         styles.container,
         {
           backgroundColor: colors.brand,
+          paddingTop: topInset + (Platform.OS === "ios" ? 6 : 8),
           transform: [{ translateY: slideAnim }],
         },
       ]}
       pointerEvents="none"
       accessibilityRole="alert"
     >
-      <View style={styles.content}>
+      <View style={[styles.content, { flexDirection: isRTL ? "row-reverse" : "row" }]}>
         <View
           style={[
             styles.iconWrap,
@@ -80,7 +91,7 @@ const OfflineBanner = () => {
           />
         </View>
         <Text style={[styles.text, { color: colors.onBrand }]}>
-          Offline — recipes still available
+          {t("common.offlineBanner")}
         </Text>
       </View>
     </Animated.View>
@@ -97,10 +108,6 @@ const styles = StyleSheet.create({
     right: 0,
     paddingBottom: 14,
     zIndex: 10000,
-    paddingTop:
-      Platform.OS === "android"
-        ? (StatusBar.currentHeight ?? 0) + 8
-        : 56,
   },
   content: {
     flexDirection: "row",

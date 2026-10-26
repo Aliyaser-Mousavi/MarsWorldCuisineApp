@@ -68,7 +68,14 @@
           "iCloudContainerEnvironment": "Production"
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#3D5A45"
+        }
+      ]
     ],
     "extra": {
       "eas": {

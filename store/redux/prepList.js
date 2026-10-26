@@ -1,4 +1,6 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { MEALS_FA } from "../../data/dummy-data.fa";
+import { getScaledMealIngredients } from "../../utils/catalogue";
 
 const prepSlice = createSlice({
   name: "prepList",
@@ -40,33 +42,51 @@ export const { setPrepItems, togglePrepItem, clearPrep, addPrepItem } =
 export default prepSlice.reducer;
 
 /** Build prep tasks from today's planned meals. */
-export function buildPrepFromMeals(meals = []) {
+export function buildPrepFromMeals(meals = [], language = "en") {
+  const isFa = language === "fa";
   const items = [];
   meals.forEach((meal) => {
+    const mealTitle =
+      isFa && MEALS_FA[meal.id]?.title ? MEALS_FA[meal.id].title : meal.title;
+
     items.push({
       id: nanoid(),
-      text: `Prep for ${meal.title}`,
+      type: "prep_meal",
+      mealId: meal.id,
+      text: isFa ? `آماده‌سازی برای ${mealTitle}` : `Prep for ${mealTitle}`,
       done: false,
       source: meal.id,
-      mealId: meal.id,
     });
-    const topIngredients = (meal.ingredients || []).slice(0, 3);
-    topIngredients.forEach((ing) => {
+
+    const scaledIngredients = getScaledMealIngredients(meal, 1, language);
+    const topIngredients = scaledIngredients.slice(0, 3);
+
+    topIngredients.forEach((ing, idx) => {
+      const cleanIng = String(ing || "").replace(/\{qty\}\s*/g, "").trim();
       items.push({
         id: nanoid(),
-        text: `Ready: ${ing}`,
+        type: "ready_ing",
+        mealId: meal.id,
+        ingredientIndex: idx,
+        text: isFa ? `آماده کردن: ${cleanIng}` : `Ready: ${cleanIng}`,
         done: false,
         source: meal.id,
-        mealId: meal.id,
       });
     });
+
     if (meal.duration >= 40) {
+      const dur = isFa
+        ? String(meal.duration).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d])
+        : meal.duration;
       items.push({
         id: nanoid(),
-        text: `Start ${meal.title} early (${meal.duration} min)`,
+        type: "early_start",
+        mealId: meal.id,
+        text: isFa
+          ? `شروع زودهنگام ${mealTitle} (${dur} دقیقه)`
+          : `Start ${mealTitle} early (${meal.duration} min)`,
         done: false,
         source: meal.id,
-        mealId: meal.id,
       });
     }
   });

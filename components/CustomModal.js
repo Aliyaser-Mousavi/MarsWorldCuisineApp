@@ -4,6 +4,7 @@ import { Animated } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import CustomButton from "./UI/CustomButton";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
 
 /**
  * Custom-styled dialog replacing system Alert.alert.
@@ -18,6 +19,7 @@ const CustomModal = ({
   onClose,
 }) => {
   const { colors, shadows, radii, spacing, type } = useTheme();
+  const { isRTL, t } = useLocale();
   const scale = useRef(new Animated.Value(0.94)).current;
   const opacity = useRef(new Animated.Value(0)).current;
 
@@ -91,15 +93,49 @@ const CustomModal = ({
             },
           ]}
         >
-          <View style={[styles.iconBadge, { backgroundColor: iconMeta.bg }]}>
+          <View
+            style={[
+              styles.iconBadge,
+              {
+                backgroundColor: iconMeta.bg,
+                alignSelf: isRTL ? "flex-end" : "flex-start",
+              },
+            ]}
+          >
             <Ionicons name={iconMeta.name} size={26} color={iconMeta.color} />
           </View>
 
           {title ? (
-            <Text style={[styles.title, { color: colors.ink }]}>{title}</Text>
+            <Text
+              style={[
+                styles.title,
+                type.title,
+                {
+                  color: colors.ink,
+                  textAlign: isRTL ? "right" : "left",
+                  writingDirection: isRTL ? "rtl" : "ltr",
+                  marginBottom: 8,
+                  fontFamily: isRTL ? undefined : "Fraunces_600SemiBold",
+                },
+              ]}
+            >
+              {title}
+            </Text>
           ) : null}
           {message ? (
-            <Text style={[styles.message, { color: colors.inkMuted }]}>
+            <Text
+              style={[
+                styles.message,
+                type.body,
+                {
+                  color: colors.inkMuted,
+                  textAlign: isRTL ? "right" : "left",
+                  writingDirection: isRTL ? "rtl" : "ltr",
+                  marginBottom: 24,
+                  fontFamily: isRTL ? undefined : "DMSans_400Regular",
+                },
+              ]}
+            >
               {message}
             </Text>
           ) : null}
@@ -110,6 +146,7 @@ const CustomModal = ({
                 label={secondaryAction.label}
                 onPress={secondaryAction.onPress}
                 variant={secondaryAction.variant || "secondary"}
+                fullWidth
               />
             ) : null}
             {primaryAction ? (
@@ -117,9 +154,15 @@ const CustomModal = ({
                 label={primaryAction.label}
                 onPress={primaryAction.onPress}
                 variant={primaryAction.variant || "primary"}
+                fullWidth
               />
             ) : (
-              <CustomButton label="OK" onPress={onClose} variant="primary" />
+              <CustomButton
+                label={t("common.confirm", { defaultValue: "OK" })}
+                onPress={onClose}
+                variant="primary"
+                fullWidth
+              />
             )}
           </View>
         </Animated.View>
@@ -162,6 +205,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   actions: {
+    width: "100%",
     gap: 8,
   },
 });

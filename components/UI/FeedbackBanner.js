@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "../../constants/theme";
+import { useLocale } from "../../constants/locale";
 
 const getTone = (variant, colors) => {
   switch (variant) {
@@ -48,16 +49,34 @@ const FeedbackBanner = ({
   style,
 }) => {
   const { colors } = useTheme();
+  const { isRTL } = useLocale();
   if (!message) return null;
   const tone = getTone(variant, colors);
 
   return (
     <View
-      style={[styles.banner, { backgroundColor: tone.bg }, style]}
+      style={[
+        styles.banner,
+        {
+          backgroundColor: tone.bg,
+          flexDirection: isRTL ? "row-reverse" : "row",
+        },
+        style,
+      ]}
       accessibilityRole="alert"
     >
       <Ionicons name={tone.icon} size={18} color={tone.ink} />
-      <Text style={[styles.text, { color: tone.ink }]}>{message}</Text>
+      <Text
+        style={[
+          styles.text,
+          {
+            color: tone.ink,
+            textAlign: isRTL ? "right" : "left",
+          },
+        ]}
+      >
+        {message}
+      </Text>
       {onDismiss ? (
         <Pressable onPress={onDismiss} hitSlop={10} accessibilityLabel="Dismiss">
           <Ionicons name="close" size={16} color={tone.ink} />
@@ -71,7 +90,6 @@ export default FeedbackBanner;
 
 const styles = StyleSheet.create({
   banner: {
-    flexDirection: "row",
     alignItems: "center",
     gap: 8,
     paddingVertical: 10,

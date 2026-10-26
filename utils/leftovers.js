@@ -106,10 +106,10 @@ export function suggestLeftoverRemixes({
 
   if (!recentCooks.length) return { sources: [], suggestions: [] };
 
-  const sourceTokens = new Map(); // token -> source meal title
+  const sourceTokens = new Map(); // token -> source meal
   recentCooks.forEach(({ meal }) => {
     extractLeftoverTokens(meal).forEach((token) => {
-      if (!sourceTokens.has(token)) sourceTokens.set(token, meal.title);
+      if (!sourceTokens.has(token)) sourceTokens.set(token, meal);
     });
   });
 
@@ -137,12 +137,14 @@ export function suggestLeftoverRemixes({
         pantry.ratio * 4 +
         (meal.duration <= 30 ? 1 : 0) +
         (meal.isVegetarian || meal.isVegan ? 0.5 : 0);
+      const fromMeal = sourceTokens.get(shared[0]) || null;
       return {
         meal,
         score,
         sharedTokens: shared.slice(0, 4),
         pantryRatio: pantry.ratio,
-        fromLabel: sourceTokens.get(shared[0]) || "recent cooks",
+        fromMeal,
+        fromLabel: fromMeal?.title || "recent cooks",
       };
     })
     .filter(Boolean)

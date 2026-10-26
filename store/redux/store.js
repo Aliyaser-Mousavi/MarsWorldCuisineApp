@@ -11,6 +11,7 @@ import dinnerMenusReducer from "./dinnerMenus";
 import prepListReducer from "./prepList";
 import questsReducer from "./quests";
 import authReducer from "./authSlice";
+import notificationsReducer from "./notifications";
 import storage from "@react-native-async-storage/async-storage";
 import { persistReducer, persistStore } from "redux-persist";
 import { syncActionToSupabase } from "../../services/syncService";
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   prepList: prepListReducer,
   quests: questsReducer,
   auth: authReducer,
+  notifications: notificationsReducer,
 });
 
 const persistConfig = {
@@ -45,6 +47,7 @@ const persistConfig = {
     "dinnerMenus",
     "prepList",
     "quests",
+    "notifications",
   ],
 };
 

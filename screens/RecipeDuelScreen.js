@@ -12,17 +12,24 @@ import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { LinearGradient } from "expo-linear-gradient";
+import { useTranslation } from "react-i18next";
 import { MEALS } from "../data/dummy-data";
 import { duelMeals, pickDuelPair } from "../utils/duel";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
+import { useAppLanguage } from "../utils/catalogue";
+import { MEALS_FA } from "../data/dummy-data.fa";
+import { formatNumber, toPersianDigits } from "../utils/formatters";
 
 const { width } = Dimensions.get("window");
 
 const RecipeDuelScreen = ({ navigation }) => {
   const { colors, radii, spacing, type, shadows } = useTheme();
+  const { t } = useTranslation();
+  const { isRTL } = useLocale();
   const styles = useMemo(
-    () => createStyles(colors, type, spacing, radii, shadows),
-    [colors, type, spacing, radii, shadows],
+    () => createStyles(colors, type, spacing, radii, shadows, isRTL),
+    [colors, type, spacing, radii, shadows, isRTL],
   );
   const prefs = useSelector((state) => state.preferences);
   const pantryItems = useSelector((state) => state.pantry.items);
@@ -52,9 +59,9 @@ const RecipeDuelScreen = ({ navigation }) => {
     return (
       <View style={styles.emptyRoot}>
         <Ionicons name="git-compare-outline" size={40} color={colors.inkSoft} />
-        <Text style={styles.emptyTitle}>Need more recipes</Text>
+        <Text style={styles.emptyTitle}>{t("duel.needMoreRecipes")}</Text>
         <Text style={styles.emptyBody}>
-          Loosen dietary preferences so we can pit two dishes against each other.
+          {t("duel.loosenPreferences")}
         </Text>
       </View>
     );
@@ -67,36 +74,86 @@ const RecipeDuelScreen = ({ navigation }) => {
     navigation.navigate("MealDetail", { mealId: meal.id });
   };
 
+  const getMetricLabel = (id, fallback) => {
+    const map = {
+      prep: t("duel.metrics.prepTime"),
+      duration: t("duel.metrics.duration", { defaultValue: "Time" }),
+      complexity: t("duel.metrics.complexity", { defaultValue: "Complexity" }),
+      affordability: t("duel.metrics.affordability", { defaultValue: "Cost" }),
+      ingredients: t("duel.metrics.ingredients", { defaultValue: "Ingredients" }),
+      pantry: t("duel.metrics.pantryMatch"),
+      rating: t("duel.metrics.rating"),
+      simplicity: t("duel.metrics.simplicity"),
+      cooked: t("duel.metrics.timesCooked"),
+    };
+    return map[id] || fallback;
+  };
+
+  const formatMetricValue = (m, val) => {
+    if (val == null || val === "—") return "—";
+    if (m.id === "duration") {
+      const num = String(val).replace(/\D/g, "");
+      return isRTL ? `${toPersianDigits(num)} دقیقه` : `${num} min`;
+    }
+    if (m.id === "complexity") {
+      return t(`mealDetails.complexity.${String(val).toLowerCase()}`, {
+        defaultValue: val,
+      });
+    }
+    if (m.id === "affordability") {
+      return t(`mealDetails.affordability.${String(val).toLowerCase()}`, {
+        defaultValue: val,
+      });
+    }
+    if (m.id === "pantry") {
+      const num = String(val).replace(/\D/g, "");
+      return isRTL ? `${toPersianDigits(num)}٪` : `${num}%`;
+    }
+    if (m.id === "rating" || m.id === "ingredients" || m.id === "cooked") {
+      return formatNumber(val, isRTL);
+    }
+    return isRTL ? toPersianDigits(val) : val;
+  };
+
+  const language = useAppLanguage();
+  const mealATitle = (language === "fa" && MEALS_FA[mealA.id]?.title) ? MEALS_FA[mealA.id].title : mealA.title;
+  const mealBTitle = (language === "fa" && MEALS_FA[mealB.id]?.title) ? MEALS_FA[mealB.id].title : mealB.title;
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.intro}>
-        <Text style={styles.kicker}>Recipe duel</Text>
-        <Text style={styles.headline}>Which one wins tonight?</Text>
-        <Text style={styles.body}>
-          Two contenders. One kitchen. Tap the champion — or reshuffle for a
-          fresh matchup.
-        </Text>
+        <Text style={styles.kicker}>{t("duel.kicker")}</Text>
+        <Text style={styles.headline}>{t("duel.headline")}</Text>
+        <Text style={styles.body}>{t("duel.body")}</Text>
       </View>
 
       <View style={styles.arena}>
         <Contender
           meal={mealA}
+          displayTitle={mealATitle}
           tags={duel.tagsA}
           crowned={duel.suggested === "a"}
           onPress={() => pickSide("a")}
           styles={styles}
           colors={colors}
+          isRTL={isRTL}
+          t={t}
         />
         <View style={styles.vsBadge}>
-          <Text style={styles.vsText}>VS</Text>
+          <Text style={styles.vsText}>
+            {t("duel.vsBadge", { defaultValue: isRTL ? "یا" : "VS" })}
+          </Text>
         </View>
         <Contender
           meal={mealB}
+          displayTitle={mealBTitle}
           tags={duel.tagsB}
           crowned={duel.suggested === "b"}
           onPress={() => pickSide("b")}
           styles={styles}
           colors={colors}
+          isRTL={isRTL}
+          t={t}
         />
       </View>
 
@@ -104,32 +161,35 @@ const RecipeDuelScreen = ({ navigation }) => {
         <View style={styles.hintBanner}>
           <Ionicons name="sparkles" size={16} color={colors.accent} />
           <Text style={styles.hintText}>
-            Edge to {(duel.suggested === "a" ? mealA : mealB).title} on tonight’s
-            numbers
+            {t("duel.edgeTo", {
+              title: duel.suggested === "a" ? mealATitle : mealBTitle,
+            })}
           </Text>
         </View>
       )}
 
       <View style={styles.table}>
         <View style={styles.tableHead}>
-          <Text style={[styles.colLabel, styles.colMetric]}>Metric</Text>
+          <Text style={[styles.colLabel, styles.colMetric]}>{t("duel.metric")}</Text>
           <Text style={styles.colLabel} numberOfLines={1}>
-            A
+            {t("duel.optionA", { defaultValue: isRTL ? "الف" : "A" })}
           </Text>
           <Text style={styles.colLabel} numberOfLines={1}>
-            B
+            {t("duel.optionB", { defaultValue: isRTL ? "ب" : "B" })}
           </Text>
         </View>
         {duel.metrics.map((m) => (
           <View key={m.id} style={styles.tableRow}>
-            <Text style={[styles.metricLabel, styles.colMetric]}>{m.label}</Text>
+            <Text style={[styles.metricLabel, styles.colMetric]}>
+              {getMetricLabel(m.id, m.label)}
+            </Text>
             <Text
               style={[
                 styles.metricValue,
                 m.winner === "a" && styles.metricWin,
               ]}
             >
-              {m.a}
+              {formatMetricValue(m, m.a)}
             </Text>
             <Text
               style={[
@@ -137,7 +197,7 @@ const RecipeDuelScreen = ({ navigation }) => {
                 m.winner === "b" && styles.metricWin,
               ]}
             >
-              {m.b}
+              {formatMetricValue(m, m.b)}
             </Text>
           </View>
         ))}
@@ -145,13 +205,24 @@ const RecipeDuelScreen = ({ navigation }) => {
 
       <Pressable style={styles.reshuffle} onPress={reshuffle}>
         <Ionicons name="shuffle" size={18} color={colors.onBrand} />
-        <Text style={styles.reshuffleText}>New duel</Text>
+        <Text style={styles.reshuffleText}>{t("duel.reshuffle")}</Text>
       </Pressable>
     </ScrollView>
   );
 };
 
-function Contender({ meal, tags, crowned, onPress, styles, colors }) {
+function getDietTagLabel(tag, t, isRTL) {
+  const map = {
+    Vegan: t ? t("duel.dietTags.vegan", { defaultValue: isRTL ? "وگان" : "Vegan" }) : (isRTL ? "وگان" : "Vegan"),
+    Vegetarian: t ? t("duel.dietTags.vegetarian", { defaultValue: isRTL ? "گیاهی" : "Vegetarian" }) : (isRTL ? "گیاهی" : "Vegetarian"),
+    GF: t ? t("duel.dietTags.gf", { defaultValue: isRTL ? "بدون گلوتن" : "GF" }) : (isRTL ? "بدون گلوتن" : "GF"),
+    LF: t ? t("duel.dietTags.lf", { defaultValue: isRTL ? "بدون لاکتوز" : "LF" }) : (isRTL ? "بدون لاکتوز" : "LF"),
+  };
+  return map[tag] || tag;
+}
+
+function Contender({ meal, displayTitle, tags, crowned, onPress, styles, colors, isRTL, t }) {
+  const title = displayTitle || meal.title;
   return (
     <Pressable style={styles.contender} onPress={onPress}>
       <View style={styles.imageWrap}>
@@ -170,29 +241,44 @@ function Contender({ meal, tags, crowned, onPress, styles, colors }) {
           </View>
         )}
         <Text style={styles.contenderTitle} numberOfLines={2}>
-          {meal.title}
+          {title}
         </Text>
       </View>
       <Text style={styles.contenderMeta}>
-        {meal.duration} min · {meal.complexity}
+        {t
+          ? t("mealDetails.durationMin", {
+              duration: isRTL ? toPersianDigits(meal.duration) : meal.duration,
+              defaultValue: isRTL
+                ? `${toPersianDigits(meal.duration)} دقیقه`
+                : `${meal.duration} min`,
+            })
+          : isRTL
+          ? `${toPersianDigits(meal.duration)} دقیقه`
+          : `${meal.duration} min`}{" "}
+        ·{" "}
+        {t
+          ? t(`mealDetails.complexity.${meal.complexity.toLowerCase()}`, {
+              defaultValue: meal.complexity,
+            })
+          : meal.complexity}
       </Text>
       {tags.length > 0 && (
         <View style={styles.tagRow}>
-          {tags.map((t) => (
-            <View key={t} style={styles.tag}>
-              <Text style={styles.tagText}>{t}</Text>
+          {tags.map((tg) => (
+            <View key={tg} style={styles.tag}>
+              <Text style={styles.tagText}>{getDietTagLabel(tg, t, isRTL)}</Text>
             </View>
           ))}
         </View>
       )}
-      <Text style={styles.pickCta}>Choose →</Text>
+      <Text style={styles.pickCta}>{isRTL ? "← انتخاب" : "Choose →"}</Text>
     </Pressable>
   );
 }
 
 export default RecipeDuelScreen;
 
-const createStyles = (colors, type, spacing, radii, shadows) => {
+const createStyles = (colors, type, spacing, radii, shadows, isRTL) => {
   const COL = (width - spacing.lg * 2 - spacing.sm) / 2;
   return StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
@@ -208,11 +294,20 @@ const createStyles = (colors, type, spacing, radii, shadows) => {
     textTransform: "uppercase",
     letterSpacing: 1.2,
     marginBottom: 6,
+    textAlign: isRTL ? "right" : "left",
   },
-  headline: { ...type.display, fontSize: 26, marginBottom: 8 },
-  body: { ...type.body },
+  headline: {
+    ...type.display,
+    fontSize: 26,
+    marginBottom: 8,
+    textAlign: isRTL ? "right" : "left",
+  },
+  body: {
+    ...type.body,
+    textAlign: isRTL ? "right" : "left",
+  },
   arena: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     paddingHorizontal: spacing.lg,
     gap: spacing.sm,
     position: "relative",
@@ -224,7 +319,6 @@ const createStyles = (colors, type, spacing, radii, shadows) => {
     borderWidth: 1,
     borderColor: colors.border,
     overflow: "hidden",
-    ...shadows.soft,
   },
   imageWrap: {
     height: COL * 1.15,
@@ -237,7 +331,7 @@ const createStyles = (colors, type, spacing, radii, shadows) => {
   crown: {
     position: "absolute",
     top: 10,
-    right: 10,
+    [isRTL ? "left" : "right"]: 10,
     backgroundColor: colors.surface,
     width: 28,
     height: 28,
@@ -250,18 +344,20 @@ const createStyles = (colors, type, spacing, radii, shadows) => {
     left: 10,
     right: 10,
     bottom: 10,
-    fontFamily: "Fraunces_600SemiBold",
+    ...(isRTL ? {} : { fontFamily: "Fraunces_600SemiBold" }),
     fontSize: 15,
     color: colors.onBrand,
     lineHeight: 20,
+    textAlign: isRTL ? "right" : "left",
   },
   contenderMeta: {
     ...type.caption,
     paddingHorizontal: 10,
     paddingTop: 8,
+    textAlign: isRTL ? "right" : "left",
   },
   tagRow: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     flexWrap: "wrap",
     gap: 4,
     paddingHorizontal: 10,
@@ -278,6 +374,7 @@ const createStyles = (colors, type, spacing, radii, shadows) => {
     ...type.label,
     color: colors.accent,
     padding: 10,
+    textAlign: isRTL ? "left" : "right",
   },
   vsBadge: {
     position: "absolute",
@@ -299,7 +396,7 @@ const createStyles = (colors, type, spacing, radii, shadows) => {
     color: colors.onBrand,
   },
   hintBanner: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     gap: 8,
     marginHorizontal: spacing.lg,
@@ -312,6 +409,7 @@ const createStyles = (colors, type, spacing, radii, shadows) => {
     ...type.label,
     color: colors.accent,
     flex: 1,
+    textAlign: isRTL ? "right" : "left",
   },
   table: {
     marginHorizontal: spacing.lg,
@@ -323,7 +421,7 @@ const createStyles = (colors, type, spacing, radii, shadows) => {
     overflow: "hidden",
   },
   tableHead: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     backgroundColor: colors.bg,
     paddingVertical: 10,
     paddingHorizontal: 12,
@@ -331,7 +429,7 @@ const createStyles = (colors, type, spacing, radii, shadows) => {
     borderBottomColor: colors.border,
   },
   tableRow: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     paddingVertical: 12,
     paddingHorizontal: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -344,11 +442,12 @@ const createStyles = (colors, type, spacing, radii, shadows) => {
     textTransform: "uppercase",
     letterSpacing: 0.6,
   },
-  colMetric: { flex: 1.2, textAlign: "left" },
+  colMetric: { flex: 1.2, textAlign: isRTL ? "right" : "left" },
   metricLabel: {
     ...type.label,
     color: colors.ink,
     flex: 1.2,
+    textAlign: isRTL ? "right" : "left",
   },
   metricValue: {
     ...type.body,
@@ -364,7 +463,7 @@ const createStyles = (colors, type, spacing, radii, shadows) => {
   reshuffle: {
     marginHorizontal: spacing.lg,
     marginTop: spacing.lg,
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 8,

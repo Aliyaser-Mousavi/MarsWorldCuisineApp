@@ -1,0 +1,89 @@
+{
+  "categories": [
+    {
+      "id": "c1",
+      "title": "Italian"
+    },
+    {
+      "id": "c2",
+      "title": "Quick & Easy"
+    },
+    {
+      "id": "c3",
+      "title": "Hamburgers"
+    },
+    {
+      "id": "c4",
+      "title": "German"
+    },
+    {
+      "id": "c5",
+      "title": "Salads"
+    },
+    {
+      "id": "c6",
+      "title": "Exotic"
+    },
+    {
+      "id": "c7",
+      "title": "Breakfast"
+    },
+    {
+      "id": "c8",
+      "title": "Asian"
+    },
+    {
+      "id": "c9",
+      "title": "French"
+    },
+    {
+      "id": "c10",
+      "title": "Desserts"
+    },
+    {
+      "id": "c11",
+      "title": "Middle Eastern"
+    },
+    {
+      "id": "c12",
+      "title": "Mexican"
+    },
+    {
+      "id": "c13",
+      "title": "Indian"
+    },
+    {
+      "id": "c14",
+      "title": "Seafood"
+    },
+    {
+      "id": "c15",
+      "title": "Vegan"
+    },
+    {
+      "id": "c16",
+      "title": "Afghan"
+    },
+    {
+      "id": "c17",
+      "title": "Iranian"
+    },
+    {
+      "id": "c18",
+      "title": "World Classics"
+    },
+    {
+      "id": "c19",
+      "title": "Street Food"
+    },
+    {
+      "id": "c20",
+      "title": "Vegetarian"
+    }
+  ],
+  "mealsSummary": {
+    "count": 140,
+    "totalIngredients": 973,
+    "totalSteps": 770
+  }
+}

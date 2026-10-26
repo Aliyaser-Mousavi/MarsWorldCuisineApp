@@ -63,14 +63,19 @@ export function extractStepTimer(stepText) {
   return null;
 }
 
-export function formatCountdown(totalSeconds) {
+import { toPersianDigits } from "./formatters";
+
+export function formatCountdown(totalSeconds, isRTL = false) {
   const s = Math.max(0, totalSeconds);
   const m = Math.floor(s / 60);
   const r = s % 60;
+  let res;
   if (m >= 60) {
     const h = Math.floor(m / 60);
     const mm = m % 60;
-    return `${h}:${mm.toString().padStart(2, "0")}:${r.toString().padStart(2, "0")}`;
+    res = `${h}:${mm.toString().padStart(2, "0")}:${r.toString().padStart(2, "0")}`;
+  } else {
+    res = `${m.toString().padStart(2, "0")}:${r.toString().padStart(2, "0")}`;
   }
-  return `${m.toString().padStart(2, "0")}:${r.toString().padStart(2, "0")}`;
+  return isRTL ? toPersianDigits(res) : res;
 }

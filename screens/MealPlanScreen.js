@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,19 +9,16 @@ import { MEALS } from "../data/dummy-data";
 import { WEEK_DAYS, removeFromDay, clearWeek } from "../store/redux/mealPlan";
 import { addIngredients } from "../store/redux/shoppingList";
 import { useTheme } from "../constants/theme";
-
-const DAY_LABELS = {
-  monday: "Mon",
-  tuesday: "Tue",
-  wednesday: "Wed",
-  thursday: "Thu",
-  friday: "Fri",
-  saturday: "Sat",
-  sunday: "Sun",
-};
+import { useLocale } from "../constants/locale";
+import { useAppLanguage, getScaledMealIngredients } from "../utils/catalogue";
+import { MEALS_FA } from "../data/dummy-data.fa";
+import { toPersianDigits } from "../utils/formatters";
+import { syncMealPlanReminders } from "../services/notificationService";
 
 const MealPlanScreen = () => {
   const { colors, type, spacing, radii } = useTheme();
+  const { t, isRTL } = useLocale();
+  const language = useAppLanguage();
   const styles = useMemo(
     () => createStyles(colors, type, spacing, radii),
     [colors, type, spacing, radii],
@@ -36,6 +33,10 @@ const MealPlanScreen = () => {
     0,
   );
 
+  useEffect(() => {
+    syncMealPlanReminders({ week }).catch(() => {});
+  }, [week]);
+
   const shopTheWeek = () => {
     const seen = new Set();
     WEEK_DAYS.forEach((day) => {
@@ -44,11 +45,13 @@ const MealPlanScreen = () => {
         seen.add(id);
         const meal = MEALS.find((m) => m.id === id);
         if (!meal) return;
+        const mealTitle = (language === "fa" && MEALS_FA[meal.id]?.title) ? MEALS_FA[meal.id].title : meal.title;
+        const mealIngredients = getScaledMealIngredients(meal, 1, language);
         dispatch(
           addIngredients({
             mealId: meal.id,
-            mealTitle: meal.title,
-            ingredients: meal.ingredients,
+            mealTitle,
+            ingredients: mealIngredients,
           }),
         );
       });
@@ -59,18 +62,29 @@ const MealPlanScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.toolbar}>
-        <Text style={styles.count}>{total} planned this week</Text>
+      <View
+        style={[
+          styles.toolbar,
+          { flexDirection: isRTL ? "row-reverse" : "row" },
+        ]}
+      >
+        <Text style={styles.count}>
+          {t("mealPlan.plannedThisWeek", { count: total })}
+        </Text>
         {total > 0 && (
           <Pressable onPress={() => dispatch(clearWeek())} hitSlop={8}>
-            <Text style={styles.clear}>Clear week</Text>
+            <Text style={styles.clear}>{t("mealPlan.clearWeek")}</Text>
           </Pressable>
         )}
       </View>
 
       {total > 0 && (
         <Pressable
-          style={[styles.shopWeek, shopped && styles.shopWeekDone]}
+          style={[
+            styles.shopWeek,
+            { flexDirection: isRTL ? "row-reverse" : "row" },
+            shopped && styles.shopWeekDone,
+          ]}
           onPress={shopTheWeek}
         >
           <Ionicons
@@ -81,7 +95,9 @@ const MealPlanScreen = () => {
           <Text
             style={[styles.shopWeekText, shopped && styles.shopWeekTextDone]}
           >
-            {shopped ? "Added to shopping list" : "Shop the whole week"}
+            {shopped
+              ? t("mealPlan.addedToShoppingList")
+              : t("mealPlan.shopTheWholeWeek")}
           </Text>
         </Pressable>
       )}
@@ -91,17 +107,40 @@ const MealPlanScreen = () => {
           const ids = week[day] || [];
           return (
             <View key={day} style={styles.dayBlock}>
-              <Text style={styles.dayTitle}>{DAY_LABELS[day]}</Text>
+              <Text
+                style={[
+                  styles.dayTitle,
+                  { textAlign: isRTL ? "right" : "left" },
+                ]}
+              >
+                {t(`mealPlan.days.${day}`, { defaultValue: day })}
+              </Text>
               {ids.length === 0 ? (
-                <Text style={styles.emptyDay}>No meals planned</Text>
+                <Text
+                  style={[
+                    styles.emptyDay,
+                    { textAlign: isRTL ? "right" : "left" },
+                  ]}
+                >
+                  {t("mealPlan.noMealsPlanned")}
+                </Text>
               ) : (
                 ids.map((id) => {
                   const meal = MEALS.find((m) => m.id === id);
                   if (!meal) return null;
                   return (
-                    <View key={`${day}-${id}`} style={styles.mealRow}>
+                    <View
+                      key={`${day}-${id}`}
+                      style={[
+                        styles.mealRow,
+                        { flexDirection: isRTL ? "row-reverse" : "row" },
+                      ]}
+                    >
                       <Pressable
-                        style={styles.mealPress}
+                        style={[
+                          styles.mealPress,
+                          { flexDirection: isRTL ? "row-reverse" : "row" },
+                        ]}
                         onPress={() =>
                           navigation.navigate("MealDetail", { mealId: id })
                         }
@@ -111,12 +150,34 @@ const MealPlanScreen = () => {
                           style={styles.thumb}
                           contentFit="cover"
                         />
-                        <View style={styles.mealMeta}>
-                          <Text style={styles.mealTitle} numberOfLines={2}>
-                            {meal.title}
+                        <View
+                          style={[
+                            styles.mealMeta,
+                            {
+                              alignItems: isRTL ? "flex-end" : "flex-start",
+                              marginLeft: isRTL ? 0 : 12,
+                              marginRight: isRTL ? 12 : 0,
+                            },
+                          ]}
+                        >
+                          <Text
+                            style={[
+                              styles.mealTitle,
+                              { textAlign: isRTL ? "right" : "left" },
+                            ]}
+                            numberOfLines={2}
+                          >
+                            {(language === "fa" && MEALS_FA[meal.id]?.title)
+                              ? MEALS_FA[meal.id].title
+                              : meal.title}
                           </Text>
                           <Text style={styles.mealSub}>
-                            {meal.duration} min
+                            {t("mealPlan.durationMin", {
+                              duration: isRTL ? toPersianDigits(meal.duration) : meal.duration,
+                              defaultValue: isRTL
+                                ? `${toPersianDigits(meal.duration)} دقیقه`
+                                : `${meal.duration} min`,
+                            })}
                           </Text>
                         </View>
                       </Pressable>
@@ -139,10 +200,6 @@ const MealPlanScreen = () => {
             </View>
           );
         })}
-        <Text style={styles.hint}>
-          Add recipes from any meal detail screen. Your plan is saved on this
-          device.
-        </Text>
       </ScrollView>
     </View>
   );

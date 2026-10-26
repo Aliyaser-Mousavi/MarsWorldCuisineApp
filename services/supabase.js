@@ -1,40 +1,38 @@
 import "react-native-url-polyfill/auto";
 import * as ExpoCrypto from "expo-crypto";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createClient } from "@supabase/supabase-js";
-import * as SecureStore from "expo-secure-store";
 
-// Polyfill WebCrypto for Supabase PKCE
-if (typeof global.crypto === "undefined") {
-  global.crypto = {};
+// Ensure getRandomValues is available for secure random tokens / UUIDs
+if (typeof globalThis.crypto === "undefined") {
+  globalThis.crypto = {};
 }
-if (typeof global.crypto.getRandomValues === "undefined") {
-  global.crypto.getRandomValues = ExpoCrypto.getRandomValues;
+if (typeof globalThis.crypto.getRandomValues === "undefined") {
+  globalThis.crypto.getRandomValues = (array) => ExpoCrypto.getRandomValues(array);
 }
-if (typeof global.crypto.subtle === "undefined") {
-  global.crypto.subtle = {
-    digest: (algorithm, data) => {
-      return ExpoCrypto.digest(ExpoCrypto.CryptoDigestAlgorithm.SHA256, data);
-    },
-  };
-}
-
-const ExpoSecureStoreAdapter = {
-  getItem: (key) => SecureStore.getItemAsync(key),
-  setItem: (key, value) => SecureStore.setItemAsync(key, value),
-  removeItem: (key) => SecureStore.deleteItemAsync(key),
-};
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    storage: ExpoSecureStoreAdapter,
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: false,
-    // PKCE puts ?code= in the redirect (query) instead of #access_token in the
-    // hash. Android/Chrome often drop hash fragments on custom-scheme handoff.
-    flowType: "pkce",
-  },
-});
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn(
+    "[supabase] EXPO_PUBLIC_SUPABASE_URL or EXPO_PUBLIC_SUPABASE_ANON_KEY is missing. " +
+    "Supabase features will be disabled. " +
+    "Make sure your .env.local file exists and the Expo dev server was restarted after adding it."
+  );
+}
+
+/** @type {import("@supabase/supabase-js").SupabaseClient} */
+export const supabase = (supabaseUrl && supabaseAnonKey)
+  ? createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        storage: AsyncStorage,
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: false,
+        // PKCE puts ?code= in the redirect (query) instead of #access_token in the
+        // hash. Android/Chrome often drop hash fragments on custom-scheme handoff.
+        flowType: "pkce",
+      },
+    })
+  : null;

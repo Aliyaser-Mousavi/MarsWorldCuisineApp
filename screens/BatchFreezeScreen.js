@@ -10,33 +10,45 @@ import { Image } from "expo-image";
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
+import { useTranslation } from "react-i18next";
 import { MEALS } from "../data/dummy-data";
 import { WEEK_DAYS, addToDay } from "../store/redux/mealPlan";
 import { addIngredients } from "../store/redux/shoppingList";
 import { scaleIngredients } from "../utils/servings";
 import { planBatchFreeze } from "../utils/serviceTimeline";
 import { useTheme } from "../constants/theme";
-
-const DAY_LABELS = {
-  monday: "Mon",
-  tuesday: "Tue",
-  wednesday: "Wed",
-  thursday: "Thu",
-  friday: "Fri",
-  saturday: "Sat",
-  sunday: "Sun",
-};
+import { useLocale } from "../constants/locale";
+import { formatNumber, toPersianDigits } from "../utils/formatters";
+import { useAppLanguage, getScaledMealIngredients } from "../utils/catalogue";
+import { MEALS_FA } from "../data/dummy-data.fa";
+import { syncMealPlanReminders } from "../services/notificationService";
 
 const BatchFreezeScreen = ({ route, navigation }) => {
-  const { colors, radii, spacing, type, shadows } = useTheme();
+  const { colors, radii, spacing, type } = useTheme();
+  const { t } = useTranslation();
+  const { isRTL } = useLocale();
+  const language = useAppLanguage();
   const styles = useMemo(
-    () => createStyles(colors, type, spacing, radii, shadows),
-    [colors, type, spacing, radii, shadows],
+    () => createStyles(colors, type, spacing, radii, isRTL),
+    [colors, type, spacing, radii, isRTL],
   );
   const mealId = route.params?.mealId;
   const initialMeal = MEALS.find((m) => m.id === mealId) || null;
   const dispatch = useDispatch();
   const prefs = useSelector((state) => state.preferences);
+
+  const dayLabels = useMemo(
+    () => ({
+      monday: t("mealPlan.days.monday"),
+      tuesday: t("mealPlan.days.tuesday"),
+      wednesday: t("mealPlan.days.wednesday"),
+      thursday: t("mealPlan.days.thursday"),
+      friday: t("mealPlan.days.friday"),
+      saturday: t("mealPlan.days.saturday"),
+      sunday: t("mealPlan.days.sunday"),
+    }),
+    [t],
+  );
 
   const [meal, setMeal] = useState(initialMeal);
   const [batches, setBatches] = useState(2);
@@ -61,7 +73,9 @@ const BatchFreezeScreen = ({ route, navigation }) => {
 
   const multiplier = batches;
   const scaled = meal
-    ? scaleIngredients(meal.ingredients, multiplier)
+    ? (language === "fa"
+        ? getScaledMealIngredients(meal, multiplier, "fa")
+        : scaleIngredients(meal.ingredients, multiplier))
     : [];
 
   const toggleDay = (day) => {
@@ -79,28 +93,28 @@ const BatchFreezeScreen = ({ route, navigation }) => {
     dispatch(
       addIngredients({
         mealId: meal.id,
-        mealTitle: `Batch · ${meal.title}`,
+        mealTitle: (language === "fa" && MEALS_FA[meal.id]?.title)
+          ? `پخت عمده · ${MEALS_FA[meal.id].title}`
+          : `Batch · ${meal.title}`,
         ingredients: scaled,
       }),
     );
     setDone(true);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    syncMealPlanReminders().catch(() => {});
   };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.intro}>
-        <Text style={styles.kicker}>Batch & freeze</Text>
-        <Text style={styles.headline}>Cook once, eat twice</Text>
-        <Text style={styles.body}>
-          Scale a recipe, shop the big batch, and park thaw nights on your meal
-          plan — all on this phone.
-        </Text>
+        <Text style={styles.kicker}>{t("batchFreeze.kicker")}</Text>
+        <Text style={styles.headline}>{t("batchFreeze.headline")}</Text>
+        <Text style={styles.body}>{t("batchFreeze.body")}</Text>
       </View>
 
       {!meal ? (
         <>
-          <Text style={styles.section}>Pick a freezable favorite</Text>
+          <Text style={styles.section}>{t("batchFreeze.pickFavorite")}</Text>
           {pool.map((m) => (
             <Pressable
               key={m.id}
@@ -117,10 +131,17 @@ const BatchFreezeScreen = ({ route, navigation }) => {
               />
               <View style={{ flex: 1 }}>
                 <Text style={styles.pickTitle} numberOfLines={2}>
-                  {m.title}
+                  {(language === "fa" && MEALS_FA[m.id]?.title)
+                    ? MEALS_FA[m.id].title
+                    : m.title}
                 </Text>
                 <Text style={styles.pickMeta}>
-                  {m.duration} min · {m.complexity}
+                  {t("mealDetails.durationMin", {
+                    duration: isRTL ? toPersianDigits(m.duration) : m.duration,
+                    defaultValue: isRTL
+                      ? `${toPersianDigits(m.duration)} دقیقه`
+                      : `${m.duration} min`,
+                  })} · {t(`mealDetails.complexity.${m.complexity.toLowerCase()}`, { defaultValue: m.complexity })}
                 </Text>
               </View>
             </Pressable>
@@ -135,14 +156,18 @@ const BatchFreezeScreen = ({ route, navigation }) => {
               contentFit="cover"
             />
             <View style={styles.heroBody}>
-              <Text style={styles.heroTitle}>{meal.title}</Text>
+              <Text style={styles.heroTitle}>
+                {(language === "fa" && MEALS_FA[meal.id]?.title)
+                  ? MEALS_FA[meal.id].title
+                  : meal.title}
+              </Text>
               <Pressable onPress={() => setMeal(null)}>
-                <Text style={styles.change}>Change recipe</Text>
+                <Text style={styles.change}>{t("batchFreeze.changeRecipe")}</Text>
               </Pressable>
             </View>
           </View>
 
-          <Text style={styles.section}>How many batches?</Text>
+          <Text style={styles.section}>{t("batchFreeze.batchMultiplier")}</Text>
           <View style={styles.stepper}>
             <Pressable
               style={styles.stepBtn}
@@ -150,7 +175,7 @@ const BatchFreezeScreen = ({ route, navigation }) => {
             >
               <Ionicons name="remove" size={20} color={colors.ink} />
             </Pressable>
-            <Text style={styles.stepValue}>{batches}×</Text>
+            <Text style={styles.stepValue}>{formatNumber(batches, isRTL)}×</Text>
             <Pressable
               style={styles.stepBtn}
               onPress={() => setBatches((n) => Math.min(6, n + 1))}
@@ -159,7 +184,7 @@ const BatchFreezeScreen = ({ route, navigation }) => {
             </Pressable>
           </View>
 
-          <Text style={styles.section}>Base servings (one batch)</Text>
+          <Text style={styles.section}>{t("batchFreeze.baseServings")}</Text>
           <View style={styles.stepper}>
             <Pressable
               style={styles.stepBtn}
@@ -167,7 +192,7 @@ const BatchFreezeScreen = ({ route, navigation }) => {
             >
               <Ionicons name="remove" size={20} color={colors.ink} />
             </Pressable>
-            <Text style={styles.stepValue}>{baseServings}</Text>
+            <Text style={styles.stepValue}>{formatNumber(baseServings, isRTL)}</Text>
             <Pressable
               style={styles.stepBtn}
               onPress={() => setBaseServings((n) => Math.min(12, n + 1))}
@@ -178,12 +203,16 @@ const BatchFreezeScreen = ({ route, navigation }) => {
 
           <View style={styles.summary}>
             <Text style={styles.summaryTitle}>
-              {plan.portions} portions · ~{plan.totalServings} servings total
+              {t("batchFreeze.totalServings", {
+                count: isRTL ? toPersianDigits(plan.totalServings) : plan.totalServings,
+              })}
             </Text>
-            <Text style={styles.summaryTip}>{plan.tip}</Text>
+            <Text style={styles.summaryTip}>
+              {batches >= 3 ? t("batchFreeze.tipLarge") : t("batchFreeze.tipSmall")}
+            </Text>
           </View>
 
-          <Text style={styles.section}>Thaw nights on meal plan</Text>
+          <Text style={styles.section}>{t("batchFreeze.thawNights")}</Text>
           <View style={styles.dayRow}>
             {WEEK_DAYS.map((day) => {
               const on = thawDays.includes(day);
@@ -194,21 +223,26 @@ const BatchFreezeScreen = ({ route, navigation }) => {
                   onPress={() => toggleDay(day)}
                 >
                   <Text style={[styles.dayText, on && styles.dayTextOn]}>
-                    {DAY_LABELS[day]}
+                    {dayLabels[day] || day}
                   </Text>
                 </Pressable>
               );
             })}
           </View>
 
-          <Text style={styles.section}>Scaled shopping list preview</Text>
+          <Text style={styles.section}>{t("shoppingList.title")}</Text>
           {scaled.slice(0, 8).map((line) => (
             <Text key={line} style={styles.ingLine}>
               · {line}
             </Text>
           ))}
           {scaled.length > 8 && (
-            <Text style={styles.more}>+{scaled.length - 8} more</Text>
+            <Text style={styles.more}>
+              {t("batchFreeze.moreIngredients", {
+                count: scaled.length - 8,
+                defaultValue: `+${scaled.length - 8} more`,
+              })}
+            </Text>
           )}
 
           <Pressable
@@ -223,8 +257,8 @@ const BatchFreezeScreen = ({ route, navigation }) => {
             />
             <Text style={[styles.applyText, done && styles.applyTextDone]}>
               {done
-                ? "Added to plan & shopping"
-                : "Add to meal plan + shopping"}
+                ? t("batchFreeze.appliedSuccess")
+                : t("batchFreeze.applyToPlan")}
             </Text>
           </Pressable>
         </>
@@ -235,7 +269,7 @@ const BatchFreezeScreen = ({ route, navigation }) => {
 
 export default BatchFreezeScreen;
 
-const createStyles = (colors, type, spacing, radii, shadows) =>
+const createStyles = (colors, type, spacing, radii, isRTL) =>
   StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.bg },
   content: { paddingBottom: spacing.xl },
@@ -250,18 +284,28 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     textTransform: "uppercase",
     letterSpacing: 1.2,
     marginBottom: 6,
+    textAlign: isRTL ? "right" : "left",
   },
-  headline: { ...type.display, fontSize: 26, marginBottom: 8 },
-  body: { ...type.body },
+  headline: {
+    ...type.display,
+    fontSize: 26,
+    marginBottom: 8,
+    textAlign: isRTL ? "right" : "left",
+  },
+  body: {
+    ...type.body,
+    textAlign: isRTL ? "right" : "left",
+  },
   section: {
     ...type.heading,
     fontSize: 15,
     paddingHorizontal: spacing.lg,
     marginTop: spacing.md,
     marginBottom: spacing.sm,
+    textAlign: isRTL ? "right" : "left",
   },
   pickCard: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     gap: 12,
     marginHorizontal: spacing.lg,
@@ -278,8 +322,17 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     borderRadius: radii.sm,
     backgroundColor: colors.border,
   },
-  pickTitle: { ...type.heading, fontSize: 15 },
-  pickMeta: { ...type.caption, marginTop: 2, textTransform: "capitalize" },
+  pickTitle: {
+    ...type.heading,
+    fontSize: 15,
+    textAlign: isRTL ? "right" : "left",
+  },
+  pickMeta: {
+    ...type.caption,
+    marginTop: 2,
+    textTransform: "capitalize",
+    textAlign: isRTL ? "right" : "left",
+  },
   heroCard: {
     marginHorizontal: spacing.lg,
     backgroundColor: colors.surface,
@@ -287,18 +340,23 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     overflow: "hidden",
     borderWidth: 1,
     borderColor: colors.border,
-    ...shadows.soft,
   },
   heroImage: { width: "100%", height: 140 },
   heroBody: { padding: spacing.md },
   heroTitle: {
-    fontFamily: "Fraunces_600SemiBold",
+    ...(isRTL ? {} : { fontFamily: "Fraunces_600SemiBold" }),
     fontSize: 20,
     color: colors.ink,
+    textAlign: isRTL ? "right" : "left",
   },
-  change: { ...type.label, color: colors.accent, marginTop: 6 },
+  change: {
+    ...type.label,
+    color: colors.accent,
+    marginTop: 6,
+    textAlign: isRTL ? "right" : "left",
+  },
   stepper: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 20,
@@ -328,10 +386,20 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     backgroundColor: colors.accentSoft,
     borderRadius: radii.md,
   },
-  summaryTitle: { ...type.heading, fontSize: 15, color: colors.accent },
-  summaryTip: { ...type.caption, marginTop: 4, color: colors.inkMuted },
+  summaryTitle: {
+    ...type.heading,
+    fontSize: 15,
+    color: colors.accent,
+    textAlign: isRTL ? "right" : "left",
+  },
+  summaryTip: {
+    ...type.caption,
+    marginTop: 4,
+    color: colors.inkMuted,
+    textAlign: isRTL ? "right" : "left",
+  },
   dayRow: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     flexWrap: "wrap",
     gap: 8,
     paddingHorizontal: spacing.lg,
@@ -354,16 +422,18 @@ const createStyles = (colors, type, spacing, radii, shadows) =>
     ...type.body,
     paddingHorizontal: spacing.lg,
     paddingVertical: 2,
+    textAlign: isRTL ? "right" : "left",
   },
   more: {
     ...type.caption,
     paddingHorizontal: spacing.lg,
     marginTop: 4,
+    textAlign: isRTL ? "right" : "left",
   },
   applyBtn: {
     marginHorizontal: spacing.lg,
     marginTop: spacing.lg,
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 8,

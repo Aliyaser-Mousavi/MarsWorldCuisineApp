@@ -19,9 +19,11 @@ import CustomButton from "../../components/UI/CustomButton";
 import FeedbackBanner from "../../components/UI/FeedbackBanner";
 import CustomModal from "../../components/CustomModal";
 import { useTheme } from "../../constants/theme";
+import { useLocale } from "../../constants/locale";
 
 const RegisterScreen = ({ navigation }) => {
-  const { colors, type, spacing, radii, shadows } = useTheme();
+  const { colors, type, spacing, radii } = useTheme();
+  const { t, isRTL } = useLocale();
   const styles = useMemo(
     () => createStyles(colors, type, spacing, radii),
     [colors, type, spacing, radii],
@@ -39,43 +41,58 @@ const RegisterScreen = ({ navigation }) => {
     const trimmedEmail = email.trim();
 
     if (!trimmedName || !trimmedEmail || !password) {
-      setLocalError("Please fill in all fields.");
+      setLocalError(t("auth.pleaseFillAllFields"));
       return;
     }
 
     if (password.length < 6) {
-      setLocalError("Password must be at least 6 characters.");
+      setLocalError(t("auth.passwordLengthError"));
       return;
     }
 
     setLocalError("");
     setSubmitting(true);
 
-    const { data, error } = await supabase.auth.signUp({
-      email: trimmedEmail,
-      password,
-      options: {
-        emailRedirectTo: AUTH_EMAIL_REDIRECT_URL,
-        data: { full_name: trimmedName },
-      },
-    });
+    if (!supabase) {
+      setSubmitting(false);
+      setLocalError("Authentication service is not available. Please check your network connection.");
+      return;
+    }
 
-    setSubmitting(false);
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: trimmedEmail,
+        password,
+        options: {
+          emailRedirectTo: AUTH_EMAIL_REDIRECT_URL,
+          data: { full_name: trimmedName },
+        },
+      });
 
-    if (error) {
-      const message = error.message || "Could not create account.";
+      if (error) {
+        const message = error.message || t("auth.couldNotCreateAccount");
+        setLocalError(message);
+        dispatch(setError(message));
+        return;
+      }
+
+      dispatch(setError(null));
+
+      if (data.session) {
+        return;
+      }
+
+      setConfirmDialog(true);
+    } catch (err) {
+      const message =
+        err?.message ||
+        t("auth.couldNotCreateAccount") ||
+        "Could not create account. Please try again.";
       setLocalError(message);
       dispatch(setError(message));
-      return;
+    } finally {
+      setSubmitting(false);
     }
-
-    dispatch(setError(null));
-
-    if (data.session) {
-      return;
-    }
-
-    setConfirmDialog(true);
   };
 
   return (
@@ -94,27 +111,50 @@ const RegisterScreen = ({ navigation }) => {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <View style={styles.brandMark}>
+          <View
+            style={[
+              styles.brandMark,
+              { flexDirection: isRTL ? "row-reverse" : "row" },
+            ]}
+          >
             <View style={styles.brandIcon}>
               <Ionicons name="leaf-outline" size={22} color={colors.onBrand} />
             </View>
-            <Text style={styles.kicker}>Mars World Cuisine</Text>
+            <Text style={styles.kicker}>{t("common.appName")}</Text>
           </View>
 
-          <Text style={styles.title}>Create account</Text>
-          <Text style={styles.subtitle}>
-            Save your favorites, meal plans, and kitchen data to your account.
+          <Text
+            style={[
+              styles.title,
+              {
+                textAlign: isRTL ? "right" : "left",
+                writingDirection: isRTL ? "rtl" : "ltr",
+              },
+            ]}
+          >
+            {t("auth.createAccount")}
+          </Text>
+          <Text
+            style={[
+              styles.subtitle,
+              {
+                textAlign: isRTL ? "right" : "left",
+                writingDirection: isRTL ? "rtl" : "ltr",
+              },
+            ]}
+          >
+            {t("auth.registerSubtitle")}
           </Text>
 
-          <View style={[styles.card, shadows.soft]}>
+          <View style={styles.card}>
             <CustomTextInput
-              label="Full name"
+              label={t("auth.fullName")}
               value={fullName}
               onChangeText={(v) => {
                 setFullName(v);
                 if (localError) setLocalError("");
               }}
-              placeholder="Your name"
+              placeholder={t("auth.fullNamePlaceholder")}
               leftIcon="person-outline"
               autoCapitalize="words"
               textContentType="name"
@@ -123,13 +163,13 @@ const RegisterScreen = ({ navigation }) => {
             />
 
             <CustomTextInput
-              label="Email"
+              label={t("auth.email")}
               value={email}
               onChangeText={(v) => {
                 setEmail(v);
                 if (localError) setLocalError("");
               }}
-              placeholder="you@example.com"
+              placeholder={t("auth.emailPlaceholder")}
               leftIcon="mail-outline"
               autoCapitalize="none"
               autoCorrect={false}
@@ -140,13 +180,13 @@ const RegisterScreen = ({ navigation }) => {
             />
 
             <CustomTextInput
-              label="Password"
+              label={t("auth.password")}
               value={password}
               onChangeText={(v) => {
                 setPassword(v);
                 if (localError) setLocalError("");
               }}
-              placeholder="At least 6 characters"
+              placeholder={t("auth.passwordMinChars")}
               leftIcon="lock-closed-outline"
               secureTextEntry
               textContentType="newPassword"
@@ -161,7 +201,7 @@ const RegisterScreen = ({ navigation }) => {
             />
 
             <CustomButton
-              label="Create account"
+              label={t("auth.createAccount")}
               onPress={handleRegister}
               loading={submitting}
               style={styles.submit}
@@ -172,12 +212,13 @@ const RegisterScreen = ({ navigation }) => {
           <Pressable
             style={({ pressed }) => [
               styles.linkRow,
+              { flexDirection: isRTL ? "row-reverse" : "row" },
               pressed && styles.linkPressed,
             ]}
             onPress={() => navigation.navigate("Login")}
           >
-            <Text style={styles.linkText}>Already have an account?</Text>
-            <Text style={styles.linkAccent}> Sign in</Text>
+            <Text style={styles.linkText}>{t("auth.alreadyHaveAccount")}</Text>
+            <Text style={styles.linkAccent}> {t("auth.signIn")}</Text>
           </Pressable>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -185,14 +226,14 @@ const RegisterScreen = ({ navigation }) => {
       <CustomModal
         visible={confirmDialog}
         variant="success"
-        title="Check your email"
-        message="We sent a confirmation link. Verify your email, then sign in."
+        title={t("auth.checkYourEmail")}
+        message={t("auth.checkEmailMessage")}
         onClose={() => {
           setConfirmDialog(false);
           navigation.navigate("Login");
         }}
         primaryAction={{
-          label: "Go to sign in",
+          label: t("auth.goToSignIn"),
           onPress: () => {
             setConfirmDialog(false);
             navigation.navigate("Login");

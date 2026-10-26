@@ -7,14 +7,20 @@ import {
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
 
-const CategoryGridTile = ({ title, color, onPress }) => {
+const CategoryGridTile = ({ title, color, onPress, categoryId }) => {
   const { colors } = useTheme();
+  const { t, isRTL } = useLocale();
 
   const handlePress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     onPress();
   };
+
+  const displayTitle = categoryId
+    ? t(`categories.items.${categoryId}`, { defaultValue: title })
+    : title;
 
   return (
     <View style={[styles.gridItem, { backgroundColor: colors.border }]}>
@@ -32,8 +38,19 @@ const CategoryGridTile = ({ title, color, onPress }) => {
           imageStyle={styles.image}
         >
           <View style={styles.overlay}>
-            <Text style={[styles.title, { color: colors.onBrand }]} numberOfLines={2}>
-              {title}
+            <Text
+              style={[
+                styles.title,
+                {
+                  color: colors.onBrand,
+                  textAlign: isRTL ? "right" : "left",
+                  writingDirection: isRTL ? "rtl" : "ltr",
+                  fontFamily: isRTL ? undefined : "DMSans_600SemiBold",
+                },
+              ]}
+              numberOfLines={2}
+            >
+              {displayTitle}
             </Text>
           </View>
         </ImageBackground>

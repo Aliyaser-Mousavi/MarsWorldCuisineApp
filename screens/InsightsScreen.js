@@ -3,17 +3,23 @@ import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 import { MEALS } from "../data/dummy-data";
+import { MEALS_FA } from "../data/dummy-data.fa";
 import { WEEK_DAYS } from "../store/redux/mealPlan";
 import { getCookingStreak } from "../utils/discover";
 import { buildActivityCalendar, activityLevel } from "../utils/activity";
 import { useTheme } from "../constants/theme";
+import { useLocale } from "../constants/locale";
+import { formatNumber } from "../utils/formatters";
 
 const InsightsScreen = ({ navigation }) => {
   const { colors, radii, spacing, type } = useTheme();
+  const { t } = useTranslation();
+  const { isRTL, language } = useLocale();
   const styles = useMemo(
-    () => createStyles(colors, type, spacing, radii),
-    [colors, type, spacing, radii],
+    () => createStyles(colors, type, spacing, radii, isRTL),
+    [colors, type, spacing, radii, isRTL],
   );
   const favoriteIds = useSelector((state) => state.favoriteMeals.ids);
   const metaById = useSelector((state) => state.recipeMeta.byId);
@@ -86,19 +92,16 @@ const InsightsScreen = ({ navigation }) => {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.intro}>
-        <Text style={styles.kicker}>Kitchen journal</Text>
-        <Text style={styles.headline}>Your cooking at a glance</Text>
-        <Text style={styles.body}>
-          Private stats from this device — favorites, meals cooked, ratings, and
-          plans.
-        </Text>
+        <Text style={styles.kicker}>{t("insights.kicker")}</Text>
+        <Text style={styles.headline}>{t("insights.headline")}</Text>
+        <Text style={styles.body}>{t("insights.body")}</Text>
       </View>
 
       {stats.streak > 0 && (
         <View style={styles.streakBanner}>
           <Ionicons name="flame" size={20} color={colors.accent} />
           <Text style={styles.streakText}>
-            {stats.streak}-day cooking streak — keep it going tonight.
+            {t("insights.streakBanner", { count: stats.streak })}
           </Text>
         </View>
       )}
@@ -109,12 +112,16 @@ const InsightsScreen = ({ navigation }) => {
       >
         <Ionicons name="ribbon-outline" size={20} color={colors.warning} />
         <View style={{ flex: 1 }}>
-          <Text style={styles.questTitle}>Kitchen quests</Text>
+          <Text style={styles.questTitle}>{t("insights.questsTitle")}</Text>
           <Text style={styles.questSub}>
-            Local challenges — claim badges as you cook
+            {t("insights.questsSub")}
           </Text>
         </View>
-        <Ionicons name="chevron-forward" size={16} color={colors.inkSoft} />
+        <Ionicons
+          name={isRTL ? "chevron-back" : "chevron-forward"}
+          size={16}
+          color={colors.inkSoft}
+        />
       </Pressable>
 
       <Pressable
@@ -123,38 +130,44 @@ const InsightsScreen = ({ navigation }) => {
       >
         <Ionicons name="globe-outline" size={20} color={colors.accent} />
         <View style={{ flex: 1 }}>
-          <Text style={styles.questTitle}>Flavor passport</Text>
+          <Text style={styles.questTitle}>{t("insights.passportTitle")}</Text>
           <Text style={styles.questSub}>
-            Stamp cuisines as you cook the world
+            {t("insights.passportSub")}
           </Text>
         </View>
-        <Ionicons name="chevron-forward" size={16} color={colors.inkSoft} />
+        <Ionicons
+          name={isRTL ? "chevron-back" : "chevron-forward"}
+          size={16}
+          color={colors.inkSoft}
+        />
       </Pressable>
 
       <View style={styles.heroStats}>
         <View style={styles.heroStat}>
-          <Text style={styles.heroNumber}>{stats.cooked}</Text>
-          <Text style={styles.heroLabel}>times cooked</Text>
+          <Text style={styles.heroNumber}>{formatNumber(stats.cooked, isRTL)}</Text>
+          <Text style={styles.heroLabel}>{t("insights.timesCooked")}</Text>
         </View>
         <View style={styles.heroDivider} />
         <View style={styles.heroStat}>
           <Text style={styles.heroNumber}>
-            {stats.avgRating ? stats.avgRating.toFixed(1) : "—"}
+            {stats.avgRating ? formatNumber(stats.avgRating.toFixed(1), isRTL) : "—"}
           </Text>
-          <Text style={styles.heroLabel}>avg rating</Text>
+          <Text style={styles.heroLabel}>{t("insights.avgRating")}</Text>
         </View>
         <View style={styles.heroDivider} />
         <View style={styles.heroStat}>
-          <Text style={styles.heroNumber}>{stats.favorites}</Text>
-          <Text style={styles.heroLabel}>favorites</Text>
+          <Text style={styles.heroNumber}>{formatNumber(stats.favorites, isRTL)}</Text>
+          <Text style={styles.heroLabel}>{t("insights.favorites")}</Text>
         </View>
       </View>
 
       <View style={styles.calendarCard}>
         <View style={styles.calendarHead}>
-          <Text style={styles.calendarTitle}>Last 12 weeks</Text>
+          <Text style={styles.calendarTitle}>{t("insights.cookingActivity")}</Text>
           <Text style={styles.calendarSub}>
-            {stats.streak > 0 ? `${stats.streak}-day streak` : "Start a streak"}
+            {stats.streak > 0
+              ? t("tonight.streak", { count: stats.streak })
+              : t("tonight.cookTonight")}
           </Text>
         </View>
         <View style={styles.calendarGrid}>
@@ -173,55 +186,59 @@ const InsightsScreen = ({ navigation }) => {
           })}
         </View>
         <View style={styles.legend}>
-          <Text style={styles.legendText}>Less</Text>
+          <Text style={styles.legendText}>—</Text>
           {levelColors.map((c, i) => (
             <View
               key={i}
               style={[styles.legendSwatch, { backgroundColor: c }]}
             />
           ))}
-          <Text style={styles.legendText}>More</Text>
+          <Text style={styles.legendText}>+</Text>
         </View>
       </View>
 
       <View style={styles.grid}>
         <StatTile
           icon="calendar-outline"
-          label="Planned this week"
+          label={t("mealPlan.title")}
           value={stats.planned}
           onPress={() => navigation.navigate("MealPlan")}
           styles={styles}
           colors={colors}
+          isRTL={isRTL}
         />
         <StatTile
           icon="basket-outline"
-          label="Shopping left"
+          label={t("shoppingList.title")}
           value={stats.shoppingLeft}
           onPress={() => navigation.navigate("ShoppingList")}
           styles={styles}
           colors={colors}
+          isRTL={isRTL}
         />
         <StatTile
           icon="leaf-outline"
-          label="Pantry items"
+          label={t("pantry.headline")}
           value={stats.pantry}
           onPress={() => navigation.navigate("Pantry")}
           styles={styles}
           colors={colors}
+          isRTL={isRTL}
         />
         <StatTile
           icon="checkbox-outline"
-          label="Prep left"
+          label={t("prep.headline")}
           value={stats.prepLeft}
           onPress={() => navigation.navigate("Prep")}
           styles={styles}
           colors={colors}
+          isRTL={isRTL}
         />
       </View>
 
       {stats.mostCooked.length > 0 && (
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Most cooked</Text>
+          <Text style={styles.sectionTitle}>{t("insights.mostCooked")}</Text>
           {stats.mostCooked.map(({ meal, count }) => (
             <Pressable
               key={meal.id}
@@ -237,11 +254,19 @@ const InsightsScreen = ({ navigation }) => {
               />
               <View style={styles.rowMeta}>
                 <Text style={styles.rowTitle} numberOfLines={1}>
-                  {meal.title}
+                  {(language === "fa" && MEALS_FA[meal.id]?.title)
+                    ? MEALS_FA[meal.id].title
+                    : meal.title}
                 </Text>
-                <Text style={styles.rowSub}>Cooked {count}×</Text>
+                <Text style={styles.rowSub}>
+                  {t("insights.cookedTimes", { count })}
+                </Text>
               </View>
-              <Ionicons name="chevron-forward" size={16} color={colors.inkSoft} />
+              <Ionicons
+                name={isRTL ? "chevron-back" : "chevron-forward"}
+                size={16}
+                color={colors.inkSoft}
+              />
             </Pressable>
           ))}
         </View>
@@ -249,11 +274,14 @@ const InsightsScreen = ({ navigation }) => {
 
       {stats.topRated.length > 0 && (
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Top rated by you</Text>
+          <Text style={styles.sectionTitle}>{t("insights.topRatedByYou")}</Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.hRow}
+            contentContainerStyle={[
+              styles.hRow,
+              isRTL && { minWidth: "100%" },
+            ]}
           >
             {stats.topRated.map((meal) => (
               <Pressable
@@ -269,7 +297,9 @@ const InsightsScreen = ({ navigation }) => {
                   contentFit="cover"
                 />
                 <Text style={styles.cardTitle} numberOfLines={2}>
-                  {meal.title}
+                  {(language === "fa" && MEALS_FA[meal.id]?.title)
+                    ? MEALS_FA[meal.id].title
+                    : meal.title}
                 </Text>
               </Pressable>
             ))}
@@ -280,32 +310,29 @@ const InsightsScreen = ({ navigation }) => {
       {stats.cooked === 0 && stats.ratedCount === 0 && (
         <View style={styles.empty}>
           <Ionicons name="sparkles-outline" size={28} color={colors.inkSoft} />
-          <Text style={styles.emptyTitle}>Your journal is waiting</Text>
-          <Text style={styles.emptyBody}>
-            Rate recipes, mark “Made it”, and finish cooking mode — insights
-            will grow here.
-          </Text>
+          <Text style={styles.emptyTitle}>{t("insights.emptyTitle")}</Text>
+          <Text style={styles.emptyBody}>{t("insights.emptyBody")}</Text>
         </View>
       )}
     </ScrollView>
   );
 };
 
-const StatTile = ({ icon, label, value, onPress, styles, colors }) => (
+const StatTile = ({ icon, label, value, onPress, styles, colors, isRTL }) => (
   <Pressable
     style={styles.tile}
     onPress={onPress}
     disabled={!onPress}
   >
     <Ionicons name={icon} size={18} color={colors.accent} />
-    <Text style={styles.tileValue}>{value}</Text>
+    <Text style={styles.tileValue}>{formatNumber(value, isRTL)}</Text>
     <Text style={styles.tileLabel}>{label}</Text>
   </Pressable>
 );
 
 export default InsightsScreen;
 
-const createStyles = (colors, type, spacing, radii) =>
+const createStyles = (colors, type, spacing, radii, isRTL) =>
   StyleSheet.create({
   container: {
     flex: 1,
@@ -322,14 +349,17 @@ const createStyles = (colors, type, spacing, radii) =>
     ...type.label,
     color: colors.accent,
     marginBottom: 4,
+    textAlign: isRTL ? "right" : "left",
   },
   headline: {
     ...type.title,
     fontSize: 24,
     marginBottom: 6,
+    textAlign: isRTL ? "right" : "left",
   },
   body: {
     ...type.body,
+    textAlign: isRTL ? "right" : "left",
   },
   streakBanner: {
     marginTop: spacing.md,
@@ -338,7 +368,7 @@ const createStyles = (colors, type, spacing, radii) =>
     paddingHorizontal: 14,
     borderRadius: radii.md,
     backgroundColor: colors.accentSoft,
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     gap: 10,
   },
@@ -346,6 +376,7 @@ const createStyles = (colors, type, spacing, radii) =>
     ...type.label,
     color: colors.ink,
     flex: 1,
+    textAlign: isRTL ? "right" : "left",
   },
   questBanner: {
     marginTop: spacing.md,
@@ -354,18 +385,21 @@ const createStyles = (colors, type, spacing, radii) =>
     paddingHorizontal: 14,
     borderRadius: radii.md,
     backgroundColor: colors.warningSoft,
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     gap: 10,
   },
   questTitle: {
-    fontFamily: "Fraunces_600SemiBold",
+    fontFamily: isRTL ? undefined : "Fraunces_600SemiBold",
+    fontWeight: isRTL ? "700" : undefined,
     fontSize: 15,
     color: colors.ink,
+    textAlign: isRTL ? "right" : "left",
   },
   questSub: {
     ...type.caption,
     marginTop: 2,
+    textAlign: isRTL ? "right" : "left",
   },
   passportBanner: {
     marginTop: spacing.sm,
@@ -374,7 +408,7 @@ const createStyles = (colors, type, spacing, radii) =>
     paddingHorizontal: 14,
     borderRadius: radii.md,
     backgroundColor: colors.accentSoft,
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     gap: 10,
   },
@@ -385,7 +419,7 @@ const createStyles = (colors, type, spacing, radii) =>
     borderRadius: radii.lg,
     paddingVertical: spacing.lg,
     paddingHorizontal: spacing.md,
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
   },
   heroStat: {
@@ -393,7 +427,8 @@ const createStyles = (colors, type, spacing, radii) =>
     alignItems: "center",
   },
   heroNumber: {
-    fontFamily: "Fraunces_600SemiBold",
+    fontFamily: isRTL ? undefined : "Fraunces_600SemiBold",
+    fontWeight: isRTL ? "700" : undefined,
     fontSize: 28,
     color: colors.onBrand,
   },
@@ -417,7 +452,7 @@ const createStyles = (colors, type, spacing, radii) =>
     padding: spacing.md,
   },
   calendarHead: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: spacing.sm,
@@ -430,7 +465,7 @@ const createStyles = (colors, type, spacing, radii) =>
     ...type.caption,
   },
   calendarGrid: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     flexWrap: "wrap",
     gap: 4,
   },
@@ -444,11 +479,11 @@ const createStyles = (colors, type, spacing, radii) =>
     borderColor: colors.accent,
   },
   legend: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     gap: 4,
     marginTop: 10,
-    justifyContent: "flex-end",
+    justifyContent: isRTL ? "flex-start" : "flex-end",
   },
   legendText: {
     ...type.caption,
@@ -460,7 +495,7 @@ const createStyles = (colors, type, spacing, radii) =>
     borderRadius: 2,
   },
   grid: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     flexWrap: "wrap",
     gap: 10,
     marginTop: spacing.md,
@@ -475,13 +510,16 @@ const createStyles = (colors, type, spacing, radii) =>
     borderColor: colors.border,
     padding: spacing.md,
     gap: 6,
+    alignItems: isRTL ? "flex-end" : "flex-start",
   },
   tileValue: {
     ...type.title,
     fontSize: 22,
+    textAlign: isRTL ? "right" : "left",
   },
   tileLabel: {
     ...type.caption,
+    textAlign: isRTL ? "right" : "left",
   },
   section: {
     marginTop: spacing.xl,
@@ -491,9 +529,10 @@ const createStyles = (colors, type, spacing, radii) =>
     fontSize: 16,
     marginHorizontal: spacing.lg,
     marginBottom: spacing.sm,
+    textAlign: isRTL ? "right" : "left",
   },
   row: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     gap: 12,
     marginHorizontal: spacing.md,
@@ -516,17 +555,21 @@ const createStyles = (colors, type, spacing, radii) =>
   rowTitle: {
     ...type.heading,
     fontSize: 15,
+    textAlign: isRTL ? "right" : "left",
   },
   rowSub: {
     ...type.caption,
     marginTop: 2,
+    textAlign: isRTL ? "right" : "left",
   },
   hRow: {
     paddingHorizontal: spacing.lg,
     gap: 12,
+    flexDirection: isRTL ? "row-reverse" : "row",
   },
   card: {
     width: 140,
+    alignItems: isRTL ? "flex-end" : "flex-start",
   },
   cardImage: {
     width: 140,
@@ -538,6 +581,7 @@ const createStyles = (colors, type, spacing, radii) =>
   cardTitle: {
     ...type.label,
     color: colors.ink,
+    textAlign: isRTL ? "right" : "left",
   },
   empty: {
     alignItems: "center",
