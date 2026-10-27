@@ -1027,7 +1027,7 @@ const createStyles = (colors, type, spacing, radii, isRTL) =>
     content: {
       padding: spacing.md,
 
-      paddingBottom: spacing.xl,
+      paddingBottom: spacing.xl * 2.5,
     },
 
     accountCard: {

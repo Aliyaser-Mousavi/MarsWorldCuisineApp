@@ -37,7 +37,7 @@ const HERO_HEIGHT = Math.min(420, SCREEN_WIDTH * 1.05);
 // by ~44-50px across all mobile screens, visually cueing horizontal scrollability.
 const EXPLORE_CARD_WIDTH = Math.min(
   175,
-  Math.max(140, Math.round((SCREEN_WIDTH - 92) / 2))
+  Math.max(140, Math.round((SCREEN_WIDTH - 92) / 2)),
 );
 
 function todayKey() {
@@ -156,7 +156,7 @@ const TonightScreen = ({ navigation }) => {
     const step = (EXPLORE_CARD_WIDTH + 12) * 1.5;
     const nextOffset = Math.max(
       0,
-      exploreScrollOffsetRef.current + direction * step
+      exploreScrollOffsetRef.current + direction * step,
     );
     exploreScrollRef.current?.scrollTo({ x: nextOffset, animated: true });
   };
@@ -545,51 +545,62 @@ const TonightScreen = ({ navigation }) => {
           >
             <Ionicons
               name="flame"
-              size={18}
+              size={19}
               color={isDark ? colors.surface : colors.onBrand}
             />
             <Text style={styles.primaryCtaText} numberOfLines={1}>
               {t("tonight.cookTonight")}
             </Text>
+            <Ionicons
+              name={isRTL ? "arrow-back" : "arrow-forward"}
+              size={17}
+              color={isDark ? colors.surface : colors.onBrand}
+            />
           </Pressable>
 
-          {plannedToday ? (
-            <View
-              style={styles.plannedStatus}
-              accessibilityRole="text"
-              accessibilityLabel={t("tonight.alreadyPlanned")}
-            >
-              <Ionicons
-                name="checkmark-circle"
-                size={17}
-                color={colors.success}
-              />
-              <Text style={styles.plannedStatusText} numberOfLines={2}>
-                {t("tonight.alreadyPlanned")}
-              </Text>
-            </View>
-          ) : (
+          <View style={styles.secondaryActionRow}>
+            {plannedToday ? (
+              <View
+                style={styles.plannedStatus}
+                accessibilityRole="text"
+                accessibilityLabel={t("tonight.alreadyPlanned")}
+              >
+                <Ionicons
+                  name="checkmark-circle"
+                  size={18}
+                  color={colors.success}
+                />
+                <Text style={styles.plannedStatusText} numberOfLines={2}>
+                  {t("tonight.alreadyPlanned")}
+                </Text>
+              </View>
+            ) : (
+              <Pressable
+                style={styles.secondaryCta}
+                onPress={planTonight}
+                accessibilityRole="button"
+                accessibilityLabel={t("tonight.planForToday")}
+              >
+                <Ionicons
+                  name="calendar-outline"
+                  size={18}
+                  color={colors.ink}
+                />
+                <Text style={styles.secondaryCtaText} numberOfLines={2}>
+                  {t("tonight.planForToday")}
+                </Text>
+              </Pressable>
+            )}
+
             <Pressable
-              style={styles.secondaryCta}
-              onPress={planTonight}
+              style={styles.iconCta}
+              onPress={refreshPick}
               accessibilityRole="button"
-              accessibilityLabel={t("tonight.planForToday")}
+              accessibilityLabel={t("tonight.shuffleTooltip")}
             >
-              <Ionicons name="calendar-outline" size={17} color={colors.ink} />
-              <Text style={styles.secondaryCtaText} numberOfLines={2}>
-                {t("tonight.planForToday")}
-              </Text>
+              <Ionicons name="shuffle" size={20} color={colors.ink} />
             </Pressable>
-          )}
-
-          <Pressable
-            style={styles.iconCta}
-            onPress={refreshPick}
-            accessibilityRole="button"
-            accessibilityLabel={t("tonight.shuffleTooltip")}
-          >
-            <Ionicons name="shuffle" size={19} color={colors.ink} />
-          </Pressable>
+          </View>
         </View>
 
         {/* Full recipe link row */}
@@ -637,52 +648,6 @@ const TonightScreen = ({ navigation }) => {
           <Text style={styles.sectionSub}>
             {t("tonight.exploreKitchenSub")}
           </Text>
-        </View>
-
-        <View style={styles.exploreHeaderRight}>
-          <View style={styles.exploreCountBadge}>
-            <Ionicons name="sparkles" size={11} color={colors.accent} />
-            <Text style={styles.exploreCountText}>
-              {t("tonight.exploreCount", {
-                count: EXPLORE_CARDS.length,
-                defaultValue: isRTL
-                  ? `${toPersianDigits(EXPLORE_CARDS.length)} ابزار`
-                  : `${EXPLORE_CARDS.length} tools`,
-              })}
-            </Text>
-          </View>
-          <View style={styles.exploreNavRow}>
-            <Pressable
-              style={({ pressed }) => [
-                styles.exploreNavBtn,
-                pressed && styles.exploreNavBtnPressed,
-              ]}
-              hitSlop={8}
-              accessibilityLabel={isRTL ? "مورد بعدی" : "Previous tools"}
-              onPress={() => scrollExplore(-1)}
-            >
-              <Ionicons
-                name="chevron-back"
-                size={14}
-                color={colors.ink}
-              />
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [
-                styles.exploreNavBtn,
-                pressed && styles.exploreNavBtnPressed,
-              ]}
-              hitSlop={8}
-              accessibilityLabel={isRTL ? "مورد قبلی" : "Next tools"}
-              onPress={() => scrollExplore(1)}
-            >
-              <Ionicons
-                name="chevron-forward"
-                size={14}
-                color={colors.ink}
-              />
-            </Pressable>
-          </View>
         </View>
       </View>
 
@@ -837,59 +802,155 @@ const TonightScreen = ({ navigation }) => {
       {/* ======================================================== */}
       <View style={styles.toolkitContainer}>
         <Pressable
-          style={styles.toolkitCard}
+          style={({ pressed }) => [
+            styles.toolkitCard,
+            pressed && { opacity: 0.85, transform: [{ scale: 0.98 }] },
+          ]}
           onPress={() => {
             Haptics.selectionAsync();
             navigation.navigate("ShoppingList");
           }}
+          accessibilityRole="button"
+          accessibilityLabel={`${t("tonight.toolkit.shopping")}, ${t("tonight.toolkit.shoppingDesc")}`}
         >
-          <View style={[styles.toolkitIcon, { backgroundColor: "#ecfdf5" }]}>
-            <Ionicons name="basket-outline" size={20} color="#059669" />
+          <View
+            style={[
+              styles.toolkitIcon,
+              {
+                backgroundColor: isDark
+                  ? "rgba(16, 185, 129, 0.15)"
+                  : "#ecfdf5",
+              },
+            ]}
+          >
+            <Ionicons
+              name="basket-outline"
+              size={20}
+              color={isDark ? "#34d399" : "#059669"}
+            />
           </View>
-          <Text style={styles.toolkitTitle}>
-            {t("tonight.toolkit.shopping")}
-          </Text>
+          <View style={styles.toolkitTextContainer}>
+            <Text style={styles.toolkitTitle} numberOfLines={1}>
+              {t("tonight.toolkit.shopping")}
+            </Text>
+            <Text style={styles.toolkitDesc} numberOfLines={2}>
+              {t("tonight.toolkit.shoppingDesc")}
+            </Text>
+          </View>
         </Pressable>
 
         <Pressable
-          style={styles.toolkitCard}
+          style={({ pressed }) => [
+            styles.toolkitCard,
+            pressed && { opacity: 0.85, transform: [{ scale: 0.98 }] },
+          ]}
           onPress={() => {
             Haptics.selectionAsync();
             navigation.navigate("Timers");
           }}
+          accessibilityRole="button"
+          accessibilityLabel={`${t("tonight.toolkit.timers")}, ${t("tonight.toolkit.timersDesc")}`}
         >
-          <View style={[styles.toolkitIcon, { backgroundColor: "#fffbeb" }]}>
-            <Ionicons name="timer-outline" size={20} color="#d97706" />
+          <View
+            style={[
+              styles.toolkitIcon,
+              {
+                backgroundColor: isDark
+                  ? "rgba(245, 158, 11, 0.15)"
+                  : "#fffbeb",
+              },
+            ]}
+          >
+            <Ionicons
+              name="timer-outline"
+              size={20}
+              color={isDark ? "#fbbf24" : "#d97706"}
+            />
           </View>
-          <Text style={styles.toolkitTitle}>{t("tonight.toolkit.timers")}</Text>
+          <View style={styles.toolkitTextContainer}>
+            <Text style={styles.toolkitTitle} numberOfLines={1}>
+              {t("tonight.toolkit.timers")}
+            </Text>
+            <Text style={styles.toolkitDesc} numberOfLines={2}>
+              {t("tonight.toolkit.timersDesc")}
+            </Text>
+          </View>
         </Pressable>
 
         <Pressable
-          style={styles.toolkitCard}
+          style={({ pressed }) => [
+            styles.toolkitCard,
+            pressed && { opacity: 0.85, transform: [{ scale: 0.98 }] },
+          ]}
           onPress={() => {
             Haptics.selectionAsync();
             navigation.navigate("UseSoon");
           }}
+          accessibilityRole="button"
+          accessibilityLabel={`${t("tonight.toolkit.useSoon")}, ${t("tonight.toolkit.useSoonDesc")}`}
         >
-          <View style={[styles.toolkitIcon, { backgroundColor: "#fef2f2" }]}>
-            <Ionicons name="hourglass-outline" size={20} color="#dc2626" />
+          <View
+            style={[
+              styles.toolkitIcon,
+              {
+                backgroundColor: isDark
+                  ? "rgba(248, 113, 113, 0.15)"
+                  : "#fef2f2",
+              },
+            ]}
+          >
+            <Ionicons
+              name="hourglass-outline"
+              size={20}
+              color={isDark ? "#f87171" : "#dc2626"}
+            />
           </View>
-          <Text style={styles.toolkitTitle}>
-            {t("tonight.toolkit.useSoon")}
-          </Text>
+          <View style={styles.toolkitTextContainer}>
+            <Text style={styles.toolkitTitle} numberOfLines={1}>
+              {t("tonight.toolkit.useSoon")}
+            </Text>
+            <Text style={styles.toolkitDesc} numberOfLines={2}>
+              {t("tonight.toolkit.useSoonDesc")}
+            </Text>
+          </View>
         </Pressable>
 
         <Pressable
-          style={styles.toolkitCard}
+          style={({ pressed }) => [
+            styles.toolkitCard,
+            pressed && { opacity: 0.85, transform: [{ scale: 0.98 }] },
+          ]}
           onPress={() => {
             Haptics.selectionAsync();
             navigation.navigate("BatchFreeze");
           }}
+          accessibilityRole="button"
+          accessibilityLabel={`${t("tonight.toolkit.batch")}, ${t("tonight.toolkit.batchDesc")}`}
         >
-          <View style={[styles.toolkitIcon, { backgroundColor: "#eff6ff" }]}>
-            <Ionicons name="snow-outline" size={20} color="#2563eb" />
+          <View
+            style={[
+              styles.toolkitIcon,
+              {
+                backgroundColor: isDark
+                  ? "rgba(96, 165, 250, 0.15)"
+                  : "#eff6ff",
+              },
+            ]}
+          >
+            <Ionicons
+              name="snow-outline"
+              size={20}
+              color={isDark ? "#60a5fa" : "#2563eb"}
+            />
           </View>
-          <Text style={styles.toolkitTitle}>{t("tonight.toolkit.batch")}</Text>
+          <View style={styles.toolkitTextContainer}>
+            <Text style={styles.toolkitTitle} numberOfLines={1}>
+              {t("tonight.toolkit.batch")}
+            </Text>
+            <Text style={styles.toolkitDesc} numberOfLines={2}>
+              {t("tonight.toolkit.batchDesc")}
+            </Text>
+          </View>
         </Pressable>
       </View>
 
@@ -1063,7 +1124,7 @@ const createStyles = (colors, type, spacing, radii, isRTL, isDark = false) =>
       backgroundColor: colors.bg,
     },
     content: {
-      paddingBottom: spacing.xl * 1.5,
+      paddingBottom: spacing.xl * 2.5,
     },
     topHeader: {
       paddingHorizontal: spacing.lg,
@@ -1315,35 +1376,41 @@ const createStyles = (colors, type, spacing, radii, isRTL, isDark = false) =>
       writingDirection: isRTL ? "rtl" : "ltr",
     },
     heroActionToolbar: {
-      flexDirection: isRTL ? "row-reverse" : "row",
+      flexDirection: "column",
       alignItems: "stretch",
       gap: spacing.sm,
       padding: spacing.md,
       backgroundColor: colors.surface,
     },
     primaryCta: {
-      flex: 1,
+      width: "100%",
       flexDirection: isRTL ? "row-reverse" : "row",
       alignItems: "center",
       justifyContent: "center",
-      gap: 6,
+      gap: 9,
       backgroundColor: isDark ? colors.ink : colors.brand,
-      minHeight: 48,
-      paddingVertical: 8,
-      paddingHorizontal: spacing.sm + 2,
+      minHeight: 54,
+      paddingVertical: 12,
+      paddingHorizontal: spacing.md,
       borderRadius: radii.md,
+    },
+    secondaryActionRow: {
+      flexDirection: isRTL ? "row-reverse" : "row",
+      alignItems: "stretch",
+      gap: spacing.sm,
+      width: "100%",
     },
     primaryCtaText: {
       ...type.heading,
-      fontSize: 13.5,
-      lineHeight: 18,
-      fontWeight: "600",
+      fontSize: 14,
+      lineHeight: 20,
+      fontWeight: "700",
       color: isDark ? colors.surface : colors.onBrand,
       textAlign: "center",
       flexShrink: 1,
     },
     secondaryCta: {
-      flex: 1.15,
+      flex: 1,
       flexDirection: isRTL ? "row-reverse" : "row",
       alignItems: "center",
       justifyContent: "center",
@@ -1367,7 +1434,7 @@ const createStyles = (colors, type, spacing, radii, isRTL, isDark = false) =>
       flexShrink: 1,
     },
     plannedStatus: {
-      flex: 1.15,
+      flex: 1,
       flexDirection: isRTL ? "row-reverse" : "row",
       alignItems: "center",
       justifyContent: "center",
@@ -1503,53 +1570,6 @@ const createStyles = (colors, type, spacing, radii, isRTL, isDark = false) =>
       color: colors.accent,
       fontSize: 13,
     },
-    exploreHeaderRight: {
-      flexDirection: isRTL ? "row-reverse" : "row",
-      alignItems: "center",
-      gap: 6,
-    },
-    exploreCountBadge: {
-      flexDirection: isRTL ? "row-reverse" : "row",
-      alignItems: "center",
-      gap: 4,
-      paddingHorizontal: 8,
-      paddingVertical: 3.5,
-      borderRadius: radii.pill,
-      backgroundColor: `${colors.accent}14`,
-      borderWidth: 1,
-      borderColor: `${colors.accent}28`,
-    },
-    exploreCountText: {
-      ...type.caption,
-      fontSize: 11,
-      fontWeight: "700",
-      color: colors.accent,
-    },
-    exploreNavRow: {
-      flexDirection: isRTL ? "row-reverse" : "row",
-      alignItems: "center",
-      gap: 4,
-    },
-    exploreNavBtn: {
-      width: 28,
-      height: 28,
-      borderRadius: 14,
-      backgroundColor: colors.surface,
-      borderWidth: 1,
-      borderColor: colors.border,
-      alignItems: "center",
-      justifyContent: "center",
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: isDark ? 0.25 : 0.06,
-      shadowRadius: 2,
-      elevation: 1,
-    },
-    exploreNavBtnPressed: {
-      backgroundColor: colors.surfaceAlt,
-      opacity: 0.7,
-      transform: [{ scale: 0.93 }],
-    },
     exploreRow: {
       paddingHorizontal: spacing.lg,
       gap: 12,
@@ -1664,23 +1684,38 @@ const createStyles = (colors, type, spacing, radii, isRTL, isDark = false) =>
       borderWidth: 1,
       borderColor: colors.border,
       borderRadius: radii.md,
-      padding: spacing.md - 2,
+      paddingVertical: 12,
+      paddingHorizontal: 12,
       flexDirection: isRTL ? "row-reverse" : "row",
       alignItems: "center",
       gap: 10,
     },
     toolkitIcon: {
-      width: 36,
-      height: 36,
+      width: 38,
+      height: 38,
       borderRadius: radii.sm,
       alignItems: "center",
       justifyContent: "center",
     },
+    toolkitTextContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: isRTL ? "flex-end" : "flex-start",
+    },
     toolkitTitle: {
       ...type.label,
       fontSize: 13,
+      fontWeight: "600",
       color: colors.ink,
-      flex: 1,
+      textAlign: isRTL ? "right" : "left",
+      writingDirection: isRTL ? "rtl" : "ltr",
+      marginBottom: 2,
+    },
+    toolkitDesc: {
+      ...type.caption,
+      fontSize: 11,
+      lineHeight: 14.5,
+      color: colors.inkSoft,
       textAlign: isRTL ? "right" : "left",
       writingDirection: isRTL ? "rtl" : "ltr",
     },

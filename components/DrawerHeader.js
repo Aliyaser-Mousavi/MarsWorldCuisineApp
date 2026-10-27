@@ -49,7 +49,16 @@ export default function DrawerHeader({ navigation, route, options }) {
         >
           <Pressable
             hitSlop={8}
-            onPress={() => navigation.toggleDrawer()}
+            onPress={() => {
+              if (typeof navigation?.toggleDrawer === "function") {
+                navigation.toggleDrawer();
+              } else if (typeof navigation?.getParent === "function") {
+                const parent = navigation.getParent();
+                if (typeof parent?.toggleDrawer === "function") {
+                  parent.toggleDrawer();
+                }
+              }
+            }}
             style={styles.hamburgerButton}
             accessibilityRole="button"
             accessibilityLabel={isRTL ? "باز کردن منوی ناوبری" : "Toggle navigation menu"}

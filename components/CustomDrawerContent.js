@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -10,12 +10,50 @@ import { useTheme } from "../constants/theme";
 import { useLocale } from "../constants/locale";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+const PRIMARY_DRAWER_ITEMS = [
+  {
+    name: "Tonight",
+    getTitle: (t) => t("navigation.tonight"),
+    fallbackTitle: "Tonight",
+    icon: "moon-outline",
+    activeIcon: "moon",
+  },
+  {
+    name: "Categories",
+    getTitle: (t) => t("navigation.browse"),
+    fallbackTitle: "Browse",
+    icon: "grid-outline",
+    activeIcon: "grid",
+  },
+  {
+    name: "Favorites",
+    getTitle: (t) => t("navigation.favorites"),
+    fallbackTitle: "Favorites",
+    icon: "heart-outline",
+    activeIcon: "heart",
+  },
+  {
+    name: "MealPlan",
+    getTitle: (t) => t("navigation.mealPlan"),
+    fallbackTitle: "Meal Plan",
+    icon: "calendar-outline",
+    activeIcon: "calendar",
+  },
+  {
+    name: "Preferences",
+    getTitle: (t) => t("navigation.preferences"),
+    fallbackTitle: "Preferences",
+    icon: "settings-outline",
+    activeIcon: "settings",
+  },
+];
+
 /**
- * Custom Drawer content with styled brand header, navigation items,
- * and compact Night Kitchen / Daylight theme toggle.
+ * Custom Drawer content with styled brand header, primary tabs shortcuts,
+ * full culinary toolkit items, and Night Kitchen / Daylight theme toggle.
  */
 const CustomDrawerContent = (props) => {
-  const { isDark, colors, type, spacing, radii } = useTheme();
+  const { isDark, colors } = useTheme();
   const { t, isRTL } = useLocale();
   const user = useSelector((state) => state.auth?.user);
   const profile = useSelector((state) => state.auth?.profile);
@@ -26,6 +64,15 @@ const CustomDrawerContent = (props) => {
     user?.user_metadata?.full_name ||
     user?.email ||
     t("drawer.defaultUser");
+
+  // Determine active route inside MainTabs or secondary drawer screens
+  const activeDrawerRoute = props.state?.routes?.[props.state.index]?.name;
+  let activeTabRoute = null;
+  if (activeDrawerRoute === "MainTabs") {
+    const mainTabsRoute = props.state.routes[props.state.index];
+    const tabIndex = mainTabsRoute.state?.index ?? 0;
+    activeTabRoute = mainTabsRoute.state?.routes?.[tabIndex]?.name || "Tonight";
+  }
 
   return (
     <View style={[styles.root, { backgroundColor: colors.surface }]}>
@@ -82,7 +129,66 @@ const CustomDrawerContent = (props) => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* Drawer Navigation List */}
+        {/* Primary Five Destinations */}
+        {PRIMARY_DRAWER_ITEMS.map((item) => {
+          const isItemActive =
+            activeDrawerRoute === "MainTabs" && activeTabRoute === item.name;
+
+          const label = item.getTitle
+            ? item.getTitle(t)
+            : item.fallbackTitle;
+
+          return (
+            <Pressable
+              key={item.name}
+              onPress={() => {
+                props.navigation.navigate("MainTabs", { screen: item.name });
+                props.navigation.closeDrawer();
+              }}
+              style={[
+                styles.drawerItem,
+                {
+                  flexDirection: isRTL ? "row-reverse" : "row",
+                  backgroundColor: isItemActive
+                    ? colors.accentSoft
+                    : "transparent",
+                },
+              ]}
+              accessibilityRole="button"
+              accessibilityLabel={label}
+            >
+              <Ionicons
+                name={isItemActive ? item.activeIcon : item.icon}
+                size={22}
+                color={isItemActive ? colors.accent : colors.inkMuted}
+              />
+              <Text
+                style={[
+                  styles.drawerLabel,
+                  {
+                    color: isItemActive ? colors.accent : colors.ink,
+                    fontFamily: isRTL
+                      ? undefined
+                      : isItemActive
+                      ? "DMSans_600SemiBold"
+                      : "DMSans_500Medium",
+                    textAlign: isRTL ? "right" : "left",
+                    writingDirection: isRTL ? "rtl" : "ltr",
+                  },
+                ]}
+              >
+                {label}
+              </Text>
+            </Pressable>
+          );
+        })}
+
+        {/* Section Divider */}
+        <View
+          style={[styles.sectionDivider, { backgroundColor: colors.border }]}
+        />
+
+        {/* Remaining Drawer Navigation List (Culinary Tools) */}
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
 
@@ -136,7 +242,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingTop: 10,
+    paddingTop: 8,
     paddingBottom: 16,
   },
   header: {
@@ -171,6 +277,25 @@ const styles = StyleSheet.create({
     height: 1,
     marginHorizontal: 16,
     marginBottom: 8,
+  },
+  sectionDivider: {
+    height: 1,
+    marginHorizontal: 16,
+    marginVertical: 8,
+    opacity: 0.7,
+  },
+  drawerItem: {
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    marginHorizontal: 10,
+    marginVertical: 2,
+    gap: 14,
+  },
+  drawerLabel: {
+    fontSize: 15,
+    flex: 1,
   },
   footer: {
     flexDirection: "row",

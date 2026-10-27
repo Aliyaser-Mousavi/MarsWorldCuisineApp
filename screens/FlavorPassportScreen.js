@@ -42,7 +42,8 @@ const FlavorPassportScreen = ({ navigation }) => {
 
       <View style={styles.hero}>
         <Text style={styles.heroNumber}>
-          {formatNumber(passport.visited, isRTL)}/{formatNumber(passport.total, isRTL)}
+          {formatNumber(passport.visited, isRTL)}/
+          {formatNumber(passport.total, isRTL)}
         </Text>
         <Text style={styles.heroLabel}>{t("passport.cuisinesStamped")}</Text>
         <View style={styles.progressTrack}>
@@ -95,7 +96,11 @@ const FlavorPassportScreen = ({ navigation }) => {
                 />
                 {locked ? (
                   <View style={styles.lockBadge}>
-                    <Ionicons name="lock-closed" size={14} color={colors.onBrand} />
+                    <Ionicons
+                      name="lock-closed"
+                      size={14}
+                      color={colors.onBrand}
+                    />
                   </View>
                 ) : frequent ? (
                   <View style={styles.goldBadge}>
@@ -103,7 +108,11 @@ const FlavorPassportScreen = ({ navigation }) => {
                   </View>
                 ) : (
                   <View style={styles.visitBadge}>
-                    <Ionicons name="checkmark" size={14} color={colors.onBrand} />
+                    <Ionicons
+                      name="checkmark"
+                      size={14}
+                      color={colors.onBrand}
+                    />
                   </View>
                 )}
               </View>
@@ -111,14 +120,16 @@ const FlavorPassportScreen = ({ navigation }) => {
                 style={[styles.stampTitle, locked && styles.stampTitleLocked]}
                 numberOfLines={1}
               >
-                {t(`categories.items.${stamp.id}`, { defaultValue: stamp.title })}
+                {t(`categories.items.${stamp.id}`, {
+                  defaultValue: stamp.title,
+                })}
               </Text>
               <Text style={styles.stampMeta}>
                 {locked
                   ? t("passport.notCookedYet")
                   : stamp.cooked === 1
-                  ? t("passport.cooksCount_one")
-                  : t("passport.cooksCount_other", { count: stamp.cooked })}
+                    ? t("passport.cooksCount_one")
+                    : t("passport.cooksCount_other", { count: stamp.cooked })}
               </Text>
             </Pressable>
           );
@@ -132,142 +143,142 @@ export default FlavorPassportScreen;
 
 const createStyles = (colors, type, spacing, radii, isRTL) =>
   StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.bg },
-  content: { paddingBottom: spacing.xl },
-  intro: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
-    paddingBottom: spacing.md,
-  },
-  kicker: {
-    ...type.label,
-    color: colors.accent,
-    textTransform: "uppercase",
-    letterSpacing: 1.2,
-    marginBottom: 6,
-    textAlign: isRTL ? "right" : "left",
-  },
-  headline: {
-    ...type.display,
-    fontSize: 26,
-    marginBottom: 8,
-    textAlign: isRTL ? "right" : "left",
-  },
-  body: {
-    ...type.body,
-    textAlign: isRTL ? "right" : "left",
-  },
-  hero: {
-    marginHorizontal: spacing.lg,
-    marginBottom: spacing.lg,
-    padding: spacing.lg,
-    backgroundColor: colors.brand,
-    borderRadius: radii.lg,
-  },
-  heroNumber: {
-    fontFamily: "Fraunces_600SemiBold",
-    fontSize: 36,
-    color: colors.onBrand,
-    textAlign: isRTL ? "right" : "left",
-  },
-  heroLabel: {
-    ...type.label,
-    color: "rgba(255,255,255,0.7)",
-    marginBottom: spacing.md,
-    textAlign: isRTL ? "right" : "left",
-  },
-  progressTrack: {
-    height: 4,
-    backgroundColor: "rgba(255,255,255,0.2)",
-    borderRadius: 2,
-    overflow: "hidden",
-  },
-  progressFill: {
-    height: "100%",
-    backgroundColor: colors.accentSoft,
-  },
-  heroSub: {
-    ...type.caption,
-    color: "rgba(255,255,255,0.65)",
-    marginTop: 10,
-    textAlign: isRTL ? "right" : "left",
-  },
-  grid: {
-    flexDirection: isRTL ? "row-reverse" : "row",
-    flexWrap: "wrap",
-    paddingHorizontal: spacing.lg,
-    gap: GAP,
-  },
-  stamp: {
-    width: COL,
-    backgroundColor: colors.surface,
-    borderRadius: radii.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    overflow: "hidden",
-    paddingBottom: 10,
-  },
-  stampLocked: {
-    opacity: 0.72,
-  },
-  stampGold: {
-    borderColor: colors.warning,
-  },
-  stampImageWrap: {
-    height: COL * 0.72,
-    position: "relative",
-  },
-  stampImage: { width: "100%", height: "100%" },
-  stampImageDim: { opacity: 0.45 },
-  stampFade: { ...StyleSheet.absoluteFillObject },
-  lockBadge: {
-    position: "absolute",
-    top: 8,
-    [isRTL ? "left" : "right"]: 8,
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: "rgba(26,20,16,0.55)",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  goldBadge: {
-    position: "absolute",
-    top: 8,
-    [isRTL ? "left" : "right"]: 8,
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: colors.surface,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  visitBadge: {
-    position: "absolute",
-    top: 8,
-    [isRTL ? "left" : "right"]: 8,
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: colors.accent,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  stampTitle: {
-    ...(isRTL ? {} : { fontFamily: "Fraunces_600SemiBold" }),
-    fontSize: 15,
-    color: colors.ink,
-    paddingHorizontal: 10,
-    marginTop: 8,
-    textAlign: isRTL ? "right" : "left",
-  },
-  stampTitleLocked: {
-    color: colors.inkMuted,
-  },
-  stampMeta: {
-    ...type.caption,
-    paddingHorizontal: 10,
-    marginTop: 2,
-    textAlign: isRTL ? "right" : "left",
-  },
-});
+    container: { flex: 1, backgroundColor: colors.bg },
+    content: { paddingBottom: spacing.xl * 2.5 },
+    intro: {
+      paddingHorizontal: spacing.lg,
+      paddingTop: spacing.lg,
+      paddingBottom: spacing.md,
+    },
+    kicker: {
+      ...type.label,
+      color: colors.accent,
+      textTransform: "uppercase",
+      letterSpacing: 1.2,
+      marginBottom: 6,
+      textAlign: isRTL ? "right" : "left",
+    },
+    headline: {
+      ...type.display,
+      fontSize: 26,
+      marginBottom: 8,
+      textAlign: isRTL ? "right" : "left",
+    },
+    body: {
+      ...type.body,
+      textAlign: isRTL ? "right" : "left",
+    },
+    hero: {
+      marginHorizontal: spacing.lg,
+      marginBottom: spacing.lg,
+      padding: spacing.lg,
+      backgroundColor: colors.brand,
+      borderRadius: radii.lg,
+    },
+    heroNumber: {
+      fontFamily: "Fraunces_600SemiBold",
+      fontSize: 36,
+      color: colors.onBrand,
+      textAlign: isRTL ? "right" : "left",
+    },
+    heroLabel: {
+      ...type.label,
+      color: "rgba(255,255,255,0.7)",
+      marginBottom: spacing.md,
+      textAlign: isRTL ? "right" : "left",
+    },
+    progressTrack: {
+      height: 4,
+      backgroundColor: "rgba(255,255,255,0.2)",
+      borderRadius: 2,
+      overflow: "hidden",
+    },
+    progressFill: {
+      height: "100%",
+      backgroundColor: colors.accentSoft,
+    },
+    heroSub: {
+      ...type.caption,
+      color: "rgba(255,255,255,0.65)",
+      marginTop: 10,
+      textAlign: isRTL ? "right" : "left",
+    },
+    grid: {
+      flexDirection: isRTL ? "row-reverse" : "row",
+      flexWrap: "wrap",
+      paddingHorizontal: spacing.lg,
+      gap: GAP,
+    },
+    stamp: {
+      width: COL,
+      backgroundColor: colors.surface,
+      borderRadius: radii.lg,
+      borderWidth: 1,
+      borderColor: colors.border,
+      overflow: "hidden",
+      paddingBottom: 10,
+    },
+    stampLocked: {
+      opacity: 0.72,
+    },
+    stampGold: {
+      borderColor: colors.warning,
+    },
+    stampImageWrap: {
+      height: COL * 0.72,
+      position: "relative",
+    },
+    stampImage: { width: "100%", height: "100%" },
+    stampImageDim: { opacity: 0.45 },
+    stampFade: { ...StyleSheet.absoluteFillObject },
+    lockBadge: {
+      position: "absolute",
+      top: 8,
+      [isRTL ? "left" : "right"]: 8,
+      width: 28,
+      height: 28,
+      borderRadius: 14,
+      backgroundColor: "rgba(26,20,16,0.55)",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    goldBadge: {
+      position: "absolute",
+      top: 8,
+      [isRTL ? "left" : "right"]: 8,
+      width: 28,
+      height: 28,
+      borderRadius: 14,
+      backgroundColor: colors.surface,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    visitBadge: {
+      position: "absolute",
+      top: 8,
+      [isRTL ? "left" : "right"]: 8,
+      width: 28,
+      height: 28,
+      borderRadius: 14,
+      backgroundColor: colors.accent,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    stampTitle: {
+      ...(isRTL ? {} : { fontFamily: "Fraunces_600SemiBold" }),
+      fontSize: 15,
+      color: colors.ink,
+      paddingHorizontal: 10,
+      marginTop: 8,
+      textAlign: isRTL ? "right" : "left",
+    },
+    stampTitleLocked: {
+      color: colors.inkMuted,
+    },
+    stampMeta: {
+      ...type.caption,
+      paddingHorizontal: 10,
+      marginTop: 2,
+      textAlign: isRTL ? "right" : "left",
+    },
+  });

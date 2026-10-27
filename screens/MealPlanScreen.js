@@ -45,7 +45,10 @@ const MealPlanScreen = () => {
         seen.add(id);
         const meal = MEALS.find((m) => m.id === id);
         if (!meal) return;
-        const mealTitle = (language === "fa" && MEALS_FA[meal.id]?.title) ? MEALS_FA[meal.id].title : meal.title;
+        const mealTitle =
+          language === "fa" && MEALS_FA[meal.id]?.title
+            ? MEALS_FA[meal.id].title
+            : meal.title;
         const mealIngredients = getScaledMealIngredients(meal, 1, language);
         dispatch(
           addIngredients({
@@ -167,13 +170,15 @@ const MealPlanScreen = () => {
                             ]}
                             numberOfLines={2}
                           >
-                            {(language === "fa" && MEALS_FA[meal.id]?.title)
+                            {language === "fa" && MEALS_FA[meal.id]?.title
                               ? MEALS_FA[meal.id].title
                               : meal.title}
                           </Text>
                           <Text style={styles.mealSub}>
                             {t("mealPlan.durationMin", {
-                              duration: isRTL ? toPersianDigits(meal.duration) : meal.duration,
+                              duration: isRTL
+                                ? toPersianDigits(meal.duration)
+                                : meal.duration,
                               defaultValue: isRTL
                                 ? `${toPersianDigits(meal.duration)} دقیقه`
                                 : `${meal.duration} min`,
@@ -255,7 +260,7 @@ const createStyles = (colors, type, spacing, radii) =>
     },
     scroll: {
       padding: spacing.md,
-      paddingBottom: spacing.xl,
+      paddingBottom: spacing.xl * 2.5,
     },
     dayBlock: {
       backgroundColor: colors.surface,

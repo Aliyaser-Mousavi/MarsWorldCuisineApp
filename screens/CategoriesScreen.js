@@ -43,7 +43,10 @@ const CategoriesScreen = ({ navigation }) => {
   }, []);
 
   const rawTodayMeals = useMemo(
-    () => (week[todayKey] || []).map((id) => MEALS.find((m) => m.id === id)).filter(Boolean),
+    () =>
+      (week[todayKey] || [])
+        .map((id) => MEALS.find((m) => m.id === id))
+        .filter(Boolean),
     [week, todayKey],
   );
   const todayMeals = useLocalizedMeals(rawTodayMeals);
@@ -134,9 +137,13 @@ const CategoriesScreen = ({ navigation }) => {
                       { flexDirection: isRTL ? "row-reverse" : "row" },
                     ]}
                   >
-                    <Text style={styles.sectionLabel}>{t("categories.todaysPlan")}</Text>
+                    <Text style={styles.sectionLabel}>
+                      {t("categories.todaysPlan")}
+                    </Text>
                     <Pressable onPress={() => navigation.navigate("MealPlan")}>
-                      <Text style={styles.link}>{t("categories.fullWeek")}</Text>
+                      <Text style={styles.link}>
+                        {t("categories.fullWeek")}
+                      </Text>
                     </Pressable>
                   </View>
                   <ScrollView
@@ -144,7 +151,10 @@ const CategoriesScreen = ({ navigation }) => {
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={[
                       styles.recentScroll,
-                      isRTL && { flexDirection: "row-reverse", minWidth: "100%" },
+                      isRTL && {
+                        flexDirection: "row-reverse",
+                        minWidth: "100%",
+                      },
                     ]}
                   >
                     {todayMeals.map((meal) => (
@@ -178,9 +188,13 @@ const CategoriesScreen = ({ navigation }) => {
                       { flexDirection: isRTL ? "row-reverse" : "row" },
                     ]}
                   >
-                    <Text style={styles.sectionLabel}>{t("categories.recentlyViewed")}</Text>
+                    <Text style={styles.sectionLabel}>
+                      {t("categories.recentlyViewed")}
+                    </Text>
                     <Pressable onPress={() => navigation.navigate("Search")}>
-                      <Text style={styles.link}>{t("categories.searchAll")}</Text>
+                      <Text style={styles.link}>
+                        {t("categories.searchAll")}
+                      </Text>
                     </Pressable>
                   </View>
                   <ScrollView
@@ -188,7 +202,10 @@ const CategoriesScreen = ({ navigation }) => {
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={[
                       styles.recentScroll,
-                      isRTL && { flexDirection: "row-reverse", minWidth: "100%" },
+                      isRTL && {
+                        flexDirection: "row-reverse",
+                        minWidth: "100%",
+                      },
                     ]}
                   >
                     {recentMeals.map((meal) => (
@@ -278,7 +295,7 @@ const createStyles = (colors, type, spacing, radii, isRTL) =>
     },
     listPadding: {
       paddingHorizontal: spacing.sm,
-      paddingBottom: spacing.xl,
+      paddingBottom: spacing.xl * 2.5,
     },
     recentSection: {
       marginBottom: spacing.md,

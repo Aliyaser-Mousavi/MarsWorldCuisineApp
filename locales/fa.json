@@ -47,7 +47,11 @@
     "pantry": "گنجه مواد اولیه",
     "timers": "زمان‌سنج‌ها",
     "kitchenJournal": "دفترچه آشپزخانه",
-    "preferences": "تنظیمات"
+    "preferences": "تنظیمات",
+    "home": "خانه",
+    "explore": "کاوش",
+    "planner": "برنامه غذایی",
+    "profile": "پروفایل"
   },
   "drawer": {
     "brandTitle": "آشپزی مریخ",
@@ -320,9 +324,13 @@
     },
     "toolkit": {
       "shopping": "لیست خرید",
+      "shoppingDesc": "اقلام و مواد مورد نیاز",
       "timers": "زمان‌سنج‌ها",
+      "timersDesc": "شمارش معکوس پخت",
       "useSoon": "مصرف زودهنگام",
-      "batch": "پخت دسته‌جمعی و فریز"
+      "useSoonDesc": "مواد در آستانه انقضا",
+      "batch": "پخت دسته‌جمعی و فریز",
+      "batchDesc": "پخت انبوه و نگهداری"
     },
     "greetings": {
       "morning": {

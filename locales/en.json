@@ -47,7 +47,11 @@
     "pantry": "Pantry",
     "timers": "Timers",
     "kitchenJournal": "Kitchen journal",
-    "preferences": "Preferences"
+    "preferences": "Preferences",
+    "home": "Home",
+    "explore": "Explore",
+    "planner": "Meal Plan",
+    "profile": "Profile"
   },
   "drawer": {
     "brandTitle": "Mars Cuisine",
@@ -320,9 +324,13 @@
     },
     "toolkit": {
       "shopping": "Shopping List",
+      "shoppingDesc": "Ingredients to buy",
       "timers": "Timers",
+      "timersDesc": "Cooking countdowns",
       "useSoon": "Use Soon",
-      "batch": "Batch & Freeze"
+      "useSoonDesc": "Expiring ingredients",
+      "batch": "Batch & Freeze",
+      "batchDesc": "Cook ahead & store"
     },
     "greetings": {
       "morning": {

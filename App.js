@@ -86,6 +86,7 @@ import FlavorPassportScreen from "./screens/FlavorPassportScreen";
 import { MEALS } from "./data/dummy-data";
 import * as SystemUI from "expo-system-ui";
 import CustomDrawerContent from "./components/CustomDrawerContent";
+import BottomTabNavigator from "./components/Navigation/BottomTabNavigator";
 import HeaderThemeButton from "./components/UI/HeaderThemeButton";
 import DrawerHeader from "./components/DrawerHeader";
 import { store, persistor } from "./store/redux/store";
@@ -168,13 +169,18 @@ function AuthNavigator({ initialRouteName = "Login" }) {
   );
 }
 
-const DRAWER_ROUTE_NAMES = [
+const PRIMARY_TAB_ROUTES = [
   "Tonight",
   "Categories",
+  "Favorites",
+  "MealPlan",
+  "Preferences",
+];
+
+const SECONDARY_DRAWER_ROUTES = [
   "Discover",
   "Search",
   "AboutDeveloper",
-  "Favorites",
   "Cookbooks",
   "DinnerParties",
   "Surprise",
@@ -185,13 +191,17 @@ const DRAWER_ROUTE_NAMES = [
   "UseSoon",
   "BatchFreeze",
   "History",
-  "MealPlan",
   "Prep",
   "ShoppingList",
   "Pantry",
   "Timers",
   "Insights",
-  "Preferences",
+];
+
+const DRAWER_ROUTE_NAMES = [
+  "MainTabs",
+  ...PRIMARY_TAB_ROUTES,
+  ...SECONDARY_DRAWER_ROUTES,
 ];
 
 function DrawerNavigator() {
@@ -201,9 +211,9 @@ function DrawerNavigator() {
     ? navigationRef.getCurrentRoute()?.name
     : null;
   const initialRouteName =
-    routeCandidate && DRAWER_ROUTE_NAMES.includes(routeCandidate)
+    routeCandidate && SECONDARY_DRAWER_ROUTES.includes(routeCandidate)
       ? routeCandidate
-      : "Tonight";
+      : "MainTabs";
 
   return (
     <Drawer.Navigator
@@ -231,25 +241,23 @@ function DrawerNavigator() {
       }}
     >
       <Drawer.Screen
-        name="Tonight"
-        component={TonightScreen}
+        name="MainTabs"
         options={{
-          title: t("navigation.tonight"),
-          drawerIcon: ({ color, size }) => (
-            <Ionicons name="moon-outline" size={size} color={color} />
-          ),
+          headerShown: false,
+          drawerItemStyle: { display: "none" },
         }}
-      />
-      <Drawer.Screen
-        name="Categories"
-        component={CategoriesScreen}
-        options={{
-          title: t("navigation.browse"),
-          drawerIcon: ({ color, size }) => (
-            <Ionicons name="grid-outline" size={size} color={color} />
-          ),
-        }}
-      />
+      >
+        {(props) => (
+          <BottomTabNavigator
+            {...props}
+            initialRouteName={
+              PRIMARY_TAB_ROUTES.includes(routeCandidate)
+                ? routeCandidate
+                : "Tonight"
+            }
+          />
+        )}
+      </Drawer.Screen>
       <Drawer.Screen
         name="Discover"
         component={DiscoverScreen}
@@ -277,16 +285,6 @@ function DrawerNavigator() {
           title: t("navigation.aboutDeveloper"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="person-circle-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Favorites"
-        component={FavoritesScreen}
-        options={{
-          title: t("navigation.favorites"),
-          drawerIcon: ({ color, size }) => (
-            <Ionicons name="heart-outline" size={size} color={color} />
           ),
         }}
       />
@@ -391,16 +389,6 @@ function DrawerNavigator() {
         }}
       />
       <Drawer.Screen
-        name="MealPlan"
-        component={MealPlanScreen}
-        options={{
-          title: t("navigation.mealPlan"),
-          drawerIcon: ({ color, size }) => (
-            <Ionicons name="calendar-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Drawer.Screen
         name="Prep"
         component={PrepScreen}
         options={{
@@ -447,16 +435,6 @@ function DrawerNavigator() {
           title: t("navigation.kitchenJournal"),
           drawerIcon: ({ color, size }) => (
             <Ionicons name="stats-chart-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="Preferences"
-        component={PreferencesScreen}
-        options={{
-          title: t("navigation.preferences"),
-          drawerIcon: ({ color, size }) => (
-            <Ionicons name="settings-outline" size={size} color={color} />
           ),
         }}
       />
