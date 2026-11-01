@@ -48,10 +48,6 @@ const PRIMARY_DRAWER_ITEMS = [
   },
 ];
 
-/**
- * Custom Drawer content with styled brand header, primary tabs shortcuts,
- * full culinary toolkit items, and Night Kitchen / Daylight theme toggle.
- */
 const CustomDrawerContent = (props) => {
   const { isDark, colors } = useTheme();
   const { t, isRTL } = useLocale();
@@ -65,7 +61,6 @@ const CustomDrawerContent = (props) => {
     user?.email ||
     t("drawer.defaultUser");
 
-  // Determine active route inside MainTabs or secondary drawer screens
   const activeDrawerRoute = props.state?.routes?.[props.state.index]?.name;
   let activeTabRoute = null;
   if (activeDrawerRoute === "MainTabs") {
@@ -77,7 +72,6 @@ const CustomDrawerContent = (props) => {
   return (
     <View style={[styles.root, { backgroundColor: colors.surface }]}>
       <View style={{ paddingTop: insets.top }}>
-        {/* Brand Header */}
         <View
           style={[
             styles.header,
@@ -129,14 +123,11 @@ const CustomDrawerContent = (props) => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* Primary Five Destinations */}
         {PRIMARY_DRAWER_ITEMS.map((item) => {
           const isItemActive =
             activeDrawerRoute === "MainTabs" && activeTabRoute === item.name;
 
-          const label = item.getTitle
-            ? item.getTitle(t)
-            : item.fallbackTitle;
+          const label = item.getTitle ? item.getTitle(t) : item.fallbackTitle;
 
           return (
             <Pressable
@@ -170,8 +161,8 @@ const CustomDrawerContent = (props) => {
                     fontFamily: isRTL
                       ? undefined
                       : isItemActive
-                      ? "DMSans_600SemiBold"
-                      : "DMSans_500Medium",
+                        ? "DMSans_600SemiBold"
+                        : "DMSans_500Medium",
                     textAlign: isRTL ? "right" : "left",
                     writingDirection: isRTL ? "rtl" : "ltr",
                   },
@@ -183,16 +174,13 @@ const CustomDrawerContent = (props) => {
           );
         })}
 
-        {/* Section Divider */}
         <View
           style={[styles.sectionDivider, { backgroundColor: colors.border }]}
         />
 
-        {/* Remaining Drawer Navigation List (Culinary Tools) */}
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
 
-      {/* Simplified, Compact Theme Footer */}
       <View
         style={[
           styles.footer,
@@ -224,9 +212,7 @@ const CustomDrawerContent = (props) => {
               },
             ]}
           >
-            {isDark
-              ? t("common.nightKitchen")
-              : t("common.daylightMode")}
+            {isDark ? t("common.nightKitchen") : t("common.daylightMode")}
           </Text>
         </View>
         <ThemeToggle variant="compact" />

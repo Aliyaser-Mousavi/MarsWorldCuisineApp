@@ -28,13 +28,22 @@ import LoginScreen from "./screens/Auth/LoginScreen";
 import RegisterScreen from "./screens/Auth/RegisterScreen";
 import ForgotPasswordScreen from "./screens/Auth/ForgotPasswordScreen";
 import ResetPasswordScreen from "./screens/Auth/ResetPasswordScreen";
+import NetInfo from "@react-native-community/netinfo";
 import { supabase } from "./services/supabase";
 import {
   createSessionFromUrl,
   isPasswordRecoveryUrl,
 } from "./services/authLinking";
 import {
+  isNetworkOrOfflineError,
+  saveOfflineAuthRecord,
+  getOfflineAuthRecord,
+  clearOfflineAuthRecord,
+  getCachedSupabaseSession,
+} from "./services/offlineAuth";
+import {
   setSession,
+  setOfflineAccess,
   setUser,
   setProfile,
   clearAuth,
@@ -110,7 +119,7 @@ const Drawer = createDrawerNavigator();
 const navigationRef = createNavigationContainerRef();
 
 async function fetchUserProfile(userId, dispatch) {
-  if (!supabase || !userId) return;
+  if (!supabase || !userId) return null;
   try {
     const { data, error } = await supabase
       .from("profiles")
@@ -120,12 +129,14 @@ async function fetchUserProfile(userId, dispatch) {
 
     if (error) {
       console.warn("Profile fetch failed:", error.message);
-      return;
+      return null;
     }
 
     dispatch(setProfile(data));
+    return data;
   } catch (err) {
     console.warn("Profile fetch exception:", err?.message || err);
+    return null;
   }
 }
 
@@ -493,6 +504,7 @@ function MainNavigator() {
 function AppNavigation() {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isOfflineAccess = useSelector((state) => state.auth.isOfflineAccess);
   const isLoading = useSelector((state) => state.auth.isLoading);
   const passwordRecovery = useSelector((state) => state.auth.passwordRecovery);
   const { isDark, colors } = useTheme();
@@ -516,20 +528,27 @@ function AppNavigation() {
         if (session) {
           dispatch(setSession(session));
           dispatch(setUser(session.user));
+          saveOfflineAuthRecord(session.user, null).catch(() => {});
+
           if (session.user?.id) {
-            await fetchUserProfile(session.user.id, dispatch);
+            const profile = await fetchUserProfile(session.user.id, dispatch);
+            if (profile) {
+              saveOfflineAuthRecord(session.user, profile).catch(() => {});
+            }
           }
 
           const shouldPull =
             event === "SIGNED_IN" ||
             event === "INITIAL_SESSION" ||
-            event === "bootstrap";
+            event === "bootstrap" ||
+            event === "online_restored";
           if (shouldPull && event !== "PASSWORD_RECOVERY" && session.user?.id) {
             await hydrateKitchenFromRemote(session.user.id, dispatch);
           }
           syncMealPlanReminders().catch(() => {});
           syncPantryExpirationAlerts().catch(() => {});
         } else {
+          await clearOfflineAuthRecord().catch(() => {});
           dispatch(clearAuth());
           cancelUserScopedNotifications().catch(() => {});
         }
@@ -563,11 +582,86 @@ function AppNavigation() {
         try {
           const {
             data: { session },
+            error: sessionError,
           } = await supabase.auth.getSession();
-          await applySession(session, "bootstrap");
+
+          if (session) {
+            await applySession(session, "bootstrap");
+          } else {
+            // No active remote session returned. Check if this is an offline cold start
+            // for a user who previously authenticated successfully on this device:
+            const netState = await NetInfo.fetch().catch(() => null);
+            const isOfflineOrNetError = isNetworkOrOfflineError(sessionError, netState);
+            const offlineRecord = await getOfflineAuthRecord();
+            const cachedSession = await getCachedSupabaseSession();
+            const hasPriorAuth = !!(offlineRecord || cachedSession?.user);
+
+            if (isOfflineOrNetError && hasPriorAuth) {
+              const offlineUser =
+                offlineRecord?.userMetadata && offlineRecord?.email
+                  ? {
+                      id: offlineRecord.userId,
+                      email: offlineRecord.email,
+                      user_metadata: offlineRecord.userMetadata,
+                    }
+                  : cachedSession?.user || {
+                      id: offlineRecord?.userId,
+                      email: offlineRecord?.email || "",
+                    };
+
+              const offlineProfile = offlineRecord?.profile || null;
+
+              dispatch(
+                setOfflineAccess({
+                  user: offlineUser,
+                  profile: offlineProfile,
+                }),
+              );
+
+              // Maintain offline record with the discovered user details
+              saveOfflineAuthRecord(offlineUser, offlineProfile).catch(() => {});
+
+              syncMealPlanReminders().catch(() => {});
+              syncPantryExpirationAlerts().catch(() => {});
+            } else {
+              // Genuinely not authenticated, explicit sign out, or confirmed failure
+              await clearOfflineAuthRecord().catch(() => {});
+              dispatch(clearAuth());
+              cancelUserScopedNotifications().catch(() => {});
+            }
+          }
         } catch (err) {
-          console.warn("Supabase getSession failed:", err.message);
-          dispatch(setLoading(false));
+          console.warn("Supabase getSession failed:", err?.message || err);
+          const netState = await NetInfo.fetch().catch(() => null);
+          const isOfflineOrNetError = isNetworkOrOfflineError(err, netState);
+          const offlineRecord = await getOfflineAuthRecord();
+          const cachedSession = await getCachedSupabaseSession();
+
+          if (isOfflineOrNetError && (offlineRecord || cachedSession?.user)) {
+            const offlineUser =
+              offlineRecord?.userMetadata && offlineRecord?.email
+                ? {
+                    id: offlineRecord.userId,
+                    email: offlineRecord.email,
+                    user_metadata: offlineRecord.userMetadata,
+                  }
+                : cachedSession?.user || {
+                    id: offlineRecord?.userId,
+                    email: offlineRecord?.email || "",
+                  };
+
+            dispatch(
+              setOfflineAccess({
+                user: offlineUser,
+                profile: offlineRecord?.profile || null,
+              }),
+            );
+          } else {
+            await clearOfflineAuthRecord().catch(() => {});
+            dispatch(clearAuth());
+          }
+        } finally {
+          if (mounted) dispatch(setLoading(false));
         }
       } else {
         dispatch(setLoading(false));
@@ -580,14 +674,52 @@ function AppNavigation() {
     if (supabase) {
       const {
         data: { subscription: sub },
-      } = supabase.auth.onAuthStateChange((event, session) => {
+      } = supabase.auth.onAuthStateChange(async (event, session) => {
         if (event === "INITIAL_SESSION") return;
+
+        // If session is null, verify whether device is offline in offline-access mode
+        // to prevent transient network disruptions from being interpreted as a sign-out:
+        if (!session) {
+          const netState = await NetInfo.fetch().catch(() => null);
+          const isOffline =
+            netState && (netState.isConnected === false || netState.isInternetReachable === false);
+          const currentOfflineAccess = store.getState().auth?.isOfflineAccess;
+          if (isOffline && currentOfflineAccess) {
+            return;
+          }
+        }
+
         applySession(session, event).catch((err) => {
           console.warn("[auth] onAuthStateChange error:", err?.message || err);
         });
       });
       subscription = sub;
     }
+
+    const netInfoSub = NetInfo.addEventListener(async (state) => {
+      const isOnline = state.isConnected === true && state.isInternetReachable !== false;
+      if (isOnline && mounted) {
+        const currentAuthState = store.getState().auth;
+        if (currentAuthState?.isOfflineAccess && supabase) {
+          try {
+            const {
+              data: { session },
+              error,
+            } = await supabase.auth.getSession();
+
+            if (session && mounted) {
+              await applySession(session, "online_restored");
+            } else if (error && !isNetworkOrOfflineError(error, state)) {
+              // Confirmed rejection by backend
+              await clearOfflineAuthRecord().catch(() => {});
+              if (mounted) dispatch(clearAuth());
+            }
+          } catch (err) {
+            // Keep offline access on transient check failures
+          }
+        }
+      }
+    });
 
     const linkingSub = Linking.addEventListener("url", ({ url }) => {
       handleIncomingUrl(url);
@@ -597,6 +729,7 @@ function AppNavigation() {
       mounted = false;
       if (subscription) subscription.unsubscribe();
       linkingSub.remove();
+      netInfoSub();
     };
   }, [dispatch]);
 
@@ -654,7 +787,7 @@ function AppNavigation() {
     );
   }
 
-  const showMainApp = isAuthenticated && !passwordRecovery;
+  const showMainApp = (isAuthenticated || isOfflineAccess) && !passwordRecovery;
 
   return (
     <>

@@ -11,7 +11,7 @@ import { Image } from "expo-image";
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import { LinearGradient } from "expo-linear-gradient";
+import ImageGradientOverlay from "../components/UI/ImageGradientOverlay";
 import {
   MOODS,
   getTimeGreeting,
@@ -277,7 +277,6 @@ const TonightScreen = ({ navigation }) => {
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
     >
-      {/* Top Header & Quick Action Icons */}
       <View style={styles.topHeader}>
         <View style={styles.introLeft}>
           <View style={styles.greetingBadge}>
@@ -339,7 +338,6 @@ const TonightScreen = ({ navigation }) => {
         </View>
       </View>
 
-      {/* Streak / Culinary Journey Bar */}
       <Pressable
         style={styles.streakBanner}
         onPress={() => {
@@ -379,7 +377,6 @@ const TonightScreen = ({ navigation }) => {
         />
       </Pressable>
 
-      {/* Mood Selector Row with Icons */}
       <ScrollView
         ref={moodScrollRef}
         horizontal
@@ -423,7 +420,6 @@ const TonightScreen = ({ navigation }) => {
         })}
       </ScrollView>
 
-      {/* Featured Chef's Tonight Selection Hero Card */}
       <View style={styles.heroContainer}>
         <Pressable
           style={styles.hero}
@@ -436,19 +432,12 @@ const TonightScreen = ({ navigation }) => {
             transition={300}
             cachePolicy="memory-disk"
           />
-          <LinearGradient
-            colors={[
-              "rgba(20,16,14,0.35)",
-              "rgba(20,16,14,0.15)",
-              "rgba(20,16,14,0.75)",
-              "rgba(20,16,14,0.96)",
-            ]}
-            locations={[0, 0.3, 0.65, 1]}
+          <ImageGradientOverlay
+            preset="strong"
+            height="80%"
             style={styles.heroGradient}
-            pointerEvents="none"
           />
 
-          {/* Top floating badge and favorite button */}
           <View style={styles.heroTopRow}>
             <View style={styles.heroBadgePill}>
               <Ionicons name="star" size={12} color="#f59e0b" />
@@ -469,7 +458,6 @@ const TonightScreen = ({ navigation }) => {
             </Pressable>
           </View>
 
-          {/* Bottom Content Info */}
           <View style={styles.heroCopy} pointerEvents="none">
             <Text style={styles.heroTitle}>{getMealTitle(pick)}</Text>
 
@@ -533,7 +521,6 @@ const TonightScreen = ({ navigation }) => {
           </View>
         </Pressable>
 
-        {/* Action Toolbar directly below Hero */}
         <View style={styles.heroActionToolbar}>
           <Pressable
             style={styles.primaryCta}
@@ -603,7 +590,6 @@ const TonightScreen = ({ navigation }) => {
           </View>
         </View>
 
-        {/* Full recipe link row */}
         <Pressable
           style={styles.openDetailBar}
           onPress={() => navigation.navigate("MealDetail", { mealId: pick.id })}
@@ -621,7 +607,6 @@ const TonightScreen = ({ navigation }) => {
         </Pressable>
       </View>
 
-      {/* Prep List Banner if planned for today */}
       {plannedToday && (
         <Pressable
           style={styles.prepBanner}
@@ -637,9 +622,6 @@ const TonightScreen = ({ navigation }) => {
         </Pressable>
       )}
 
-      {/* ======================================================== */}
-      {/* 🌟 EXPLORE THE KITCHEN: INTERACTIVE GATEWAY TO ALL SCREENS */}
-      {/* ======================================================== */}
       <View style={styles.sectionHeaderBetween}>
         <View style={styles.sectionMeta}>
           <Text style={styles.sectionKicker}>
@@ -731,9 +713,6 @@ const TonightScreen = ({ navigation }) => {
         ))}
       </ScrollView>
 
-      {/* ======================================================== */}
-      {/* 🌍 WORLD CUISINES CAROUSEL */}
-      {/* ======================================================== */}
       <View style={styles.sectionHeaderBetween}>
         <View style={styles.sectionMeta}>
           <Text style={styles.sectionKicker}>{t("tonight.cuisinesTitle")}</Text>
@@ -786,8 +765,9 @@ const TonightScreen = ({ navigation }) => {
               contentFit="cover"
               transition={200}
             />
-            <LinearGradient
-              colors={["transparent", "rgba(0,0,0,0.78)"]}
+            <ImageGradientOverlay
+              preset="standard"
+              height="70%"
               style={styles.cuisineGradient}
             />
             <Text style={styles.cuisineTitle} numberOfLines={1}>
@@ -797,9 +777,6 @@ const TonightScreen = ({ navigation }) => {
         ))}
       </ScrollView>
 
-      {/* ======================================================== */}
-      {/* 🧰 QUICK KITCHEN TOOLKIT (UTILITIES) */}
-      {/* ======================================================== */}
       <View style={styles.toolkitContainer}>
         <Pressable
           style={({ pressed }) => [
@@ -954,9 +931,6 @@ const TonightScreen = ({ navigation }) => {
         </Pressable>
       </View>
 
-      {/* ======================================================== */}
-      {/* ⭐ TOP RATED IN KITCHEN (IF ANY RATED) */}
-      {/* ======================================================== */}
       {rated.length > 0 && (
         <View style={styles.sectionBlock}>
           <Text style={styles.sectionBlockTitle}>
@@ -1008,9 +982,6 @@ const TonightScreen = ({ navigation }) => {
         </View>
       )}
 
-      {/* ======================================================== */}
-      {/* 🔥 TRENDING & CHEF'S FAVORITE DISHES (ALWAYS POPULATED) */}
-      {/* ======================================================== */}
       <View style={styles.sectionHeader}>
         <View style={styles.sectionMeta}>
           <Text style={styles.sectionKicker}>
@@ -1083,34 +1054,6 @@ const TonightScreen = ({ navigation }) => {
           </Pressable>
         ))}
       </ScrollView>
-
-      {/* ======================================================== */}
-      {/* 👨‍💻 ABOUT THE DEVELOPER FOOTER CARD */}
-      {/* ======================================================== */}
-      <Pressable
-        style={styles.devCard}
-        onPress={() => {
-          Haptics.selectionAsync();
-          navigation.navigate("AboutDeveloper");
-        }}
-      >
-        <Image
-          source={require("../assets/creator.png")}
-          style={styles.devAvatar}
-        />
-        <View style={styles.devMeta}>
-          <Text style={styles.devKicker}>{t("tonight.craftedBy")}</Text>
-          <Text style={styles.devName}>{t("aboutDeveloper.title")}</Text>
-          <Text style={styles.devRole}>{t("aboutDeveloper.role")}</Text>
-        </View>
-        <View style={styles.devArrow}>
-          <Ionicons
-            name={isRTL ? "chevron-back" : "chevron-forward"}
-            size={18}
-            color={colors.accent}
-          />
-        </View>
-      </Pressable>
     </ScrollView>
   );
 };
@@ -1276,7 +1219,11 @@ const createStyles = (colors, type, spacing, radii, isRTL, isDark = false) =>
       height: HERO_HEIGHT,
     },
     heroGradient: {
-      ...StyleSheet.absoluteFillObject,
+      position: "absolute",
+      left: 0,
+      right: 0,
+      bottom: 0,
+      height: "80%",
     },
     heroTopRow: {
       position: "absolute",
@@ -1654,7 +1601,11 @@ const createStyles = (colors, type, spacing, radii, isRTL, isDark = false) =>
       height: "100%",
     },
     cuisineGradient: {
-      ...StyleSheet.absoluteFillObject,
+      position: "absolute",
+      left: 0,
+      right: 0,
+      bottom: 0,
+      height: "70%",
     },
     cuisineTitle: {
       position: "absolute",
@@ -1779,59 +1730,6 @@ const createStyles = (colors, type, spacing, radii, isRTL, isDark = false) =>
     dishDot: {
       color: colors.inkSoft,
       fontSize: 10,
-    },
-    devCard: {
-      marginHorizontal: spacing.lg,
-      marginTop: spacing.xl + 4,
-      backgroundColor: colors.surface,
-      borderWidth: 1,
-      borderColor: colors.border,
-      borderRadius: radii.lg,
-      padding: spacing.md,
-      flexDirection: isRTL ? "row-reverse" : "row",
-      alignItems: "center",
-      gap: 12,
-    },
-    devAvatar: {
-      width: 52,
-      height: 52,
-      borderRadius: radii.md,
-      backgroundColor: colors.accentSoft,
-      borderWidth: 1,
-      borderColor: colors.border,
-    },
-    devMeta: {
-      flex: 1,
-      alignItems: isRTL ? "flex-end" : "flex-start",
-    },
-    devKicker: {
-      ...type.caption,
-      color: colors.inkSoft,
-      marginBottom: 2,
-      textAlign: isRTL ? "right" : "left",
-      writingDirection: isRTL ? "rtl" : "ltr",
-    },
-    devName: {
-      ...type.heading,
-      fontSize: 15,
-      color: colors.ink,
-      textAlign: isRTL ? "right" : "left",
-      writingDirection: isRTL ? "rtl" : "ltr",
-    },
-    devRole: {
-      ...type.caption,
-      color: colors.accent,
-      marginTop: 1,
-      textAlign: isRTL ? "right" : "left",
-      writingDirection: isRTL ? "rtl" : "ltr",
-    },
-    devArrow: {
-      width: 32,
-      height: 32,
-      borderRadius: 16,
-      backgroundColor: colors.accentSoft,
-      alignItems: "center",
-      justifyContent: "center",
     },
     moodHintText: {
       ...type.body,

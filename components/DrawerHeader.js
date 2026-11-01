@@ -6,11 +6,6 @@ import { useTheme } from "../constants/theme";
 import { useLocale } from "../constants/locale";
 import HeaderThemeButton from "./UI/HeaderThemeButton";
 
-/**
- * Universal Drawer Header with full RTL / LTR mirroring support.
- * - LTR (English): [Hamburger Menu] [Screen Title] ------------ [Theme Button]
- * - RTL (Persian): [Theme Button] ------------ [Screen Title] [Hamburger Menu]
- */
 export default function DrawerHeader({ navigation, route, options }) {
   const { colors } = useTheme();
   const { isRTL } = useLocale();
@@ -20,8 +15,8 @@ export default function DrawerHeader({ navigation, route, options }) {
     typeof options?.title === "string"
       ? options.title
       : typeof options?.headerTitle === "string"
-      ? options.headerTitle
-      : route?.name || "";
+        ? options.headerTitle
+        : route?.name || "";
 
   return (
     <View
@@ -40,7 +35,6 @@ export default function DrawerHeader({ navigation, route, options }) {
           { flexDirection: isRTL ? "row-reverse" : "row" },
         ]}
       >
-        {/* Navigation & Title Group */}
         <View
           style={[
             styles.navGroup,
@@ -61,7 +55,9 @@ export default function DrawerHeader({ navigation, route, options }) {
             }}
             style={styles.hamburgerButton}
             accessibilityRole="button"
-            accessibilityLabel={isRTL ? "باز کردن منوی ناوبری" : "Toggle navigation menu"}
+            accessibilityLabel={
+              isRTL ? "باز کردن منوی ناوبری" : "Toggle navigation menu"
+            }
           >
             <Ionicons name="menu-outline" size={26} color={colors.ink} />
           </Pressable>
@@ -80,7 +76,6 @@ export default function DrawerHeader({ navigation, route, options }) {
           </Text>
         </View>
 
-        {/* Action Button: Light/Dark Mode */}
         <HeaderThemeButton
           style={[
             styles.themeButton,

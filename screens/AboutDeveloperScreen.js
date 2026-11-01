@@ -97,7 +97,6 @@ const AboutDeveloperScreen = () => {
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
     >
-      {/* Header Profile Card */}
       <View style={styles.headerCard}>
         <Pressable
           onPress={() => {
@@ -172,7 +171,6 @@ const AboutDeveloperScreen = () => {
         </View>
       </View>
 
-      {/* Bio & Philosophy Card */}
       <View style={styles.card}>
         <Text style={styles.cardKicker}>{t("aboutDeveloper.aboutKicker")}</Text>
         <Text style={styles.cardTitle}>{t("aboutDeveloper.bioTitle")}</Text>
@@ -188,7 +186,6 @@ const AboutDeveloperScreen = () => {
         </View>
       </View>
 
-      {/* Organization Support Card (Clickable) */}
       <Pressable
         style={({ pressed }) => [
           styles.supportCard,
@@ -217,7 +214,6 @@ const AboutDeveloperScreen = () => {
         />
       </Pressable>
 
-      {/* Contact & Connect Links */}
       <View style={styles.card}>
         <Text style={styles.cardKicker}>{t("aboutDeveloper.connect")}</Text>
         <Text style={styles.cardTitle}>{t("aboutDeveloper.connectTitle")}</Text>
@@ -258,7 +254,6 @@ const AboutDeveloperScreen = () => {
         </View>
       </View>
 
-      {/* App & Version Footer */}
       <View style={styles.footer}>
         <Text style={styles.appName}>{t("aboutDeveloper.appName")}</Text>
         <Text style={styles.version}>{t("aboutDeveloper.version")}</Text>

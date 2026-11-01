@@ -21,6 +21,8 @@ import { setPreference, resetPreferences } from "../store/redux/preferences";
 import ThemeToggle from "../components/UI/ThemeToggle";
 
 import { clearAuth } from "../store/redux/authSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { clearOfflineAuthRecord } from "../services/offlineAuth";
 
 import { exportKitchenBackup, importKitchenBackup } from "../utils/backup";
 
@@ -251,7 +253,17 @@ const PreferencesScreen = () => {
 
       cancelUserScopedNotifications().catch(() => {});
 
-      if (supabase) await supabase.auth.signOut();
+      await clearOfflineAuthRecord().catch(() => {});
+
+      if (supabase) {
+        try {
+          await supabase.auth.signOut();
+        } catch (_) {}
+
+        if (supabase.auth?.storageKey) {
+          await AsyncStorage.removeItem(supabase.auth.storageKey).catch(() => {});
+        }
+      }
 
       dispatch(clearAuth());
 

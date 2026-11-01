@@ -8,6 +8,7 @@ import {
 import * as Haptics from "expo-haptics";
 import { useTheme } from "../constants/theme";
 import { useLocale } from "../constants/locale";
+import ImageGradientOverlay from "./UI/ImageGradientOverlay";
 
 const CategoryGridTile = ({ title, color, onPress, categoryId }) => {
   const { colors } = useTheme();
@@ -37,6 +38,11 @@ const CategoryGridTile = ({ title, color, onPress, categoryId }) => {
           style={styles.innerContainer}
           imageStyle={styles.image}
         >
+          <ImageGradientOverlay
+            preset="strong"
+            height="85%"
+            borderRadius={12}
+          />
           <View style={styles.overlay}>
             <Text
               style={[
@@ -84,7 +90,6 @@ const styles = StyleSheet.create({
   },
   overlay: {
     padding: 12,
-    backgroundColor: "rgba(26, 20, 16, 0.42)",
   },
   title: {
     fontFamily: "DMSans_600SemiBold",

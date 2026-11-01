@@ -11,7 +11,7 @@ import { Image } from "expo-image";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import { LinearGradient } from "expo-linear-gradient";
+import ImageGradientOverlay from "../components/UI/ImageGradientOverlay";
 import { useTranslation } from "react-i18next";
 import { MEALS } from "../data/dummy-data";
 import { duelMeals, pickDuelPair } from "../utils/duel";
@@ -231,8 +231,9 @@ function Contender({ meal, displayTitle, tags, crowned, onPress, styles, colors,
           style={styles.image}
           contentFit="cover"
         />
-        <LinearGradient
-          colors={["transparent", "rgba(26,20,16,0.75)"]}
+        <ImageGradientOverlay
+          preset="strong"
+          height="65%"
           style={styles.imageFade}
         />
         {crowned && (
@@ -326,7 +327,11 @@ const createStyles = (colors, type, spacing, radii, shadows, isRTL) => {
   },
   image: { width: "100%", height: "100%" },
   imageFade: {
-    ...StyleSheet.absoluteFillObject,
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: "65%",
   },
   crown: {
     position: "absolute",

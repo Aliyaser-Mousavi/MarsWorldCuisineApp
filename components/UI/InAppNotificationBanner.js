@@ -207,23 +207,25 @@ export default function InAppNotificationBanner({ navigationRef }) {
         accessibilityRole="button"
         accessibilityLabel={`${meta.label}: ${activeBanner.title}. ${activeBanner.body}`}
       >
-        {/* Top Header / Kicker row */}
         <View style={styles.headerRow}>
           <View style={styles.headerLeft}>
             <Text style={styles.appTitle}>
               {isRTL ? "مارس ورلد کوزین" : "Mars World Cuisine"}
             </Text>
             <Text style={styles.dot}>·</Text>
-            <View style={[styles.categoryChip, { backgroundColor: meta.color + "22" }]}>
+            <View
+              style={[
+                styles.categoryChip,
+                { backgroundColor: meta.color + "22" },
+              ]}
+            >
               <Ionicons name={meta.icon} size={11} color={meta.color} />
               <Text style={[styles.categoryText, { color: meta.color }]}>
                 {meta.label}
               </Text>
             </View>
             <Text style={styles.dot}>·</Text>
-            <Text style={styles.timeText}>
-              {isRTL ? "همین الان" : "Now"}
-            </Text>
+            <Text style={styles.timeText}>{isRTL ? "همین الان" : "Now"}</Text>
           </View>
 
           <Pressable
@@ -238,8 +240,6 @@ export default function InAppNotificationBanner({ navigationRef }) {
             <Ionicons name="close" size={16} color={colors.inkSoft} />
           </Pressable>
         </View>
-
-        {/* Content Row with App Logo */}
         <View style={styles.contentRow}>
           <View style={styles.logoWrapper}>
             <Image
@@ -248,8 +248,9 @@ export default function InAppNotificationBanner({ navigationRef }) {
               contentFit="cover"
               transition={150}
             />
-            {/* Miniature Category Overlay Badge */}
-            <View style={[styles.categoryBadge, { backgroundColor: meta.color }]}>
+            <View
+              style={[styles.categoryBadge, { backgroundColor: meta.color }]}
+            >
               <Ionicons name={meta.icon} size={10} color="#ffffff" />
             </View>
           </View>
@@ -271,7 +272,6 @@ export default function InAppNotificationBanner({ navigationRef }) {
           />
         </View>
 
-        {/* Subtle accent indicator bar at bottom */}
         <View style={[styles.accentBar, { backgroundColor: meta.color }]} />
       </Pressable>
     </Animated.View>

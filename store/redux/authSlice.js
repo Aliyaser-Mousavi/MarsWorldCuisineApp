@@ -5,6 +5,8 @@ const initialState = {
   session: null,
   profile: null,
   isAuthenticated: false,
+  /** True when user is granted local access based on prior authenticated session during offline cold-start. */
+  isOfflineAccess: false,
   isLoading: true,
   error: null,
   /** True while user is completing password recovery via deep link. */
@@ -18,7 +20,20 @@ const authSlice = createSlice({
     setSession: (state, action) => {
       state.session = action.payload;
       state.isAuthenticated = !!action.payload;
+      if (action.payload) {
+        state.isOfflineAccess = false;
+      }
       state.error = null;
+    },
+    setOfflineAccess: (state, action) => {
+      const { user, profile } = action.payload || {};
+      state.isOfflineAccess = true;
+      state.isAuthenticated = false;
+      state.session = null;
+      if (user) state.user = user;
+      if (profile) state.profile = profile;
+      state.error = null;
+      state.isLoading = false;
     },
     setUser: (state, action) => {
       state.user = action.payload;
@@ -29,6 +44,7 @@ const authSlice = createSlice({
     clearAuth: () => ({
       ...initialState,
       isLoading: false,
+      isOfflineAccess: false,
     }),
     setLoading: (state, action) => {
       state.isLoading = action.payload;
@@ -45,6 +61,7 @@ const authSlice = createSlice({
 
 export const {
   setSession,
+  setOfflineAccess,
   setUser,
   setProfile,
   clearAuth,

@@ -13,7 +13,7 @@ import { Image } from "expo-image";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import { LinearGradient } from "expo-linear-gradient";
+import ImageGradientOverlay from "../components/UI/ImageGradientOverlay";
 import { useTranslation } from "react-i18next";
 import { MEALS } from "../data/dummy-data";
 import { useTheme } from "../constants/theme";
@@ -181,15 +181,10 @@ const SurpriseScreen = ({ navigation }) => {
             cachePolicy="memory-disk"
             recyclingKey={result.id}
           />
-          <LinearGradient
-            colors={[
-              "transparent",
-              "rgba(26,20,16,0.2)",
-              "rgba(26,20,16,0.88)",
-            ]}
-            locations={[0.32, 0.58, 1]}
+          <ImageGradientOverlay
+            preset="strong"
+            height="75%"
             style={styles.gradient}
-            pointerEvents="none"
           />
           <View style={styles.copy} pointerEvents="none">
             <Text style={styles.badge}>
@@ -304,7 +299,11 @@ const createStyles = (colors, type, spacing, radii, isRTL) => {
     height: CARD * 1.15,
   },
   gradient: {
-    ...StyleSheet.absoluteFillObject,
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: "75%",
   },
   copy: {
     position: "absolute",

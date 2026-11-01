@@ -10,7 +10,7 @@ import {
 import { Image } from "expo-image";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
+import ImageGradientOverlay from "../components/UI/ImageGradientOverlay";
 import { useTranslation } from "react-i18next";
 import { buildFlavorPassport } from "../utils/passport";
 import { useTheme } from "../constants/theme";
@@ -90,8 +90,9 @@ const FlavorPassportScreen = ({ navigation }) => {
                   style={[styles.stampImage, locked && styles.stampImageDim]}
                   contentFit="cover"
                 />
-                <LinearGradient
-                  colors={["transparent", "rgba(26,20,16,0.7)"]}
+                <ImageGradientOverlay
+                  preset="subtle"
+                  height="65%"
                   style={styles.stampFade}
                 />
                 {locked ? (
@@ -230,7 +231,13 @@ const createStyles = (colors, type, spacing, radii, isRTL) =>
     },
     stampImage: { width: "100%", height: "100%" },
     stampImageDim: { opacity: 0.45 },
-    stampFade: { ...StyleSheet.absoluteFillObject },
+    stampFade: {
+      position: "absolute",
+      left: 0,
+      right: 0,
+      bottom: 0,
+      height: "65%",
+    },
     lockBadge: {
       position: "absolute",
       top: 8,

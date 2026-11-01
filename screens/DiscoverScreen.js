@@ -10,7 +10,7 @@ import {
 import { Image } from "expo-image";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
+import ImageGradientOverlay from "../components/UI/ImageGradientOverlay";
 import { buildDiscoverShelves, getCookingStreak } from "../utils/discover";
 import { useTheme } from "../constants/theme";
 import { useLocale } from "../constants/locale";
@@ -263,11 +263,10 @@ const DiscoverScreen = ({ navigation }) => {
                         cachePolicy="memory-disk"
                         recyclingKey={`${shelf.id}-${meal.id}`}
                       />
-                      <LinearGradient
-                        colors={["transparent", "rgba(26,20,16,0.75)"]}
-                        locations={[0.45, 1]}
+                      <ImageGradientOverlay
+                        preset="standard"
+                        height="55%"
                         style={styles.cardGrad}
-                        pointerEvents="none"
                       />
                       <Text style={styles.cardMeta}>
                         {durationText}
@@ -431,7 +430,11 @@ const createStyles = (colors, type, spacing, radii, isRTL) =>
       height: CARD_W * 1.15,
     },
     cardGrad: {
-      ...StyleSheet.absoluteFillObject,
+      position: "absolute",
+      left: 0,
+      right: 0,
+      bottom: 0,
+      height: "55%",
     },
     cardMeta: {
       position: "absolute",

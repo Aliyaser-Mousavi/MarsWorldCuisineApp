@@ -15,9 +15,6 @@ import { useTheme } from "../../constants/theme";
 import { useLocale } from "../../constants/locale";
 import { toPersianDigits } from "../../utils/formatters";
 
-/**
- * Icon map: filled (active) vs outline (inactive) Ionicons pairs.
- */
 const TAB_ICONS = {
   Tonight: {
     active: "home",
@@ -51,19 +48,9 @@ const TAB_ICONS = {
   },
 };
 
-// Horizontal margin for the floating dock on each side
 const DOCK_MARGIN = 16;
-// Inner horizontal padding within the dock (shared across all tabs)
 const DOCK_PADDING_H = 6;
 
-/**
- * TabItem — a single destination button.
- *
- * The active background capsule is rendered in the parent and positioned
- * absolutely, so TabItem only needs to render its icon + label. A subtle
- * translateY spring lifts the icon slightly on selection — no scale
- * transform, to keep layout perfectly stable during rapid switching.
- */
 function TabItem({
   route,
   isFocused,
@@ -240,20 +227,17 @@ export default function AnimatedTabBar({ state, descriptors, navigation }) {
       style={[styles.outerWrapper, { paddingBottom: safeBottom + 8 }]}
       pointerEvents="box-none"
     >
-      {/* Floating Dock */}
       <View
         style={[
           styles.dock,
           {
             backgroundColor: colors.surface,
             borderColor: colors.border,
-            // Subtle shadow in light mode; minimal in dark
             shadowOpacity: isDark ? 0.18 : 0.07,
           },
         ]}
         onLayout={onDockLayout}
       >
-        {/* Sliding active-tab highlight — absolutely positioned */}
         {tabWidth > 0 && (
           <Animated.View
             pointerEvents="none"
@@ -268,7 +252,6 @@ export default function AnimatedTabBar({ state, descriptors, navigation }) {
           />
         )}
 
-        {/* Tab row */}
         <View
           style={[
             styles.tabsRow,

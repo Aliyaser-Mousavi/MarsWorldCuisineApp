@@ -6,9 +6,6 @@ import CustomButton from "./UI/CustomButton";
 import { useTheme } from "../constants/theme";
 import { useLocale } from "../constants/locale";
 
-/**
- * Custom-styled dialog replacing system Alert.alert.
- */
 const CustomModal = ({
   visible,
   title,

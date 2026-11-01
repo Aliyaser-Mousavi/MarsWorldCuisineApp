@@ -43,10 +43,13 @@ const NotificationCenterModal = ({ visible, onClose, onNavigate }) => {
       const hours = d.getHours();
       const mins = String(d.getMinutes()).padStart(2, "0");
       const timeStr = `${hours}:${mins}`;
-      const datePart = d.toLocaleDateString(language === "fa" ? "fa-IR" : "en-US", {
-        month: "short",
-        day: "numeric",
-      });
+      const datePart = d.toLocaleDateString(
+        language === "fa" ? "fa-IR" : "en-US",
+        {
+          month: "short",
+          day: "numeric",
+        },
+      );
       const res = `${datePart} · ${timeStr}`;
       return isRTL ? toPersianDigits(res) : res;
     } catch {
@@ -59,13 +62,21 @@ const NotificationCenterModal = ({ visible, onClose, onNavigate }) => {
       case "timer":
         return { name: "timer-outline", color: "#f59e0b", bg: "#fef3c7" };
       case "meal_plan":
-        return { name: "calendar-outline", color: colors.accent, bg: colors.accentSoft };
+        return {
+          name: "calendar-outline",
+          color: colors.accent,
+          bg: colors.accentSoft,
+        };
       case "pantry":
         return { name: "hourglass-outline", color: "#f97316", bg: "#ffedd5" };
       case "quest":
         return { name: "ribbon-outline", color: "#8b5cf6", bg: "#ede9fe" };
       default:
-        return { name: "sparkles", color: colors.accent, bg: colors.accentSoft };
+        return {
+          name: "sparkles",
+          color: colors.accent,
+          bg: colors.accentSoft,
+        };
     }
   };
 
@@ -97,7 +108,6 @@ const NotificationCenterModal = ({ visible, onClose, onNavigate }) => {
     >
       <View style={styles.modalRoot}>
         <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
-        {/* Universal Standard Header: insets.top + 56px container */}
         <View
           style={[
             styles.headerWrapper,
@@ -121,7 +131,9 @@ const NotificationCenterModal = ({ visible, onClose, onNavigate }) => {
                 contentFit="cover"
               />
               <View>
-                <Text style={styles.headerTitle}>{t("notifications.historyTitle")}</Text>
+                <Text style={styles.headerTitle}>
+                  {t("notifications.historyTitle")}
+                </Text>
                 <Text style={styles.headerSubtitle}>
                   {isRTL ? "مارس ورلد کوزین" : "Mars World Cuisine"}
                 </Text>
@@ -133,11 +145,12 @@ const NotificationCenterModal = ({ visible, onClose, onNavigate }) => {
           </View>
         </View>
 
-        {/* Toolbar */}
         {history.length > 0 && (
           <View style={styles.toolbar}>
             <Pressable onPress={onMarkAll} hitSlop={8}>
-              <Text style={styles.toolbarAction}>{t("notifications.markAllRead")}</Text>
+              <Text style={styles.toolbarAction}>
+                {t("notifications.markAllRead")}
+              </Text>
             </Pressable>
             <Pressable onPress={onClear} hitSlop={8}>
               <Text style={[styles.toolbarAction, styles.clearAction]}>
@@ -146,8 +159,6 @@ const NotificationCenterModal = ({ visible, onClose, onNavigate }) => {
             </Pressable>
           </View>
         )}
-
-        {/* List Content */}
         <ScrollView
           style={styles.scroll}
           contentContainerStyle={styles.scrollContent}
@@ -162,7 +173,9 @@ const NotificationCenterModal = ({ visible, onClose, onNavigate }) => {
                   contentFit="cover"
                 />
               </View>
-              <Text style={styles.emptyTitle}>{t("notifications.historyEmpty")}</Text>
+              <Text style={styles.emptyTitle}>
+                {t("notifications.historyEmpty")}
+              </Text>
               <Text style={styles.emptyDesc}>
                 {t("notifications.historyEmptyDesc")}
               </Text>
@@ -176,7 +189,6 @@ const NotificationCenterModal = ({ visible, onClose, onNavigate }) => {
                   style={[styles.itemCard, !item.read && styles.itemCardUnread]}
                   onPress={() => onItemPress(item)}
                 >
-                  {/* App Logo with Category Micro Badge */}
                   <View style={styles.itemLogoWrapper}>
                     <Image
                       source={require("../assets/icon.png")}
